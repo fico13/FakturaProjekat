@@ -22,7 +22,6 @@ namespace Persistence
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseNpgsql(@"Host='localhost';Port='5432';Database='Projekat';Username='postgres';Password='admin';Timeout='120';CommandTimeout='0';");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
