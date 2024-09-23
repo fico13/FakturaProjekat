@@ -27,6 +27,7 @@ namespace Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<DokumentEntity>()
                     .HasOne(d => d.Komitent)
                     .WithMany()
@@ -36,6 +37,15 @@ namespace Persistence
                 .HasOne(s => s.Roba)
                 .WithMany()
                 .HasForeignKey(s => s.RobaId);
+
+            modelBuilder.Entity<RobaEntity>()
+                .Property(r => r.Naziv).IsRequired();
+
+            modelBuilder.Entity<KomitentEntity>(komitent =>
+            {
+                komitent.Property(k => k.Naziv).IsRequired();
+                komitent.Property(k => k.Adresa).IsRequired();
+            });
         }
     }
 }

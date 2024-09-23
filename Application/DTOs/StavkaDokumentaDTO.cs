@@ -5,6 +5,6 @@
         public decimal CenaStavkeKom { get; set; }
         public int Kolicina { get; set; }
         public decimal UkupnaCenaStavke { get; set; }
-        public RobaDTO Roba { get; set; } = new RobaDTO();
+        public RobaDTO? Roba { get; set; }
     }
 }

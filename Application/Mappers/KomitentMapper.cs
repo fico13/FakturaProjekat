@@ -9,8 +9,8 @@ namespace Application.Mappers
         {
             return new KomitentEntity
             {
-                Naziv = komitentDTO.Naziv,
-                Adresa = komitentDTO.Adresa,
+                Naziv = komitentDTO.Naziv ?? string.Empty,
+                Adresa = komitentDTO.Adresa ?? string.Empty,
             };
         }
 

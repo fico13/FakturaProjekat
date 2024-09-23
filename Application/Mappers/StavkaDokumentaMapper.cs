@@ -12,7 +12,7 @@ namespace Application.Mappers
                 CenaStavkeKom = stavkaDokumentaEntity.CenaStavkeKom,
                 Kolicina = stavkaDokumentaEntity.Kolicina,
                 UkupnaCenaStavke = stavkaDokumentaEntity.UkupnaCenaStavke,
-                Roba = stavkaDokumentaEntity.Roba.ToRobaDTO()
+                Roba = stavkaDokumentaEntity.Roba!.ToRobaDTO()
             };
         }
 
@@ -23,7 +23,7 @@ namespace Application.Mappers
                 CenaStavkeKom = stavkaDokumentaDTO.CenaStavkeKom,
                 Kolicina = stavkaDokumentaDTO.Kolicina,
                 UkupnaCenaStavke = stavkaDokumentaDTO.UkupnaCenaStavke,
-                Roba = stavkaDokumentaDTO.Roba.ToRobaEntity()
+                Roba = stavkaDokumentaDTO.Roba!.ToRobaEntity()
             };
         }
     }

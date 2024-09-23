@@ -13,7 +13,7 @@ namespace Application.Mappers
                 UkupnaCena = dokumentEntity.UkupnaCena,
                 Komitent =
                 dokumentEntity.Komitent!.ToKomitentDTO(),
-                Stavke = dokumentEntity.Stavke.Select(s => s.ToStavkaDTO()).ToList()
+                Stavke = dokumentEntity.Stavke!.Select(s => s.ToStavkaDTO()).ToList()
             };
         }
 
@@ -23,8 +23,8 @@ namespace Application.Mappers
             {
                 DatumIzdavanja = dokumentDTO.DatumIzdavanja,
                 UkupnaCena = dokumentDTO.UkupnaCena,
-                Komitent = dokumentDTO.Komitent.ToKomitentEntity(),
-                Stavke = dokumentDTO.Stavke.Select(s => s.ToStavkaDokumentaEntity()).ToList()
+                Komitent = dokumentDTO.Komitent!.ToKomitentEntity(),
+                Stavke = dokumentDTO.Stavke!.Select(s => s.ToStavkaDokumentaEntity()).ToList()
             };
         }
     }

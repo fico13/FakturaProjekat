@@ -2,7 +2,7 @@
 {
     public class RobaDTO
     {
-        public string Naziv { get; set; } = string.Empty;
+        public string? Naziv { get; set; }
         public decimal Cena { get; set; }
     }
 }

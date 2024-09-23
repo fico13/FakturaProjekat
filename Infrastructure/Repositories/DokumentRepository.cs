@@ -66,7 +66,8 @@ namespace Persistence.Repositories
             {
                 try
                 {
-                    var dokumenti = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke).ThenInclude(s => s.Roba)
+                    var dokumenti = await _context.Dokumenti.AsNoTracking()
+                                            .Include(d => d.Stavke!).ThenInclude(s => s.Roba)
                                             .Include(d => d.Komitent)
                                             .AsSplitQuery()
                                             .AsNoTracking()
@@ -90,7 +91,7 @@ namespace Persistence.Repositories
             {
                 try
                 {
-                    var dokument = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke).ThenInclude(s => s.Roba)
+                    var dokument = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke!).ThenInclude(s => s.Roba)
                                                     .Include(d => d.Komitent)
                                                     .AsSplitQuery()
                                                     .FirstOrDefaultAsync(d => d.Id == id);
@@ -113,7 +114,7 @@ namespace Persistence.Repositories
             {
                 try
                 {
-                    var dokument = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke).ThenInclude(s => s.Roba)
+                    var dokument = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke!).ThenInclude(s => s.Roba)
                                                     .Include(d => d.Komitent)
                                                     .FirstOrDefaultAsync(d => d.Id == id);
 

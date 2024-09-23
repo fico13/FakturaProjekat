@@ -7,6 +7,6 @@
         public decimal UkupnaCena { get; set; }
         public int KomitentId { get; set; }
         public KomitentEntity? Komitent { get; set; }
-        public List<StavkaDokumentaEntity> Stavke { get; set; } = new List<StavkaDokumentaEntity>();
+        public List<StavkaDokumentaEntity>? Stavke { get; set; }
     }
 }

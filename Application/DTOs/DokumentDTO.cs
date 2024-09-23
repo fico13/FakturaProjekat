@@ -4,7 +4,7 @@
     {
         public DateTime DatumIzdavanja { get; set; }
         public decimal UkupnaCena { get; set; }
-        public KomitentDTO Komitent { get; set; } = new KomitentDTO();
-        public List<StavkaDokumentaDTO> Stavke { get; set; } = new List<StavkaDokumentaDTO>();
+        public KomitentDTO? Komitent { get; set; }
+        public List<StavkaDokumentaDTO>? Stavke { get; set; }
     }
 }

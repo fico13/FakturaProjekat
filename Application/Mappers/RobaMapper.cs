@@ -18,7 +18,7 @@ namespace Application.Mappers
         {
             return new RobaEntity
             {
-                Naziv = robaDTO.Naziv,
+                Naziv = robaDTO.Naziv ?? string.Empty,
                 Cena = robaDTO.Cena,
             };
         }

@@ -3,7 +3,7 @@
     public class RobaEntity
     {
         public int Id { get; set; }
-        public string Naziv { get; set; } = string.Empty;
+        public string? Naziv { get; set; }
         public decimal Cena { get; set; }
     }
 }
