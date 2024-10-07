@@ -109,19 +109,19 @@
                                 <TextBlock Text="Početak" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Button>
-                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/home.png">
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/client.png" Click="Button_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Icons/client.png" Width="24" Height="24" Margin="5,0,0,0"/>
                                 <TextBlock Text="Komitent" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Button>
-                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/icon3.png">
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/goods.png">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Icons/goods.png" Width="24" Height="24" Margin="5,0,0,0"/>
                                 <TextBlock Text="Roba" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Button>
-                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/icon4.png">
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/bill.png">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Icons/bill.png" Width="24" Height="24" Margin="5,0,0,0"/>
                                 <TextBlock Text="Faktura" VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -133,8 +133,8 @@
         </Grid>
 
         <!-- Content for the second column can go here -->
-        <Grid Grid.Row="1" Grid.Column="1">
+        <ContentControl Grid.Row="1" Grid.Column="1" x:Name="ContentGrid">
             <!-- Your content here -->
-        </Grid>
+        </ContentControl>
     </Grid>
 </Window>

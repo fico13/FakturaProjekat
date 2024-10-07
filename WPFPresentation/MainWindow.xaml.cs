@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WPFPresentation.Views.UserControls;
 
 namespace WPFPresentation
 {
@@ -22,6 +23,12 @@ namespace WPFPresentation
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ContentGrid.Content = new UCKomitent();
+
         }
     }
 }
