@@ -14,7 +14,7 @@
                                 BorderThickness="1" 
                                 CornerRadius="10">
                             <Grid>
-                                <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}" Width="24" Height="24" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                                <Image Source="{TemplateBinding Tag}" Width="24" Height="24" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
@@ -80,7 +80,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="Auto" x:Name="MenuColumn"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -97,32 +97,44 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="21*"/>
-                <ColumnDefinition Width="129*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0" Background="LightGreen">
-                <TextBlock Text="MENI" Margin="5, 20, 5, 5" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Blue" />
-                <StackPanel VerticalAlignment="Center">
-                    <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/icon1.png">
-                        <TextBlock Text="Button 1" VerticalAlignment="Center"/>
-                    </Button>
-                    <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/icon2.png">
-                        <TextBlock Text="Button 2" VerticalAlignment="Center"/>
-                    </Button>
-                    <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/icon3.png">
-                        <TextBlock Text="Button 3" VerticalAlignment="Center"/>
-                    </Button>
-                    <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/icon4.png">
-                        <TextBlock Text="Button 4" VerticalAlignment="Center"/>
-                    </Button>
+        <Grid Grid.Row="1" Grid.Column="0" Background="LightGreen" x:Name="MenuStackPanel">
+            <StackPanel>
+                <Button Name="HamburgerButton" Content="☰" Click="HamburgerButton_Click" Width="30" Height="30" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                <StackPanel x:Name="MenuContent">
+                    <TextBlock Text="MENI" Margin="5, 20, 5, 5" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Blue" />
+                    <StackPanel VerticalAlignment="Center">
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/home.png">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Icons/home.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                                <TextBlock Text="Početak" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/home.png">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Icons/client.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                                <TextBlock Text="Komitent" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/icon3.png">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Icons/goods.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                                <TextBlock Text="Roba" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/icon4.png">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Icons/bill.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                                <TextBlock Text="Faktura" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
-            </Grid>
+            </StackPanel>
+        </Grid>
 
-            <!-- Content for the second column can go here -->
+        <!-- Content for the second column can go here -->
+        <Grid Grid.Row="1" Grid.Column="1">
+            <!-- Your content here -->
         </Grid>
     </Grid>
 </Window>

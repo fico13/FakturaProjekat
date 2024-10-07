@@ -2,9 +2,6 @@
 
 namespace WPFPresentation
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -12,14 +9,19 @@ namespace WPFPresentation
             InitializeComponent();
         }
 
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            MenuContent.Visibility = MenuContent.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+        }
+
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

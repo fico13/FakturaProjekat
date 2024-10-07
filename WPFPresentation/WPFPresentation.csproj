@@ -9,17 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Icons\icon1.png" />
-    <None Remove="Icons\icon2.png" />
-    <None Remove="Icons\icon3.png" />
-    <None Remove="Icons\icon4.png" />
+    <None Remove="Icons\bill.png" />
+    <None Remove="Icons\client.png" />
+    <None Remove="Icons\goods.png" />
+    <None Remove="Icons\home.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Icons\icon1.png" />
-    <Resource Include="Icons\icon2.png" />
-    <Resource Include="Icons\icon3.png" />
-    <Resource Include="Icons\icon4.png" />
+    <Resource Include="Icons\bill.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\client.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\goods.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\home.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
