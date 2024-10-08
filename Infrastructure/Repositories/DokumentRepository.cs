@@ -108,6 +108,11 @@ namespace Persistence.Repositories
             }
         }
 
+        public Task<IEnumerable<DokumentEntity>> GetByNameAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<DokumentEntity?> UpdateAsync(int id, DokumentEntity dokumentEntity)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())

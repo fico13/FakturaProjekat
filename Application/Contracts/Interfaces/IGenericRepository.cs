@@ -5,6 +5,7 @@
         Task<IReadOnlyList<T>> GetAllAsync();
 
         Task<T?> GetAsync(int id);
+        Task<IEnumerable<T>> GetByNameAsync(string name);
 
         Task<T> AddAsync(T item);
 

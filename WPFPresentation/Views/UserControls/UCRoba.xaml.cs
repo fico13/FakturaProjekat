@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WPFPresentation.Views.UserControls
 {
     /// <summary>
-    /// Interaction logic for UCKomitent.xaml
+    /// Interaction logic for UCRoba.xaml
     /// </summary>
-    public partial class UCKomitent : UserControl
+    public partial class UCRoba : UserControl
     {
-        public UCKomitent()
+        public UCRoba()
         {
             InitializeComponent();
         }

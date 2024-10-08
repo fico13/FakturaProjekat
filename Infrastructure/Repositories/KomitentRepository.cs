@@ -86,11 +86,31 @@ namespace Persistence.Repositories
             {
                 try
                 {
-                    var komitent = await _context.Komitenti.FindAsync(id);
+                    var komitent = await _context.Komitenti.AsNoTracking().FirstOrDefaultAsync(k => k.Id == id);
 
                     await transaction.CommitAsync();
 
                     return komitent == null ? null : komitent;
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<KomitentEntity>> GetByNameAsync(string name)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    var komitent = await _context.Komitenti.AsNoTracking().Where(k => k.Naziv!.ToLower().Contains(name.ToLower())).ToListAsync();
+
+                    await transaction.CommitAsync();
+
+                    return komitent;
                 }
                 catch (Exception)
                 {

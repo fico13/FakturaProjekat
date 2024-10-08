@@ -86,7 +86,7 @@ namespace Persistence.Repositories
             {
                 try
                 {
-                    var roba = await _context.Roba.FindAsync(id);
+                    var roba = await _context.Roba.AsNoTracking().FirstOrDefaultAsync(k => k.Id == id);
 
                     await transaction.CommitAsync();
 
@@ -98,6 +98,11 @@ namespace Persistence.Repositories
                     throw;
                 }
             }
+        }
+
+        public Task<IEnumerable<RobaEntity>> GetByNameAsync(string name)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<RobaEntity?> UpdateAsync(int id, RobaEntity robaEntity)

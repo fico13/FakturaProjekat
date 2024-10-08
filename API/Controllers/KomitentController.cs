@@ -27,15 +27,15 @@ namespace API.Controllers
             return Ok(komitenti.Select(k => k.ToKomitentDTO()).ToList());
         }
 
-        // GET: api/Komitent/5
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<KomitentDTO>> GetKomitent([FromRoute] int id)
+        [HttpGet("search")]
+        public async Task<ActionResult<IReadOnlyList<KomitentDTO>>> GetKomitentByName([FromQuery] string name)
         {
-            var komitent = await _komitentRepository.GetAsync(id);
-
-            if (komitent == null) return NotFound();
-
-            return Ok(komitent.ToKomitentDTO());
+            var komitenti = await _komitentRepository.GetByNameAsync(name);
+            if (komitenti == null || !komitenti.Any())
+            {
+                return NotFound();
+            }
+            return Ok(komitenti.Select(k => k.ToKomitentDTO()).ToList());
         }
 
         // PUT: api/Komitent/5

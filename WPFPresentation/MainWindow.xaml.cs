@@ -25,10 +25,23 @@ namespace WPFPresentation
             Close();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnHome_Click(object sender, RoutedEventArgs e)
         {
-            ContentGrid.Content = new UCKomitent();
+        }
 
+        private void btnKomitent_Click(object sender, RoutedEventArgs e)
+        {
+            ContentGrid.Content = new UCKomitent(this);
+        }
+
+        private void btnRoba_Click(object sender, RoutedEventArgs e)
+        {
+            ContentGrid.Content = new UCRoba();
+        }
+
+        private void btnFaktura_Click(object sender, RoutedEventArgs e)
+        {
+            ContentGrid.Content = new UCFaktura();
         }
     }
 }

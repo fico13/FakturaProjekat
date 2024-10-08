@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="WPFPresentation.Views.UserControls.Komitent.UCIzmeniKomitenta"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="400">
+    <Grid Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <!-- New row for the button -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- First Row -->
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Naziv" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Width="200" Margin="5"/>
+
+        <!-- Second Row -->
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Adresa" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Width="200" Margin="5"/>
+
+        <!-- Third Row for Error TextBox -->
+        <TextBox Grid.Row="2" Grid.Column="1" Width="200" Margin="5" IsReadOnly="True" Foreground="Red" Height="100"/>
+
+        <!-- Fourth Row for the Button -->
+        <Button Grid.Row="3" Grid.Column="1"  Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Icons/update.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                <TextBlock Text="Izmeni" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            </StackPanel>
+        </Button>
+    </Grid>
+</UserControl>
+
