@@ -18,6 +18,7 @@ namespace Application.Mappers
         {
             return new KomitentDTO
             {
+                Id = komitentEntity.Id,
                 Naziv = komitentEntity.Naziv,
                 Adresa = komitentEntity.Adresa
             };

@@ -57,8 +57,7 @@ namespace API.Controllers
         public async Task<ActionResult<KomitentEntity>> PostKomitentEntity([FromBody] KomitentDTO komitentDTO)
         {
             var komitentEntity = await _komitentRepository.AddAsync(komitentDTO.ToKomitentEntity());
-
-            return CreatedAtAction("GetKomitent", new { id = komitentEntity.Id }, komitentEntity.ToKomitentDTO());
+            return Ok(komitentEntity.ToKomitentDTO());
         }
 
         // DELETE: api/Komitent/5

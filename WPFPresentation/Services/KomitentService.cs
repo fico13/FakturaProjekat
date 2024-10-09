@@ -40,6 +40,7 @@ namespace WPFPresentation.Services
         {
             var response = await _httpClient.PostAsJsonAsync("api/Komitent", komitent);
             if (response.IsSuccessStatusCode) MessageBox.Show("Komitent je uspesno dodat");
+            else MessageBox.Show("Greska prilikom dodavanja komitenta");
         }
 
         internal async Task<IReadOnlyList<KomitentDTO>> FindKomitents(string name)
@@ -52,6 +53,22 @@ namespace WPFPresentation.Services
                 return komitents!;
             }
             return new List<KomitentDTO>();
+        }
+
+        internal async Task UpdateKomitent(KomitentDTO komitentDTO)
+        {
+            var requestUri = $"api/Komitent/{komitentDTO.Id}";
+            var response = await _httpClient.PutAsJsonAsync(requestUri, komitentDTO);
+            if (response.IsSuccessStatusCode) MessageBox.Show("Komitent je uspesno izmenjen");
+            else MessageBox.Show("Greska prilikom izmene komitenta");
+        }
+
+        internal async Task DeleteKomitent(KomitentDTO komitentDTO)
+        {
+            var requestUri = $"api/Komitent/{komitentDTO.Id}";
+            var response = await _httpClient.DeleteAsync(requestUri);
+            if (response.IsSuccessStatusCode) MessageBox.Show("Komitent je uspesno obrisan");
+            else MessageBox.Show("Greska prilikom brisanja komitenta");
         }
     }
 }

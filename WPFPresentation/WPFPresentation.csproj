@@ -16,6 +16,7 @@
     <None Remove="Icons\find.png" />
     <None Remove="Icons\goods.png" />
     <None Remove="Icons\home.png" />
+    <None Remove="Icons\select.png" />
     <None Remove="Icons\update.png" />
   </ItemGroup>
 
@@ -42,6 +43,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Icons\home.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\select.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Icons\update.png">

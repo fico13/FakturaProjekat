@@ -40,12 +40,6 @@
                     <TextBlock Text="Izmeni" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
             </Button>
-            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/Icons/delete.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                    <TextBlock Text="Obriši" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                </StackPanel>
-            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

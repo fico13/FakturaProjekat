@@ -80,24 +80,9 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<KomitentEntity?> GetAsync(int id)
+        public Task<KomitentEntity?> GetAsync(int id)
         {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
-            {
-                try
-                {
-                    var komitent = await _context.Komitenti.AsNoTracking().FirstOrDefaultAsync(k => k.Id == id);
-
-                    await transaction.CommitAsync();
-
-                    return komitent == null ? null : komitent;
-                }
-                catch (Exception)
-                {
-                    await transaction.RollbackAsync();
-                    throw;
-                }
-            }
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<KomitentEntity>> GetByNameAsync(string name)
