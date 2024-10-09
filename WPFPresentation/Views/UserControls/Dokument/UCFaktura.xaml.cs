@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using WPFPresentation.ViewModels.Dokument;
 
 namespace WPFPresentation.Views.UserControls
 {
@@ -13,6 +14,7 @@ namespace WPFPresentation.Views.UserControls
         {
             InitializeComponent();
             _mainWindow = mainWindow;
+            DataContext = new DokumentViewModel();
         }
     }
 }
