@@ -28,15 +28,15 @@ namespace API.Controllers
             return Ok(roba.Select(r => r.ToRobaDTO()).ToList());
         }
 
-        // GET: api/Roba/5
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<RobaEntity>> GetRobaEntity([FromRoute] int id)
+        [HttpGet("search")]
+        public async Task<ActionResult<IReadOnlyList<KomitentDTO>>> GetRobaByName([FromQuery] string name)
         {
-            var roba = await _robaRepository.GetAsync(id);
-
-            if (roba == null) return NotFound();
-
-            return Ok(roba.ToRobaDTO());
+            var roba = await _robaRepository.GetByNameAsync(name);
+            if (roba == null || !roba.Any())
+            {
+                return NotFound();
+            }
+            return Ok(roba.Select(k => k.ToRobaDTO()).ToList());
         }
 
         // PUT: api/Roba/5
@@ -58,7 +58,7 @@ namespace API.Controllers
         {
             var robaEntity = await _robaRepository.AddAsync(robaDTO.ToRobaEntity());
 
-            return CreatedAtAction("GetRobaEntity", new { id = robaEntity.Id }, robaEntity.ToRobaDTO());
+            return Ok(robaEntity.ToRobaDTO());
         }
 
         // DELETE: api/Roba/5

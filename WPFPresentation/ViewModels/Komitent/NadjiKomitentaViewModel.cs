@@ -44,10 +44,10 @@ namespace WPFPresentation.ViewModels.Komitent
         {
             _komitentService = new KomitentService();
             Komitenti = new ObservableCollection<KomitentDTO>();
-            _findKomitentCommand = new RelayCommand(FindKomitent);
+            _findKomitentCommand = new RelayCommand(async (obj) => await FindKomitent(obj));
         }
 
-        private async void FindKomitent(object obj)
+        private async Task FindKomitent(object obj)
         {
             IEnumerable<KomitentDTO> komitenti = await _komitentService.FindKomitents(SearchString!);
             Komitenti = new ObservableCollection<KomitentDTO>(komitenti);

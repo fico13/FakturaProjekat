@@ -9,6 +9,7 @@ namespace Application.Mappers
         {
             return new StavkaDokumentaDTO
             {
+                Id = stavkaDokumentaEntity.Id,
                 CenaStavkeKom = stavkaDokumentaEntity.CenaStavkeKom,
                 Kolicina = stavkaDokumentaEntity.Kolicina,
                 UkupnaCenaStavke = stavkaDokumentaEntity.UkupnaCenaStavke,

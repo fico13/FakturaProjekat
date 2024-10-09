@@ -27,6 +27,7 @@ namespace WPFPresentation
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
+
         }
 
         private void btnKomitent_Click(object sender, RoutedEventArgs e)
@@ -36,12 +37,12 @@ namespace WPFPresentation
 
         private void btnRoba_Click(object sender, RoutedEventArgs e)
         {
-            ContentGrid.Content = new UCRoba();
+            ContentGrid.Content = new UCRoba(this);
         }
 
         private void btnFaktura_Click(object sender, RoutedEventArgs e)
         {
-            ContentGrid.Content = new UCFaktura();
+            ContentGrid.Content = new UCFaktura(this);
         }
     }
 }

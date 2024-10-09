@@ -100,9 +100,24 @@ namespace Persistence.Repositories
             }
         }
 
-        public Task<IEnumerable<RobaEntity>> GetByNameAsync(string name)
+        public async Task<IEnumerable<RobaEntity>> GetByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    var roba = await _context.Roba.AsNoTracking().Where(r => r.Naziv!.ToLower().Contains(name.ToLower())).ToListAsync();
+
+                    await transaction.CommitAsync();
+
+                    return roba;
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
         }
 
         public async Task<RobaEntity?> UpdateAsync(int id, RobaEntity robaEntity)

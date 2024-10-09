@@ -65,8 +65,7 @@ namespace WPFPresentation.Services
 
         internal async Task DeleteKomitent(KomitentDTO komitentDTO)
         {
-            var requestUri = $"api/Komitent/{komitentDTO.Id}";
-            var response = await _httpClient.DeleteAsync(requestUri);
+            var response = await _httpClient.DeleteAsync($"api/Komitent/{komitentDTO.Id}");
             if (response.IsSuccessStatusCode) MessageBox.Show("Komitent je uspesno obrisan");
             else MessageBox.Show("Greska prilikom brisanja komitenta");
         }

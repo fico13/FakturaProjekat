@@ -13,23 +13,22 @@
         </Grid.RowDefinitions>
 
         <!-- DataGrid -->
-        <DataGrid x:Name="RobaDataGrid" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" Margin="10"/>
+        <DataGrid x:Name="RobaDataGrid" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" Margin="10" ItemsSource="{Binding Path=Roba}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Naziv}"/>
+                <DataGridTextColumn Header="Cena" Width="*" Binding="{Binding Path=Cena}"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <!-- Buttons -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="10">
-            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}">
+            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnAddRoba" Click="btnAddRoba_Click">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Icons/add.png" Width="24" Height="24" Margin="5,0,0,0"/>
                     <TextBlock Text="Dodaj" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
             </Button>
-            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/Icons/find.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                    <TextBlock Text="Pretraži" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                </StackPanel>
-            </Button>
-            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}">
+            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnEditRoba" Click="btnEditRoba_Click">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Icons/update.png" Width="24" Height="24" Margin="5,0,0,0"/>
                     <TextBlock Text="Izmeni" VerticalAlignment="Center" Margin="5,0,0,0"/>

@@ -30,10 +30,10 @@ namespace WPFPresentation.ViewModels.Komitent
         {
             _komitentService = new KomitentService();
             Komitent = new KomitentDTO();
-            _dodajKomitenta = new RelayCommand(AddKomitent);
+            _dodajKomitenta = new RelayCommand(async (obj) => await AddKomitent(obj));
         }
 
-        public async void AddKomitent(object obj)
+        private async Task AddKomitent(object obj)
         {
             await _komitentService.AddKomitent(Komitent);
             Komitent = new KomitentDTO();

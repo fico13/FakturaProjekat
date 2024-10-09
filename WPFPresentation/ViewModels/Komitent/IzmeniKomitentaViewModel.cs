@@ -62,25 +62,25 @@ namespace WPFPresentation.ViewModels.Komitent
             _komitentService = new KomitentService();
             SelectedKomitent = new KomitentDTO();
             Komitenti = new ObservableCollection<KomitentDTO>();
-            FindKomitentCommand = new RelayCommand(FindKomitents);
-            UpdateKomitentCommand = new RelayCommand(UpdateKomitent);
-            DeleteKomitentCommand = new RelayCommand(DeleteKomitent);
+            FindKomitentCommand = new RelayCommand(async (obj) => await FindKomitents(obj));
+            UpdateKomitentCommand = new RelayCommand(async (obj) => await UpdateKomitent(obj));
+            DeleteKomitentCommand = new RelayCommand(async (obj) => await DeleteKomitent(obj));
         }
 
-        private async void DeleteKomitent(object obj)
+        private async Task DeleteKomitent(object obj)
         {
             await _komitentService.DeleteKomitent(SelectedKomitent!);
             SelectedKomitent = new KomitentDTO();
-            FindKomitents(obj);
+            await FindKomitents(obj);
         }
 
-        private async void UpdateKomitent(object obj)
+        private async Task UpdateKomitent(object obj)
         {
             await _komitentService.UpdateKomitent(SelectedKomitent!);
             SelectedKomitent = new KomitentDTO();
         }
 
-        private async void FindKomitents(object obj)
+        private async Task FindKomitents(object obj)
         {
             var komitenti = await _komitentService.FindKomitents(SearchString!);
             Komitenti = new ObservableCollection<KomitentDTO>(komitenti);

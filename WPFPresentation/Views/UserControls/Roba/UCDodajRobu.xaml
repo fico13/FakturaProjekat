@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="WPFPresentation.Views.UserControls.Roba.UCDodajRobu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFPresentation.Views.UserControls.Roba"
+             mc:Ignorable="d" 
+             Height="303" Width="594" Background="White">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Naziv -->
+        <TextBlock Text="Naziv:" VerticalAlignment="Center" Margin="116,0,370,0" Grid.Column="1" OpacityMask="Black"/>
+        <TextBox x:Name="NazivTextBox" Grid.Column="1" Margin="5" Text="{Binding Path=Roba.Naziv}" Width="200" OpacityMask="Black"/>
+
+        <!-- Adresa -->
+        <TextBlock Text="Cena:" Grid.Row="1" VerticalAlignment="Center" Margin="111,0,424,0" Grid.ColumnSpan="2" OpacityMask="Black"/>
+        <TextBox x:Name="AdresaTextBox" Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Path=Roba.Cena}" Width="200" OpacityMask="Black"/>
+
+        <!-- Validation Errors -->
+        <TextBox x:Name="ValidationErrorsTextBox" Grid.Row="2" Margin="5,10,5,53" IsReadOnly="True" Foreground="Red" Background="Transparent" BorderThickness="0" Grid.Column="1" Width="200" OpacityMask="Black"/>
+
+        <!-- Dodaj Button -->
+        <Button Grid.Row="3" Width="100" Height="40" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource RoundedButtonStyle}" Grid.ColumnSpan="2" Command="{Binding Path=DodajRobuCommand}" OpacityMask="Black">
+            <StackPanel Orientation="Horizontal" OpacityMask="Black">
+                <Image Source="/Icons/add.png" Width="24" Height="24" Margin="5,0,0,0" OpacityMask="Black"/>
+                <TextBlock Text="Dodaj" VerticalAlignment="Center" Margin="5,0,0,0" OpacityMask="Black"/>
+            </StackPanel>
+        </Button>
+    </Grid>
+</UserControl>
