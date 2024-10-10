@@ -22,9 +22,41 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
+
+
+        private DokumentDTO? _selectedDokument;
+        public DokumentDTO? SelectedDokument
+        {
+            get
+            {
+                return _selectedDokument;
+            }
+            set
+            {
+                _selectedDokument = value;
+                OnPropertyChanged(nameof(SelectedDokument));
+                UpdateStavke();
+            }
+        }
+
+        private ObservableCollection<StavkaDokumentaDTO>? _stavke;
+        public ObservableCollection<StavkaDokumentaDTO>? Stavke
+        {
+            get
+            {
+                return _stavke;
+            }
+            set
+            {
+                _stavke = value;
+                OnPropertyChanged(nameof(Stavke));
+            }
+        }
+
         public DokumentViewModel()
         {
             Dokumenti = new ObservableCollection<DokumentDTO>();
+            SelectedDokument = new DokumentDTO();
             _dokumentService = new DokumentService();
             LoadData();
         }
@@ -33,6 +65,18 @@ namespace WPFPresentation.ViewModels.Dokument
         {
             var dokumenti = await _dokumentService.GetDokumenti();
             Dokumenti = new ObservableCollection<DokumentDTO>(dokumenti);
+        }
+
+        private void UpdateStavke()
+        {
+            if (SelectedDokument != null && SelectedDokument.Stavke != null)
+            {
+                Stavke = new ObservableCollection<StavkaDokumentaDTO>(SelectedDokument.Stavke);
+            }
+            else
+            {
+                Stavke = new ObservableCollection<StavkaDokumentaDTO>();
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Windows;
 
 namespace WPFPresentation.Services
 {
@@ -14,6 +15,19 @@ namespace WPFPresentation.Services
             _httpClient.BaseAddress = new Uri("http://localhost:5055");
         }
 
+        internal async Task AddDokument(DokumentDTO dokumentDTO)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/Dokument", dokumentDTO);
+            if (response.IsSuccessStatusCode)
+            {
+                MessageBox.Show("Dokument uspesno dodat");
+            }
+            else
+            {
+                MessageBox.Show("Greska prilikom dodavanja dokumenta");
+
+            }
+        }
 
         internal async Task<IEnumerable<DokumentDTO>> GetDokumenti()
         {

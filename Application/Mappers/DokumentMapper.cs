@@ -24,7 +24,7 @@ namespace Application.Mappers
             {
                 DatumIzdavanja = dokumentDTO.DatumIzdavanja,
                 UkupnaCena = dokumentDTO.UkupnaCena,
-                Komitent = dokumentDTO.Komitent!.ToKomitentEntity(),
+                KomitentId = dokumentDTO.Komitent!.Id,
                 Stavke = dokumentDTO.Stavke!.Select(s => s.ToStavkaDokumentaEntity()).ToList()
             };
         }

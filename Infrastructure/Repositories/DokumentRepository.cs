@@ -25,7 +25,12 @@ namespace Persistence.Repositories
 
                     await transaction.CommitAsync();
 
-                    return dokumentEntity;
+                    var dokument = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke!).ThenInclude(s => s.Roba)
+                                                    .Include(d => d.Komitent)
+                                                    .AsSplitQuery()
+                                                    .FirstOrDefaultAsync(d => d.Id == dokumentEntity.Id);
+
+                    return dokument!;
                 }
                 catch
                 {

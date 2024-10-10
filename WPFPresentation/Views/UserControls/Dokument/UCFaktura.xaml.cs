@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using WPFPresentation.ViewModels.Dokument;
+using WPFPresentation.Views.UserControls.Dokument;
 
 namespace WPFPresentation.Views.UserControls
 {
@@ -15,6 +16,11 @@ namespace WPFPresentation.Views.UserControls
             InitializeComponent();
             _mainWindow = mainWindow;
             DataContext = new DokumentViewModel();
+        }
+
+        private void btnAddDokument_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _mainWindow.ContentGrid.Content = new UCDodajDokument();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Application.Mappers
                 CenaStavkeKom = stavkaDokumentaDTO.CenaStavkeKom,
                 Kolicina = stavkaDokumentaDTO.Kolicina,
                 UkupnaCenaStavke = stavkaDokumentaDTO.UkupnaCenaStavke,
-                Roba = stavkaDokumentaDTO.Roba!.ToRobaEntity()
+                RobaId = stavkaDokumentaDTO.Roba!.Id
             };
         }
     }

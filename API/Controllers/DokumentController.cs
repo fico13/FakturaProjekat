@@ -59,37 +59,11 @@ namespace API.Controllers
         // POST: api/DokumentEntities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DokumentEntity>> PostDokumentEntity()
+        public async Task<ActionResult<DokumentEntity>> PostDokumentEntity([FromBody] DokumentDTO dokumentDTO)
         {
-            var roba = await _robaRepository.GetAllAsync();
-            var komitent = await _komitentRepository.GetAsync(1);
+            var dokumentEntity = await _dokumentRepository.AddAsync(dokumentDTO.ToDokumentEntity());
 
-            var dokument = new DokumentDTO
-            {
-                DatumIzdavanja = DateTime.UtcNow,
-                Komitent = komitent!.ToKomitentDTO(),
-                Stavke = new List<StavkaDokumentaDTO>
-                {
-                    new StavkaDokumentaDTO
-                    {
-                        Roba = roba[0].ToRobaDTO(),
-                        CenaStavkeKom = roba[0].Cena,
-                        Kolicina = 3
-                    },
-                    new StavkaDokumentaDTO
-                    {
-                        Roba = roba[1].ToRobaDTO(),
-                        CenaStavkeKom = roba[1].Cena,
-                        Kolicina = 5
-                    },
-                }
-            };
-            dokument.Stavke.Select(s => s.UkupnaCenaStavke = s.CenaStavkeKom * s.Kolicina).ToList();
-            dokument.UkupnaCena = dokument.Stavke.Sum(s => s.UkupnaCenaStavke);
-
-            var dokumentEntity = await _dokumentRepository.AddAsync(dokument.ToDokumentEntity());
-
-            return CreatedAtAction("GetDokumentEntity", new { id = dokumentEntity.Id }, dokumentEntity.ToDokumentDTO());
+            return Ok(dokumentEntity.ToDokumentDTO());
         }
 
         // DELETE: api/DokumentEntities/5
