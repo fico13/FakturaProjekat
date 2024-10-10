@@ -56,7 +56,7 @@
                     <TextBlock Text="Dodaj" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
             </Button>
-            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}">
+            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnEditDokument" Click="btnEditDokument_Click">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Icons/update.png" Width="24" Height="24" Margin="5,0,0,0"/>
                     <TextBlock Text="Izmeni" VerticalAlignment="Center" Margin="5,0,0,0"/>
