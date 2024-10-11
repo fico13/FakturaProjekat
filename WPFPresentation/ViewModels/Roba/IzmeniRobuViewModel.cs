@@ -1,15 +1,17 @@
 ﻿using Application.DTOs;
+using FluentValidation;
 using System.Collections.ObjectModel;
-using System.Windows.Controls;
 using System.Windows.Input;
 using WPFPresentation.Commands;
 using WPFPresentation.Services;
+using WPFPresentation.Validators;
 
 namespace WPFPresentation.ViewModels.Roba
 {
     public class IzmeniRobuViewModel : BaseViewModel
     {
         private RobaService _robaService;
+        private IValidator<RobaDTO> _validator;
 
         private string? _searchString;
         public string? SearchString
@@ -53,15 +55,43 @@ namespace WPFPresentation.ViewModels.Roba
             }
         }
 
+        private string? _validation;
+        public string? Validation
+        {
+            get
+            {
+                return _validation;
+            }
+            set
+            {
+                _validation = value;
+                OnPropertyChanged(nameof(Validation));
+            }
+        }
 
         public ICommand FindRobuCommand { get; set; }
         public ICommand UpdateRobaCommand { get; set; }
         public ICommand DeleteRobaCommand { get; set; }
 
+        public IzmeniRobuViewModel()
+        {
+            _robaService = new RobaService();
+            SelectedRoba = new RobaDTO();
+            Roba = new ObservableCollection<RobaDTO>();
+            _validator = new RobaValidator();
+            FindRobuCommand = new RelayCommand(async (obj) => await FindRoba(obj));
+            UpdateRobaCommand = new RelayCommand(async (obj) => await UpdateRoba(obj));
+            DeleteRobaCommand = new RelayCommand(async (obj) => await DeleteRoba(obj));
+        }
 
 
         private async Task DeleteRoba(object obj)
         {
+            if (SelectedRoba!.Id == 0)
+            {
+                Validation = "Morate izabrati robu koju zelite da obrisete";
+                return;
+            }
             await _robaService.ObrisiRobu(SelectedRoba!);
             SelectedRoba = new RobaDTO();
             await FindRoba(obj);
@@ -69,39 +99,32 @@ namespace WPFPresentation.ViewModels.Roba
 
         private async Task UpdateRoba(object obj)
         {
+            if (SelectedRoba!.Id == 0)
+            {
+                Validation = "Morate izabrati robu koju zelite da izmenite";
+                return;
+            }
+            var result = _validator.Validate(SelectedRoba!);
+            if (!result.IsValid)
+            {
+                Validation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
+                return;
+            }
             await _robaService.UpdateRoba(SelectedRoba!);
             SelectedRoba = new RobaDTO();
         }
 
         private async Task FindRoba(object obj)
         {
-            var roba = await _robaService.FindRoba(SearchString!);
+            IEnumerable<RobaDTO> roba;
+            if (string.IsNullOrWhiteSpace(SearchString))
+            {
+                roba = await _robaService.GetRoba();
+                Roba = new ObservableCollection<RobaDTO>(roba);
+                return;
+            }
+            roba = await _robaService.FindRoba(SearchString!);
             Roba = new ObservableCollection<RobaDTO>(roba);
-        }
-
-        private TextBox? _errors;
-        public TextBox? Errors
-        {
-            get
-            {
-                return _errors;
-            }
-            set
-            {
-                _errors = value;
-                OnPropertyChanged(nameof(Errors));
-            }
-        }
-
-        public IzmeniRobuViewModel()
-        {
-            _robaService = new RobaService();
-            SelectedRoba = new RobaDTO();
-            Roba = new ObservableCollection<RobaDTO>();
-            Errors = new TextBox();
-            FindRobuCommand = new RelayCommand(async (obj) => await FindRoba(obj));
-            UpdateRobaCommand = new RelayCommand(async (obj) => await UpdateRoba(obj));
-            DeleteRobaCommand = new RelayCommand(async (obj) => await DeleteRoba(obj));
         }
     }
 }

@@ -23,11 +23,12 @@
         <TextBox x:Name="NazivTextBox" Grid.Column="1" Margin="5" Text="{Binding Path=Roba.Naziv}" Width="200" OpacityMask="Black"/>
 
         <!-- Adresa -->
-        <TextBlock Text="Cena:" Grid.Row="1" VerticalAlignment="Center" Margin="111,0,424,0" Grid.ColumnSpan="2" OpacityMask="Black"/>
+        <TextBlock Text="Cena:" Grid.Row="1" VerticalAlignment="Center" Margin="116,0,419,0" Grid.ColumnSpan="2" OpacityMask="Black" RenderTransformOrigin="0.849,0.648"/>
         <TextBox x:Name="AdresaTextBox" Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Path=Roba.Cena}" Width="200" OpacityMask="Black"/>
 
         <!-- Validation Errors -->
-        <TextBox x:Name="ValidationErrorsTextBox" Grid.Row="2" Margin="5,10,5,53" IsReadOnly="True" Foreground="Red" Background="Transparent" BorderThickness="0" Grid.Column="1" Width="200" OpacityMask="Black"/>
+        <TextBox Grid.Row="2" Margin="5,10,5,53" IsReadOnly="True" Foreground="Red" Background="Transparent" BorderThickness="0" Grid.Column="1" Width="200" OpacityMask="Black"
+                 Text="{Binding Path=Validation}"/>
 
         <!-- Dodaj Button -->
         <Button Grid.Row="3" Width="100" Height="40" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource RoundedButtonStyle}" Grid.ColumnSpan="2" Command="{Binding Path=DodajRobuCommand}" OpacityMask="Black">

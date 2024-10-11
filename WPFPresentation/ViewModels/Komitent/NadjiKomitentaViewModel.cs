@@ -49,7 +49,14 @@ namespace WPFPresentation.ViewModels.Komitent
 
         private async Task FindKomitent(object obj)
         {
-            IEnumerable<KomitentDTO> komitenti = await _komitentService.FindKomitents(SearchString!);
+            IEnumerable<KomitentDTO> komitenti = new List<KomitentDTO>();
+            if (string.IsNullOrWhiteSpace(SearchString))
+            {
+                komitenti = await _komitentService.GetKomitents();
+                Komitenti = new ObservableCollection<KomitentDTO>(komitenti);
+                return;
+            }
+            komitenti = await _komitentService.FindKomitents(SearchString);
             Komitenti = new ObservableCollection<KomitentDTO>(komitenti);
         }
     }

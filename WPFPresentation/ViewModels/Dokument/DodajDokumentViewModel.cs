@@ -1,8 +1,10 @@
 ﻿using Application.DTOs;
+using FluentValidation;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WPFPresentation.Commands;
 using WPFPresentation.Services;
+using WPFPresentation.Validators;
 
 namespace WPFPresentation.ViewModels.Dokument
 {
@@ -11,6 +13,8 @@ namespace WPFPresentation.ViewModels.Dokument
         private KomitentService _komitentService;
         private RobaService _robaService;
         private DokumentService _dokumentService;
+        private IValidator<DokumentDTO> _dokumentValidator;
+        private IValidator<StavkaDokumentaDTO> _stavkaValidator;
 
         private ObservableCollection<RobaDTO>? _roba;
         public ObservableCollection<RobaDTO>? Roba
@@ -124,6 +128,34 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
+        private string? _stavkaValidation;
+        public string? StavkaValidation
+        {
+            get
+            {
+                return _stavkaValidation;
+            }
+            set
+            {
+                _stavkaValidation = value;
+                OnPropertyChanged(nameof(StavkaValidation));
+            }
+        }
+
+        private string? _dokumentValidation;
+        public string? DokumentValidation
+        {
+            get
+            {
+                return _dokumentValidation;
+            }
+            set
+            {
+                _dokumentValidation = value;
+                OnPropertyChanged(nameof(DokumentValidation));
+            }
+        }
+
         private ICommand _dodajStavkuCommand;
         public ICommand DodajStavkuCommand => _dodajStavkuCommand;
 
@@ -135,6 +167,8 @@ namespace WPFPresentation.ViewModels.Dokument
             _komitentService = new KomitentService();
             _robaService = new RobaService();
             _dokumentService = new DokumentService();
+            _dokumentValidator = new DokumentValidator();
+            _stavkaValidator = new StavkaDokumentaValidator();
             Roba = new ObservableCollection<RobaDTO>();
             Komitenti = new ObservableCollection<KomitentDTO>();
             Stavke = new ObservableCollection<StavkaDokumentaDTO>();
@@ -148,13 +182,25 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private async void DodajFakturu(object obj)
         {
-            await _dokumentService.AddDokument(new DokumentDTO
+            if (UkupnaCena == null)
+            {
+                DokumentValidation = "Morate uneti stavke";
+                return;
+            }
+            var dokument = new DokumentDTO
             {
                 DatumIzdavanja = DateTime.UtcNow,
                 UkupnaCena = decimal.Parse(UkupnaCena!),
                 Komitent = SelectedKomitent,
                 Stavke = Stavke!.ToList()
-            });
+            };
+            var result = _dokumentValidator.Validate(dokument);
+            if (!result.IsValid)
+            {
+                DokumentValidation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
+                return;
+            }
+            await _dokumentService.AddDokument(dokument);
             Stavke = new ObservableCollection<StavkaDokumentaDTO>();
             SelectedKomitent = new KomitentDTO();
             SelectedRoba = new RobaDTO();
@@ -163,13 +209,25 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private void DodajStavku(object obj)
         {
-            Stavke!.Add(new StavkaDokumentaDTO
+            if (Kolicina == null)
+            {
+                StavkaValidation = "Morate uneti kolicinu";
+                return;
+            }
+            StavkaDokumentaDTO stavka = new StavkaDokumentaDTO
             {
                 Roba = SelectedRoba,
                 Kolicina = int.Parse(Kolicina!),
                 CenaStavkeKom = SelectedRoba!.Cena,
                 UkupnaCenaStavke = int.Parse(Kolicina!) * SelectedRoba.Cena
-            });
+            };
+            var result = _stavkaValidator.Validate(stavka);
+            if (!result.IsValid)
+            {
+                StavkaValidation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
+                return;
+            }
+            Stavke!.Add(stavka);
             UkupnaCena = Stavke.Sum(x => x.UkupnaCenaStavke).ToString();
         }
 

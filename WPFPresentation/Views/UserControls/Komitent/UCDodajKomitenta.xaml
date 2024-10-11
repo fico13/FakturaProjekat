@@ -26,7 +26,7 @@
         <TextBox x:Name="AdresaTextBox" Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Path=Komitent.Adresa}" Width="200"/>
 
         <!-- Validation Errors -->
-        <TextBox x:Name="ValidationErrorsTextBox" Grid.Row="2" Margin="5,10,5,53" IsReadOnly="True" Foreground="Red" Background="Transparent" BorderThickness="0" Grid.Column="1" Width="200"/>
+        <TextBox Grid.Row="2" Margin="5,10,5,53" IsReadOnly="True" Foreground="Red" Background="Transparent" BorderThickness="0" Grid.Column="1" Width="200" Text="{Binding Validation}"/>
 
         <!-- Dodaj Button -->
         <Button Grid.Row="3" Width="100" Height="40" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource RoundedButtonStyle}" Grid.ColumnSpan="2" Command="{Binding Path=DodajKomitenta}">
