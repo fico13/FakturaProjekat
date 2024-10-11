@@ -80,26 +80,6 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<RobaEntity?> GetAsync(int id)
-        {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
-            {
-                try
-                {
-                    var roba = await _context.Roba.AsNoTracking().FirstOrDefaultAsync(k => k.Id == id);
-
-                    await transaction.CommitAsync();
-
-                    return roba;
-                }
-                catch (Exception)
-                {
-                    await transaction.RollbackAsync();
-                    throw;
-                }
-            }
-        }
-
         public async Task<IEnumerable<RobaEntity>> GetByNameAsync(string name)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())

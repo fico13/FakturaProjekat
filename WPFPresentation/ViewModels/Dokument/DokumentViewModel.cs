@@ -35,7 +35,7 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 _selectedDokument = value;
                 OnPropertyChanged(nameof(SelectedDokument));
-                UpdateStavke();
+                ShowStavke();
             }
         }
 
@@ -67,7 +67,7 @@ namespace WPFPresentation.ViewModels.Dokument
             Dokumenti = new ObservableCollection<DokumentDTO>(dokumenti);
         }
 
-        private void UpdateStavke()
+        private void ShowStavke()
         {
             if (SelectedDokument != null && SelectedDokument.Stavke != null)
             {

@@ -16,14 +16,14 @@ namespace WPFPresentation.Services
             _httpClient.BaseAddress = new Uri("http://localhost:5055");
         }
 
-        public async Task<IReadOnlyList<KomitentDTO>> GetKomitents()
+        public async Task<IEnumerable<KomitentDTO>> GetKomitents()
         {
             try
             {
                 var response = await _httpClient.GetAsync("api/Komitent");
                 if (response.IsSuccessStatusCode)
                 {
-                    var komitents = await response.Content.ReadFromJsonAsync<IReadOnlyList<KomitentDTO>>();
+                    var komitents = await response.Content.ReadFromJsonAsync<IEnumerable<KomitentDTO>>();
                     return komitents!;
                 }
                 return new List<KomitentDTO>();

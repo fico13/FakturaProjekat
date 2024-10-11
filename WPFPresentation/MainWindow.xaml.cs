@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using WPFPresentation.Views.UserControls;
 
 namespace WPFPresentation
@@ -27,7 +29,11 @@ namespace WPFPresentation
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
-
+            var image = new Image
+            {
+                Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/faktura.jpg"))
+            };
+            ContentGrid.Content = image;
         }
 
         private void btnKomitent_Click(object sender, RoutedEventArgs e)

@@ -80,11 +80,6 @@ namespace Persistence.Repositories
             }
         }
 
-        public Task<KomitentEntity?> GetAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<KomitentEntity>> GetByNameAsync(string name)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())

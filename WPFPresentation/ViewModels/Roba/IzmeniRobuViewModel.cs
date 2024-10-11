@@ -58,16 +58,7 @@ namespace WPFPresentation.ViewModels.Roba
         public ICommand UpdateRobaCommand { get; set; }
         public ICommand DeleteRobaCommand { get; set; }
 
-        public IzmeniRobuViewModel()
-        {
-            _robaService = new RobaService();
-            SelectedRoba = new RobaDTO();
-            Roba = new ObservableCollection<RobaDTO>();
-            Errors = new TextBox();
-            FindRobuCommand = new RelayCommand(async (obj) => await FindRoba(obj));
-            UpdateRobaCommand = new RelayCommand(async (obj) => await UpdateRoba(obj));
-            DeleteRobaCommand = new RelayCommand(async (obj) => await DeleteRoba(obj));
-        }
+
 
         private async Task DeleteRoba(object obj)
         {
@@ -100,6 +91,17 @@ namespace WPFPresentation.ViewModels.Roba
                 _errors = value;
                 OnPropertyChanged(nameof(Errors));
             }
+        }
+
+        public IzmeniRobuViewModel()
+        {
+            _robaService = new RobaService();
+            SelectedRoba = new RobaDTO();
+            Roba = new ObservableCollection<RobaDTO>();
+            Errors = new TextBox();
+            FindRobuCommand = new RelayCommand(async (obj) => await FindRoba(obj));
+            UpdateRobaCommand = new RelayCommand(async (obj) => await UpdateRoba(obj));
+            DeleteRobaCommand = new RelayCommand(async (obj) => await DeleteRoba(obj));
         }
     }
 }

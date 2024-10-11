@@ -109,7 +109,7 @@
                                 <TextBlock Text="Početak" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Button>
-                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/client.png" x:Name="btnKomitent" Click="btnKomitent_Click">
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/client.png" x:Name="btnKomitent" Click="btnKomitent_Click" Command="{Binding KomitentView}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Icons/client.png" Width="24" Height="24" Margin="5,0,0,0"/>
                                 <TextBlock Text="Komitent" VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -135,6 +135,9 @@
         <!-- Content for the second column can go here -->
         <ContentControl Grid.Row="1" Grid.Column="1" x:Name="ContentGrid">
             <!-- Your content here -->
+            <ContentControl.Content>
+                <Image Source="pack://application:,,,/Pictures/faktura.jpg" />
+            </ContentControl.Content>
         </ContentControl>
     </Grid>
 </Window>

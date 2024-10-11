@@ -33,15 +33,15 @@ namespace API.Controllers
             return Ok(dokumenti.Select(d => d.ToDokumentDTO()).ToList());
         }
 
-        // GET: api/DokumentEntities/5
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<DokumentEntity>> GetDokumentEntity([FromRoute] int id)
+        [HttpGet("search")]
+        public async Task<ActionResult<IReadOnlyList<DokumentDTO>>> GetDokumentByName([FromQuery] string name)
         {
-            var dokument = await _dokumentRepository.GetAsync(id);
-
-            if (dokument == null) return NotFound();
-
-            return Ok(dokument.ToDokumentDTO());
+            var dokumenti = await _dokumentRepository.GetByNameAsync(name);
+            if (dokumenti == null || !dokumenti.Any())
+            {
+                return NotFound();
+            }
+            return Ok(dokumenti.Select(d => d.ToDokumentDTO()).ToList());
         }
 
         // PUT: api/DokumentEntities/5

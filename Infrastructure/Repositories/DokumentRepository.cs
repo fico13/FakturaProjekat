@@ -90,20 +90,19 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<DokumentEntity?> GetAsync(int id)
+        public async Task<IEnumerable<DokumentEntity>> GetByNameAsync(string name)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    var dokument = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke!).ThenInclude(s => s.Roba)
+                    var dokumenti = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke!).ThenInclude(s => s.Roba)
                                                     .Include(d => d.Komitent)
-                                                    .AsSplitQuery()
-                                                    .FirstOrDefaultAsync(d => d.Id == id);
+                                                    .Where(d => d.Komitent!.Naziv!.ToLower().Contains(name.ToLower())).ToListAsync();
 
                     await transaction.CommitAsync();
 
-                    return dokument == null ? null : dokument;
+                    return dokumenti;
                 }
                 catch (Exception)
                 {
@@ -111,11 +110,6 @@ namespace Persistence.Repositories
                     throw;
                 }
             }
-        }
-
-        public Task<IEnumerable<DokumentEntity>> GetByNameAsync(string name)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<DokumentEntity?> UpdateAsync(int id, DokumentEntity dokumentEntity)
@@ -130,9 +124,20 @@ namespace Persistence.Repositories
 
                     if (dokument == null) return null;
 
+                    foreach (var stavka in dokument.Stavke!)
+                    {
+                        await _context.Stavke.Where(s => s.Id == stavka.Id)
+                        .ExecuteUpdateAsync(s => s
+                                .SetProperty(s => s.Kolicina, stavka.Kolicina)
+                                .SetProperty(s => s.UkupnaCenaStavke, stavka.UkupnaCenaStavke));
+                    }
+
+
+
                     await _context.Dokumenti.Where(d => d.Id == id)
-                        .ExecuteUpdateAsync(d => d.
-                                SetProperty(d => d.UkupnaCena, dokumentEntity.UkupnaCena));
+                        .ExecuteUpdateAsync(d => d
+                                .SetProperty(d => d.UkupnaCena, dokumentEntity.UkupnaCena)
+                                .SetProperty(d => d.DatumIzdavanja, DateTime.UtcNow));
 
                     await transaction.CommitAsync();
 
