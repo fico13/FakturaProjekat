@@ -214,21 +214,30 @@ namespace WPFPresentation.ViewModels.Dokument
                 StavkaValidation = "Morate uneti kolicinu";
                 return;
             }
-            StavkaDokumentaDTO stavka = new StavkaDokumentaDTO
+            try
             {
-                Roba = SelectedRoba,
-                Kolicina = int.Parse(Kolicina!),
-                CenaStavkeKom = SelectedRoba!.Cena,
-                UkupnaCenaStavke = int.Parse(Kolicina!) * SelectedRoba.Cena
-            };
-            var result = _stavkaValidator.Validate(stavka);
-            if (!result.IsValid)
+                StavkaDokumentaDTO stavka = new StavkaDokumentaDTO
+                {
+                    Roba = SelectedRoba,
+                    Kolicina = int.Parse(Kolicina!),
+                    CenaStavkeKom = SelectedRoba!.Cena,
+                    UkupnaCenaStavke = int.Parse(Kolicina!) * SelectedRoba.Cena
+                };
+                var result = _stavkaValidator.Validate(stavka);
+                if (!result.IsValid)
+                {
+                    StavkaValidation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
+                    return;
+                }
+                Stavke!.Add(stavka);
+                UkupnaCena = Stavke.Sum(x => x.UkupnaCenaStavke).ToString();
+            }
+            catch (FormatException)
             {
-                StavkaValidation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
+                StavkaValidation = "Količina mora biti broj veći od 0";
                 return;
             }
-            Stavke!.Add(stavka);
-            UkupnaCena = Stavke.Sum(x => x.UkupnaCenaStavke).ToString();
+
         }
 
         private async void LoadData()

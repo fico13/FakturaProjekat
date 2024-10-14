@@ -87,7 +87,7 @@ namespace WPFPresentation.ViewModels.Roba
 
         private async Task DeleteRoba(object obj)
         {
-            if (SelectedRoba!.Id == 0)
+            if (SelectedRoba == null || SelectedRoba!.Id == 0)
             {
                 Validation = "Morate izabrati robu koju zelite da obrisete";
                 return;
@@ -99,7 +99,7 @@ namespace WPFPresentation.ViewModels.Roba
 
         private async Task UpdateRoba(object obj)
         {
-            if (SelectedRoba!.Id == 0)
+            if (SelectedRoba == null || SelectedRoba!.Id == 0)
             {
                 Validation = "Morate izabrati robu koju zelite da izmenite";
                 return;
@@ -112,6 +112,7 @@ namespace WPFPresentation.ViewModels.Roba
             }
             await _robaService.UpdateRoba(SelectedRoba!);
             SelectedRoba = new RobaDTO();
+            await FindRoba(obj);
         }
 
         private async Task FindRoba(object obj)

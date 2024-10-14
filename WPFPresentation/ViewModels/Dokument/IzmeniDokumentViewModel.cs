@@ -111,6 +111,20 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
+        private string? _validationText;
+        public string? ValidationText
+        {
+            get
+            {
+                return _validationText;
+            }
+            set
+            {
+                _validationText = value;
+                OnPropertyChanged(nameof(ValidationText));
+            }
+        }
+
         private ICommand _findDokumentCommand;
         public ICommand FindDokumentCommand => _findDokumentCommand;
 
@@ -142,16 +156,34 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private void UpdateStavka(object obj)
         {
-            SelectedDokument!.Stavke!.Remove(SelectedStavka!);
-            SelectedStavka!.Kolicina = int.Parse(Kolicina!);
-            SelectedStavka.UkupnaCenaStavke = SelectedStavka.CenaStavkeKom * SelectedStavka.Kolicina;
-            SelectedDokument!.Stavke!.Add(SelectedStavka);
-            SelectedDokument!.UkupnaCena = SelectedDokument.Stavke!.Sum(s => s.UkupnaCenaStavke);
-            Stavke = new ObservableCollection<StavkaDokumentaDTO>(SelectedDokument.Stavke);
+            if (SelectedStavka!.Id == 0)
+            {
+                ValidationText = "Morate izabrati stavku";
+                return;
+            }
+            try
+            {
+                SelectedDokument!.Stavke!.Remove(SelectedStavka!);
+                SelectedStavka!.Kolicina = int.Parse(Kolicina!);
+                SelectedStavka.UkupnaCenaStavke = SelectedStavka.CenaStavkeKom * SelectedStavka.Kolicina;
+                SelectedDokument!.Stavke!.Add(SelectedStavka);
+                SelectedDokument!.UkupnaCena = SelectedDokument.Stavke!.Sum(s => s.UkupnaCenaStavke);
+                Stavke = new ObservableCollection<StavkaDokumentaDTO>(SelectedDokument.Stavke);
+            }
+            catch (FormatException)
+            {
+                ValidationText = "Količina mora biti broj veći od 0";
+                return;
+            }
         }
 
         private async Task DeleteDokument(object obj)
         {
+            if (SelectedDokument!.Id == 0)
+            {
+                ValidationText = "Morate izabrati dokument";
+                return;
+            }
             await _dokumentService.DeleteDokument(SelectedDokument!.Id);
             SelectedDokument = new DokumentDTO();
             await FindDokument(obj);
@@ -159,6 +191,11 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private async Task UpdateDokument(object obj)
         {
+            if (SelectedDokument!.Id == 0)
+            {
+                ValidationText = "Morate izabrati dokument";
+                return;
+            }
             await _dokumentService.UpdateDokument(SelectedDokument!);
             SelectedDokument = new DokumentDTO();
             Dokumenti = new ObservableCollection<DokumentDTO>();
@@ -166,6 +203,11 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private async Task FindDokument(object obj)
         {
+            if (SelectedKomitent!.Id == 0)
+            {
+                ValidationText = "Morate izabrati komitenta";
+                return;
+            }
             var dokumenti = await _dokumentService.FindDokuments(SelectedKomitent!.Naziv!);
             Dokumenti = new ObservableCollection<DokumentDTO>(dokumenti);
 

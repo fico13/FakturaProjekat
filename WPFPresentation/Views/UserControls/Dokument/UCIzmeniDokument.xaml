@@ -91,6 +91,9 @@
                     <TextBlock Text="Obrisi fakturu" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
             </Button>
+
+            <TextBox VerticalAlignment="Top" Width="200" Height="100" Margin="120,10,0,0" 
+         Text="{Binding ValidationText}" IsReadOnly="True" Foreground="Red" Background="Transparent" BorderThickness="0" />
         </StackPanel>
     </Grid>
 </UserControl>
