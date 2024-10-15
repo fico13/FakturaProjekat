@@ -127,17 +127,17 @@ namespace Persistence.Repositories
                     foreach (var stavka in dokument.Stavke!)
                     {
                         await _context.Stavke.Where(s => s.Id == stavka.Id)
-                        .ExecuteUpdateAsync(s => s
-                                .SetProperty(s => s.Kolicina, stavka.Kolicina)
-                                .SetProperty(s => s.UkupnaCenaStavke, stavka.UkupnaCenaStavke));
+                                             .ExecuteUpdateAsync(s => s
+                                                    .SetProperty(s => s.Kolicina, stavka.Kolicina)
+                                                    .SetProperty(s => s.UkupnaCenaStavke, stavka.UkupnaCenaStavke));
                     }
 
 
 
                     await _context.Dokumenti.Where(d => d.Id == id)
-                        .ExecuteUpdateAsync(d => d
-                                .SetProperty(d => d.UkupnaCena, dokumentEntity.UkupnaCena)
-                                .SetProperty(d => d.DatumIzdavanja, DateTime.UtcNow));
+                                            .ExecuteUpdateAsync(d => d
+                                                    .SetProperty(d => d.UkupnaCena, dokumentEntity.UkupnaCena)
+                                                    .SetProperty(d => d.DatumIzdavanja, DateTime.UtcNow));
 
                     await transaction.CommitAsync();
 

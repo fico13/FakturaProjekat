@@ -3,7 +3,6 @@ using Application.DTOs;
 using Application.Mappers;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Persistence;
 
 namespace API.Controllers
 {
@@ -12,14 +11,10 @@ namespace API.Controllers
     public class DokumentController : ControllerBase
     {
         private readonly IDokumentRepository _dokumentRepository;
-        private readonly IKomitentRepository _komitentRepository;
-        private readonly IRobaRepository _robaRepository;
 
-        public DokumentController(ProjekatContext context, IDokumentRepository dokumentRepository, IKomitentRepository komitentRepository, IRobaRepository robaRepository)
+        public DokumentController(IDokumentRepository dokumentRepository)
         {
             _dokumentRepository = dokumentRepository;
-            _komitentRepository = komitentRepository;
-            _robaRepository = robaRepository;
         }
 
         // GET: api/DokumentEntities
