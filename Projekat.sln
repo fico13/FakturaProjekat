@@ -11,7 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{B673DEAE-E54B-424A-A0D0-7455FE7F7F30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFPresentation", "WPFPresentation\WPFPresentation.csproj", "{72BC9918-CA46-472B-902C-75550A249F73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFPresentation", "WPFPresentation\WPFPresentation.csproj", "{72BC9918-CA46-472B-902C-75550A249F73}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PresentationLayer", "PresentationLayer", "{B4FC37B3-A873-4A06-9A4D-BCF46AF0617F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApplicationLayer", "ApplicationLayer", "{200683F7-70B7-4628-98F1-E973CFD7C5D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DomainLayer", "DomainLayer", "{ABC531CD-AA1A-47C8-89AF-7BC2521364A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InfrastructureLayer", "InfrastructureLayer", "{F0B0148A-EE9F-4F01-B5CA-2605DBD7AEAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +50,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6FC7AEEB-760A-4633-9F34-2E3752159EC1} = {ABC531CD-AA1A-47C8-89AF-7BC2521364A7}
+		{607ED605-9E9F-4DC7-B430-71639753C913} = {F0B0148A-EE9F-4F01-B5CA-2605DBD7AEAC}
+		{D7CB6307-1EDF-4C1E-B4B2-E562608191C0} = {B4FC37B3-A873-4A06-9A4D-BCF46AF0617F}
+		{B673DEAE-E54B-424A-A0D0-7455FE7F7F30} = {200683F7-70B7-4628-98F1-E973CFD7C5D8}
+		{72BC9918-CA46-472B-902C-75550A249F73} = {B4FC37B3-A873-4A06-9A4D-BCF46AF0617F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4C885EE-DA28-4337-BAF2-61C1D492AD9B}
