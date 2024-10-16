@@ -9,8 +9,10 @@ namespace Application.Mappers
         {
             return new KomitentEntity
             {
-                Naziv = komitentDTO.Naziv ?? string.Empty,
-                Adresa = komitentDTO.Adresa ?? string.Empty,
+                SifraKomitenta = komitentDTO.SifraKomitenta,
+                Naziv = komitentDTO.Naziv,
+                Adresa = komitentDTO.Adresa,
+                Grad = komitentDTO.Grad
             };
         }
 
@@ -18,9 +20,10 @@ namespace Application.Mappers
         {
             return new KomitentDTO
             {
-                Id = komitentEntity.Id,
+                SifraKomitenta = komitentEntity.SifraKomitenta,
                 Naziv = komitentEntity.Naziv,
-                Adresa = komitentEntity.Adresa
+                Adresa = komitentEntity.Adresa,
+                Grad = komitentEntity.Grad
             };
         }
     }

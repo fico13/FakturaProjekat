@@ -9,11 +9,11 @@ namespace Application.Mappers
         {
             return new DokumentDTO
             {
-                Id = dokumentEntity.Id,
+                BrojDokumenta = dokumentEntity.BrojDokumenta,
                 DatumIzdavanja = dokumentEntity.DatumIzdavanja,
                 UkupnaCena = dokumentEntity.UkupnaCena,
-                Komitent =
-                dokumentEntity.Komitent!.ToKomitentDTO(),
+                DatumDospeca = dokumentEntity.DatumDospeca,
+                Komitent = dokumentEntity.Komitent!.ToKomitentDTO(),
                 Stavke = dokumentEntity.Stavke!.Select(s => s.ToStavkaDTO()).ToList()
             };
         }
@@ -22,9 +22,11 @@ namespace Application.Mappers
         {
             return new DokumentEntity
             {
+                BrojDokumenta = dokumentDTO.BrojDokumenta,
                 DatumIzdavanja = dokumentDTO.DatumIzdavanja,
+                DatumDospeca = dokumentDTO.DatumDospeca,
                 UkupnaCena = dokumentDTO.UkupnaCena,
-                KomitentId = dokumentDTO.Komitent!.Id,
+                Komitent = dokumentDTO.Komitent!.ToKomitentEntity(),
                 Stavke = dokumentDTO.Stavke!.Select(s => s.ToStavkaDokumentaEntity()).ToList()
             };
         }

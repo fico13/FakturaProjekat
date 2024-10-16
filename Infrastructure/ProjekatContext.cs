@@ -28,24 +28,71 @@ namespace Persistence
         {
             base.OnModelCreating(modelBuilder);
 
+            //Dokument
             modelBuilder.Entity<DokumentEntity>()
                     .HasOne(d => d.Komitent)
                     .WithMany()
-                    .HasForeignKey(d => d.KomitentId);
+                    .HasForeignKey(d => d.SifraKomitenta)
+                    .HasPrincipalKey(d => d.SifraKomitenta);
+
+            modelBuilder.Entity<DokumentEntity>()
+                .Property(d => d.BrojDokumenta).IsRequired();
+
+            modelBuilder.Entity<DokumentEntity>()
+                .Property(d => d.SifraKomitenta).IsRequired();
+
+            modelBuilder.Entity<DokumentEntity>()
+                .HasIndex(d => d.BrojDokumenta)
+                .IsUnique();
+
+            //StavkaDokumenta
 
             modelBuilder.Entity<StavkaDokumentaEntity>()
                 .HasOne(s => s.Roba)
                 .WithMany()
-                .HasForeignKey(s => s.RobaId);
+                .HasForeignKey(s => s.SifraRobe)
+                .HasPrincipalKey(s => s.SifraRobe);
+
+            modelBuilder.Entity<StavkaDokumentaEntity>()
+                .HasOne(s => s.Dokument)
+                .WithMany()
+                .HasForeignKey(s => s.BrojDokumenta)
+                .HasPrincipalKey(s => s.BrojDokumenta);
+
+            modelBuilder.Entity<StavkaDokumentaEntity>()
+                .Property(s => s.BrojDokumenta).IsRequired();
+
+            modelBuilder.Entity<StavkaDokumentaEntity>()
+                .Property(s => s.SifraRobe).IsRequired();
+
+            //Roba
 
             modelBuilder.Entity<RobaEntity>()
                 .Property(r => r.Naziv).IsRequired();
 
+            modelBuilder.Entity<RobaEntity>()
+                .Property(r => r.SifraRobe).IsRequired();
+
+            modelBuilder.Entity<RobaEntity>()
+                .Property(r => r.JedinicaMere).IsRequired();
+
+            modelBuilder.Entity<RobaEntity>()
+                .HasIndex(k => k.SifraRobe)
+                .IsUnique();
+
+            //Komitent
+
             modelBuilder.Entity<KomitentEntity>(komitent =>
             {
+                komitent.Property(k => k.SifraKomitenta).IsRequired();
                 komitent.Property(k => k.Naziv).IsRequired();
                 komitent.Property(k => k.Adresa).IsRequired();
+                komitent.Property(k => k.Grad).IsRequired();
             });
+
+            modelBuilder.Entity<KomitentEntity>()
+                .HasIndex(k => k.SifraKomitenta)
+                .IsUnique();
         }
     }
 }

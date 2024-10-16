@@ -75,7 +75,6 @@ namespace Persistence.Repositories
                                             .Include(d => d.Stavke!).ThenInclude(s => s.Roba)
                                             .Include(d => d.Komitent)
                                             .AsSplitQuery()
-                                            .AsNoTracking()
                                             .ToListAsync();
 
                     await transaction.CommitAsync();
