@@ -59,7 +59,7 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<IReadOnlyList<RobaEntity>> GetAllAsync()
+        public async Task<IEnumerable<RobaEntity>> GetAllAsync()
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {

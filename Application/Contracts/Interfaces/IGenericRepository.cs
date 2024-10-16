@@ -2,7 +2,7 @@
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<IReadOnlyList<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetByNameAsync(string name);
 
         Task<T> AddAsync(T item);

@@ -23,7 +23,7 @@ namespace API.Controllers
         {
             var roba = await _robaRepository.GetAllAsync();
 
-            if (roba.Count == 0) return NotFound();
+            if (roba == null || !roba.Any()) return NotFound();
 
             return Ok(roba.Select(r => r.ToRobaDTO()).ToList());
         }

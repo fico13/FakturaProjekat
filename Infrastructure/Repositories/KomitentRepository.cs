@@ -60,7 +60,7 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<IReadOnlyList<KomitentEntity>> GetAllAsync()
+        public async Task<IEnumerable<KomitentEntity>> GetAllAsync()
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {

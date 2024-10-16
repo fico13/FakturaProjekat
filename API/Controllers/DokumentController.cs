@@ -23,7 +23,7 @@ namespace API.Controllers
         {
             var dokumenti = await _dokumentRepository.GetAllAsync();
 
-            if (dokumenti.Count == 0) return NotFound();
+            if (dokumenti == null || !dokumenti.Any()) return NotFound();
 
             return Ok(dokumenti.Select(d => d.ToDokumentDTO()).ToList());
         }

@@ -19,16 +19,16 @@ namespace API.Controllers
 
         // GET: api/Komitent
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<KomitentDTO>>> GetKomitenti()
+        public async Task<ActionResult<IEnumerable<KomitentDTO>>> GetKomitenti()
         {
             var komitenti = await _komitentRepository.GetAllAsync();
-            if (komitenti.Count == 0) return NotFound();
+            if (komitenti == null || !komitenti.Any()) return NotFound();
 
             return Ok(komitenti.Select(k => k.ToKomitentDTO()).ToList());
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<IReadOnlyList<KomitentDTO>>> GetKomitentByName([FromQuery] string name)
+        public async Task<ActionResult<IEnumerable<KomitentDTO>>> GetKomitentByName([FromQuery] string name)
         {
             var komitenti = await _komitentRepository.GetByNameAsync(name);
             if (komitenti == null || !komitenti.Any())

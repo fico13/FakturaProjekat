@@ -65,7 +65,7 @@ namespace Persistence.Repositories
 
         }
 
-        public async Task<IReadOnlyList<DokumentEntity>> GetAllAsync()
+        public async Task<IEnumerable<DokumentEntity>> GetAllAsync()
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
