@@ -7,8 +7,8 @@ namespace WPFPresentation.Validators
     {
         public DokumentValidator()
         {
-            RuleFor(d => d.Komitent!.Id)
-                .GreaterThan(0).WithMessage("Komitent je obavezan");
+            RuleFor(d => d.Komitent!.SifraKomitenta)
+                .NotEmpty().WithMessage("Komitent je obavezan");
 
             RuleFor(d => d.Stavke!.Count)
                 .GreaterThan(0).WithMessage("Stavke su obavezne");

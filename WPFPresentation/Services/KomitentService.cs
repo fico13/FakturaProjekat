@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Windows;
 
 namespace WPFPresentation.Services
 {
@@ -36,11 +35,11 @@ namespace WPFPresentation.Services
 
         }
 
-        public async Task AddKomitent(KomitentDTO komitent)
+        public async Task<bool> AddKomitent(KomitentDTO komitent)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Komitent", komitent);
-            if (response.IsSuccessStatusCode) MessageBox.Show("Komitent je uspesno dodat");
-            else MessageBox.Show("Greska prilikom dodavanja komitenta");
+            if (response.IsSuccessStatusCode) return true;
+            return false;
         }
 
         internal async Task<IReadOnlyList<KomitentDTO>> FindKomitents(string name)
@@ -55,19 +54,19 @@ namespace WPFPresentation.Services
             return new List<KomitentDTO>();
         }
 
-        internal async Task UpdateKomitent(KomitentDTO komitentDTO)
+        internal async Task<bool> UpdateKomitent(KomitentDTO komitentDTO)
         {
-            var requestUri = $"api/Komitent/{komitentDTO.Id}";
+            var requestUri = $"api/Komitent/{komitentDTO.SifraKomitenta}";
             var response = await _httpClient.PutAsJsonAsync(requestUri, komitentDTO);
-            if (response.IsSuccessStatusCode) MessageBox.Show("Komitent je uspesno izmenjen");
-            else MessageBox.Show("Greska prilikom izmene komitenta");
+            if (response.IsSuccessStatusCode) return true;
+            return false;
         }
 
-        internal async Task DeleteKomitent(KomitentDTO komitentDTO)
+        internal async Task<bool> DeleteKomitent(KomitentDTO komitentDTO)
         {
-            var response = await _httpClient.DeleteAsync($"api/Komitent/{komitentDTO.Id}");
-            if (response.IsSuccessStatusCode) MessageBox.Show("Komitent je uspesno obrisan");
-            else MessageBox.Show("Greska prilikom brisanja komitenta");
+            var response = await _httpClient.DeleteAsync($"api/Komitent/{komitentDTO.SifraKomitenta}");
+            if (response.IsSuccessStatusCode) return true;
+            return false;
         }
     }
 }

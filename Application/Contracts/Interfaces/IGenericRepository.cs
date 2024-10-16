@@ -3,12 +3,12 @@
     public interface IGenericRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync();
-        Task<IEnumerable<T>> GetByNameAsync(string name);
+        Task<IEnumerable<T>> GetBySifraAsync(string name);
 
         Task<T> AddAsync(T item);
 
-        Task<T?> UpdateAsync(int id, T item);
+        Task<T?> UpdateAsync(string sifra, T item);
 
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(string sifra);
     }
 }

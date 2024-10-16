@@ -11,8 +11,8 @@ namespace WPFPresentation.Validators
                 .NotEmpty().WithMessage("Količina je obavezna")
                 .GreaterThan(0).WithMessage("Količina mora biti veća od 0");
 
-            RuleFor(s => s.Roba!.Id)
-                .GreaterThan(0).WithMessage("Roba je obavezna");
+            RuleFor(s => s.Roba!.SifraRobe)
+                .NotEmpty().WithMessage("Roba je obavezna");
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Application.DTOs;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Windows;
 
 namespace WPFPresentation.Services
 {
@@ -15,11 +14,11 @@ namespace WPFPresentation.Services
             _httpClient.BaseAddress = new Uri("http://localhost:5055");
         }
 
-        internal async Task DodajRobu(RobaDTO? roba)
+        internal async Task<bool> DodajRobu(RobaDTO? roba)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Roba", roba);
-            if (response.IsSuccessStatusCode) MessageBox.Show("Roba je uspesno dodata");
-            else MessageBox.Show("Greska prilikom dodavanja robe");
+            if (response.IsSuccessStatusCode) return true;
+            return false;
         }
 
         internal async Task<IEnumerable<RobaDTO>> FindRoba(string name)
@@ -45,19 +44,19 @@ namespace WPFPresentation.Services
             return new List<RobaDTO>();
         }
 
-        internal async Task UpdateRoba(RobaDTO robaDTO)
+        internal async Task<bool> UpdateRoba(RobaDTO robaDTO)
         {
-            var requestUri = $"api/Roba/{robaDTO.Id}";
+            var requestUri = $"api/Roba/{robaDTO.SifraRobe}";
             var response = await _httpClient.PutAsJsonAsync(requestUri, robaDTO);
-            if (response.IsSuccessStatusCode) MessageBox.Show("Roba je uspesno izmenjena");
-            else MessageBox.Show("Greska prilikom izmene robe");
+            if (response.IsSuccessStatusCode) return true;
+            return false;
         }
 
-        internal async Task ObrisiRobu(RobaDTO robaDTO)
+        internal async Task<bool> DeleteRoba(RobaDTO robaDTO)
         {
-            var response = await _httpClient.DeleteAsync($"api/Roba/{robaDTO.Id}");
-            if (response.IsSuccessStatusCode) MessageBox.Show("Roba je uspesno obrisana");
-            else MessageBox.Show("Greska prilikom brisanja robe");
+            var response = await _httpClient.DeleteAsync($"api/Roba/{robaDTO.SifraRobe}");
+            if (response.IsSuccessStatusCode) return true;
+            return false;
         }
     }
 }

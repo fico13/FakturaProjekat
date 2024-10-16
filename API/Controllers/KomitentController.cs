@@ -30,7 +30,7 @@ namespace API.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<KomitentDTO>>> GetKomitentByName([FromQuery] string name)
         {
-            var komitenti = await _komitentRepository.GetByNameAsync(name);
+            var komitenti = await _komitentRepository.GetBySifraAsync(name);
             if (komitenti == null || !komitenti.Any())
             {
                 return NotFound();
@@ -40,11 +40,11 @@ namespace API.Controllers
 
         // PUT: api/Komitent/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> PutKomitentEntity([FromRoute] int id, [FromBody] KomitentDTO komitentDTO)
+        [HttpPut]
+        public async Task<IActionResult> PutKomitentEntity([FromQuery] string sifraKomitenta, [FromBody] KomitentDTO komitentDTO)
         {
 
-            var komitentEntity = await _komitentRepository.UpdateAsync(id, komitentDTO.ToKomitentEntity());
+            var komitentEntity = await _komitentRepository.UpdateAsync(sifraKomitenta, komitentDTO.ToKomitentEntity());
 
             if (komitentEntity == null) return NotFound();
 
@@ -61,10 +61,10 @@ namespace API.Controllers
         }
 
         // DELETE: api/Komitent/5
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteKomitentEntity([FromRoute] int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteKomitentEntity([FromQuery] string sifraKomitenta)
         {
-            var successful = await _komitentRepository.DeleteAsync(id);
+            var successful = await _komitentRepository.DeleteAsync(sifraKomitenta);
 
             if (!successful) return NotFound();
 

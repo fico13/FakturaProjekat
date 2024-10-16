@@ -59,6 +59,11 @@ namespace Persistence.Repositories
             }
         }
 
+        public Task<bool> DeleteAsync(string sifra)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<RobaEntity>> GetAllAsync()
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
@@ -80,7 +85,7 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<IEnumerable<RobaEntity>> GetByNameAsync(string name)
+        public async Task<IEnumerable<RobaEntity>> GetBySifraAsync(string name)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
@@ -125,6 +130,11 @@ namespace Persistence.Repositories
                     throw;
                 }
             }
+        }
+
+        public Task<RobaEntity?> UpdateAsync(string sifra, RobaEntity item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

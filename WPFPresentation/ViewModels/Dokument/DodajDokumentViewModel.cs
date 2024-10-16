@@ -220,8 +220,7 @@ namespace WPFPresentation.ViewModels.Dokument
                 {
                     Roba = SelectedRoba,
                     Kolicina = int.Parse(Kolicina!),
-                    CenaStavkeKom = SelectedRoba!.Cena,
-                    UkupnaCenaStavke = int.Parse(Kolicina!) * SelectedRoba.Cena
+                    UkupnaCenaStavke = int.Parse(Kolicina!) * SelectedRoba!.Cena
                 };
                 var result = _stavkaValidator.Validate(stavka);
                 if (!result.IsValid)

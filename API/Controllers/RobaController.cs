@@ -31,7 +31,7 @@ namespace API.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<IReadOnlyList<KomitentDTO>>> GetRobaByName([FromQuery] string name)
         {
-            var roba = await _robaRepository.GetByNameAsync(name);
+            var roba = await _robaRepository.GetBySifraAsync(name);
             if (roba == null || !roba.Any())
             {
                 return NotFound();
@@ -41,10 +41,10 @@ namespace API.Controllers
 
         // PUT: api/Roba/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> PutRobaEntity([FromRoute] int id, [FromBody] RobaDTO robaDTO)
+        [HttpPut]
+        public async Task<IActionResult> PutRobaEntity([FromQuery] string sifraRobe, [FromBody] RobaDTO robaDTO)
         {
-            var robaEntity = await _robaRepository.UpdateAsync(id, robaDTO.ToRobaEntity());
+            var robaEntity = await _robaRepository.UpdateAsync(sifraRobe, robaDTO.ToRobaEntity());
 
             if (robaEntity == null) return NotFound();
 
@@ -62,10 +62,10 @@ namespace API.Controllers
         }
 
         // DELETE: api/Roba/5
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteRobaEntity([FromRoute] int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteRobaEntity([FromQuery] string sifraRobe)
         {
-            var successful = await _robaRepository.DeleteAsync(id);
+            var successful = await _robaRepository.DeleteAsync(sifraRobe);
 
             if (!successful) return NotFound();
 

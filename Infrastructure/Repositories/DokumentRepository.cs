@@ -25,12 +25,12 @@ namespace Persistence.Repositories
 
                     await transaction.CommitAsync();
 
-                    var dokument = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke!).ThenInclude(s => s.Roba)
-                                                    .Include(d => d.Komitent)
-                                                    .AsSplitQuery()
-                                                    .FirstOrDefaultAsync(d => d.Id == dokumentEntity.Id);
+                    //var dokument = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke!).ThenInclude(s => s.Roba)
+                    //                                .Include(d => d.Komitent)
+                    //                                .AsSplitQuery()
+                    //                                .FirstOrDefaultAsync(d => d.Id == dokumentEntity.Id);
 
-                    return dokument!;
+                    return dokumentEntity;
                 }
                 catch
                 {
@@ -65,6 +65,11 @@ namespace Persistence.Repositories
 
         }
 
+        public Task<bool> DeleteAsync(string sifra)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<DokumentEntity>> GetAllAsync()
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
@@ -89,15 +94,18 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<IEnumerable<DokumentEntity>> GetByNameAsync(string name)
+        public async Task<IEnumerable<DokumentEntity>> GetBySifraAsync(string name)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    var dokumenti = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke!).ThenInclude(s => s.Roba)
-                                                    .Include(d => d.Komitent)
-                                                    .Where(d => d.Komitent!.Naziv!.ToLower().Contains(name.ToLower())).ToListAsync();
+                    var dokumenti = await _context.Dokumenti.AsNoTracking()
+                                      .Include(d => d.Stavke!).ThenInclude(s => s.Roba)
+                                      .Include(d => d.Komitent)
+                                      .Where(d => d.Komitent!.Naziv!.ToLower().Contains(name.ToLower()))
+                                      .AsSplitQuery()
+                                      .ToListAsync();
 
                     await transaction.CommitAsync();
 
@@ -117,8 +125,10 @@ namespace Persistence.Repositories
             {
                 try
                 {
-                    var dokument = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke!).ThenInclude(s => s.Roba)
+                    var dokument = await _context.Dokumenti.AsNoTracking()
+                                                    .Include(d => d.Stavke!).ThenInclude(s => s.Roba)
                                                     .Include(d => d.Komitent)
+                                                    .AsSplitQuery()
                                                     .FirstOrDefaultAsync(d => d.Id == id);
 
                     if (dokument == null) return null;
@@ -148,6 +158,11 @@ namespace Persistence.Repositories
                     throw;
                 }
             }
+        }
+
+        public Task<DokumentEntity?> UpdateAsync(string sifra, DokumentEntity item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

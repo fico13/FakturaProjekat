@@ -1,7 +1,6 @@
 ﻿using Application.DTOs;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Windows;
 
 namespace WPFPresentation.Services
 {
@@ -15,25 +14,18 @@ namespace WPFPresentation.Services
             _httpClient.BaseAddress = new Uri("http://localhost:5055");
         }
 
-        internal async Task AddDokument(DokumentDTO dokumentDTO)
+        internal async Task<bool> AddDokument(DokumentDTO dokumentDTO)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Dokument", dokumentDTO);
-            if (response.IsSuccessStatusCode)
-            {
-                MessageBox.Show("Dokument uspesno dodat");
-            }
-            else
-            {
-                MessageBox.Show("Greska prilikom dodavanja dokumenta");
-
-            }
+            if (response.IsSuccessStatusCode) return true;
+            return false;
         }
 
-        internal async Task DeleteDokument(int id)
+        internal async Task<bool> DeleteDokument(int id)
         {
             var response = await _httpClient.DeleteAsync($"api/Dokument/{id}");
-            if (response.IsSuccessStatusCode) MessageBox.Show("Dokument je uspesno obrisan");
-            else MessageBox.Show("Greska prilikom brisanja dokumenta");
+            if (response.IsSuccessStatusCode) return true;
+            return false;
         }
 
         internal async Task<IEnumerable<DokumentDTO>> FindDokuments(string name)
@@ -59,12 +51,12 @@ namespace WPFPresentation.Services
             return new List<DokumentDTO>();
         }
 
-        internal async Task UpdateDokument(DokumentDTO selectedDokument)
+        internal async Task<bool> UpdateDokument(DokumentDTO selectedDokument)
         {
-            var requestUri = $"api/Dokument/{selectedDokument.Id}";
+            var requestUri = $"api/Dokument/{selectedDokument.BrojDokumenta}";
             var response = await _httpClient.PutAsJsonAsync(requestUri, selectedDokument);
-            if (response.IsSuccessStatusCode) MessageBox.Show("Dokument je uspesno izmenjen");
-            else MessageBox.Show("Greska prilikom izmene dokumenta");
+            if (response.IsSuccessStatusCode) return true;
+            return false;
         }
     }
 }

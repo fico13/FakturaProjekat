@@ -156,16 +156,16 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private void UpdateStavka(object obj)
         {
-            if (SelectedStavka!.Id == 0)
-            {
-                ValidationText = "Morate izabrati stavku";
-                return;
-            }
+            //if (SelectedStavka!.Roba)
+            //{
+            //    ValidationText = "Morate izabrati stavku";
+            //    return;
+            //}
             try
             {
                 SelectedDokument!.Stavke!.Remove(SelectedStavka!);
                 SelectedStavka!.Kolicina = int.Parse(Kolicina!);
-                SelectedStavka.UkupnaCenaStavke = SelectedStavka.CenaStavkeKom * SelectedStavka.Kolicina;
+                //SelectedStavka.UkupnaCenaStavke = SelectedStavka.ce * SelectedStavka.Kolicina;
                 SelectedDokument!.Stavke!.Add(SelectedStavka);
                 SelectedDokument!.UkupnaCena = SelectedDokument.Stavke!.Sum(s => s.UkupnaCenaStavke);
                 Stavke = new ObservableCollection<StavkaDokumentaDTO>(SelectedDokument.Stavke);
@@ -179,23 +179,23 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private async Task DeleteDokument(object obj)
         {
-            if (SelectedDokument!.Id == 0)
-            {
-                ValidationText = "Morate izabrati dokument";
-                return;
-            }
-            await _dokumentService.DeleteDokument(SelectedDokument!.Id);
+            //if (SelectedDokument!.Id == 0)
+            //{
+            //    ValidationText = "Morate izabrati dokument";
+            //    return;
+            //}
+            //await _dokumentService.DeleteDokument(SelectedDokument!.BrojDokumenta);
             SelectedDokument = new DokumentDTO();
             await FindDokument(obj);
         }
 
         private async Task UpdateDokument(object obj)
         {
-            if (SelectedDokument!.Id == 0)
-            {
-                ValidationText = "Morate izabrati dokument";
-                return;
-            }
+            //if (SelectedDokument!.Id == 0)
+            //{
+            //    ValidationText = "Morate izabrati dokument";
+            //    return;
+            //}
             await _dokumentService.UpdateDokument(SelectedDokument!);
             SelectedDokument = new DokumentDTO();
             Dokumenti = new ObservableCollection<DokumentDTO>();
@@ -203,11 +203,11 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private async Task FindDokument(object obj)
         {
-            if (SelectedKomitent!.Id == 0)
-            {
-                ValidationText = "Morate izabrati komitenta";
-                return;
-            }
+            //if (SelectedKomitent!.Id == 0)
+            //{
+            //    ValidationText = "Morate izabrati komitenta";
+            //    return;
+            //}
             var dokumenti = await _dokumentService.FindDokuments(SelectedKomitent!.Naziv!);
             Dokumenti = new ObservableCollection<DokumentDTO>(dokumenti);
 

@@ -86,11 +86,11 @@ namespace WPFPresentation.ViewModels.Komitent
 
         private async Task DeleteKomitent(object obj)
         {
-            if (SelectedKomitent!.Id == 0)
-            {
-                Validation = "Morate izabrati komitenta";
-                return;
-            }
+            //if (SelectedKomitent!.Id == 0)
+            //{
+            //    Validation = "Morate izabrati komitenta";
+            //    return;
+            //}
             await _komitentService.DeleteKomitent(SelectedKomitent!);
             SelectedKomitent = new KomitentDTO();
             await FindKomitents(obj);
@@ -98,11 +98,11 @@ namespace WPFPresentation.ViewModels.Komitent
 
         private async Task UpdateKomitent(object obj)
         {
-            if (SelectedKomitent!.Id == 0)
-            {
-                Validation = "Morate izabrati komitenta";
-                return;
-            }
+            //if (SelectedKomitent!.Id == 0)
+            //{
+            //    Validation = "Morate izabrati komitenta";
+            //    return;
+            //}
             var result = _validator.Validate(SelectedKomitent!);
             if (!result.IsValid)
             {

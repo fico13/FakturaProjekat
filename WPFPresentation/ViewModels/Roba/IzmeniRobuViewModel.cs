@@ -87,23 +87,23 @@ namespace WPFPresentation.ViewModels.Roba
 
         private async Task DeleteRoba(object obj)
         {
-            if (SelectedRoba == null || SelectedRoba!.Id == 0)
-            {
-                Validation = "Morate izabrati robu koju zelite da obrisete";
-                return;
-            }
-            await _robaService.ObrisiRobu(SelectedRoba!);
+            ////if (SelectedRoba == null || SelectedRoba!.Id == 0)
+            //{
+            //    Validation = "Morate izabrati robu koju zelite da obrisete";
+            //    return;
+            //}
+            await _robaService.DeleteRoba(SelectedRoba!);
             SelectedRoba = new RobaDTO();
             await FindRoba(obj);
         }
 
         private async Task UpdateRoba(object obj)
         {
-            if (SelectedRoba == null || SelectedRoba!.Id == 0)
-            {
-                Validation = "Morate izabrati robu koju zelite da izmenite";
-                return;
-            }
+            //if (SelectedRoba == null || SelectedRoba!.Id == 0)
+            //{
+            //    Validation = "Morate izabrati robu koju zelite da izmenite";
+            //    return;
+            //}
             var result = _validator.Validate(SelectedRoba!);
             if (!result.IsValid)
             {

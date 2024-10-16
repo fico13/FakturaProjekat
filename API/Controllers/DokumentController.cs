@@ -29,9 +29,9 @@ namespace API.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<IReadOnlyList<DokumentDTO>>> GetDokumentByName([FromQuery] string name)
+        public async Task<ActionResult<IReadOnlyList<DokumentDTO>>> GetDokumentByBrojDokumenta([FromQuery] string brojDokumenta)
         {
-            var dokumenti = await _dokumentRepository.GetByNameAsync(name);
+            var dokumenti = await _dokumentRepository.GetBySifraAsync(brojDokumenta);
             if (dokumenti == null || !dokumenti.Any())
             {
                 return NotFound();
@@ -41,14 +41,14 @@ namespace API.Controllers
 
         // PUT: api/DokumentEntities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> PutDokumentEntity([FromRoute] int id, [FromBody] DokumentDTO dokumentDTO)
+        [HttpPut]
+        public async Task<IActionResult> PutDokumentEntity([FromQuery] string brojDokumenta, [FromBody] DokumentDTO dokumentDTO)
         {
-            var dokument = await _dokumentRepository.UpdateAsync(id, dokumentDTO.ToDokumentEntity());
+            var dokument = await _dokumentRepository.UpdateAsync(brojDokumenta, dokumentDTO.ToDokumentEntity());
 
             if (dokument == null) return NotFound();
 
-            return Ok(dokument.ToDokumentDTO());
+            return Ok();
         }
 
         // POST: api/DokumentEntities
@@ -62,10 +62,10 @@ namespace API.Controllers
         }
 
         // DELETE: api/DokumentEntities/5
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteDokumentEntity([FromRoute] int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteDokumentEntity([FromQuery] string brojDokumenta)
         {
-            var successful = await _dokumentRepository.DeleteAsync(id);
+            var successful = await _dokumentRepository.DeleteAsync(brojDokumenta);
 
             if (!successful) return BadRequest();
 
