@@ -35,17 +35,17 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(string sifraRobe)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    var roba = await _context.Roba.FindAsync(id);
+                    var roba = await _context.Roba.FirstOrDefaultAsync(r => r.SifraRobe == sifraRobe);
 
                     if (roba == null) return false;
 
-                    await _context.Roba.Where(r => r.Id == id).ExecuteDeleteAsync();
+                    await _context.Roba.Where(r => r.SifraRobe == sifraRobe).ExecuteDeleteAsync();
 
                     await transaction.CommitAsync();
 
@@ -57,11 +57,6 @@ namespace Persistence.Repositories
                     throw;
                 }
             }
-        }
-
-        public Task<bool> DeleteAsync(string sifra)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<RobaEntity>> GetAllAsync()
@@ -85,13 +80,15 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<IEnumerable<RobaEntity>> GetBySifraAsync(string name)
+        public async Task<IEnumerable<RobaEntity>> GetBySifraAsync(string sifraRobe)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    var roba = await _context.Roba.AsNoTracking().Where(r => r.Naziv!.ToLower().Contains(name.ToLower())).ToListAsync();
+                    var roba = await _context.Roba.AsNoTracking()
+                                                  .Where(r => r.SifraRobe!.ToLower().Contains(sifraRobe.ToLower()))
+                                                  .ToListAsync();
 
                     await transaction.CommitAsync();
 
@@ -105,20 +102,21 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<RobaEntity?> UpdateAsync(int id, RobaEntity robaEntity)
+        public async Task<RobaEntity?> UpdateAsync(RobaEntity robaEntity)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    var roba = await _context.Roba.FindAsync(id);
+                    var roba = await _context.Roba.FirstOrDefaultAsync(r => r.SifraRobe == robaEntity.SifraRobe);
 
                     if (roba == null) return null;
 
-                    await _context.Roba.Where(r => r.Id == id)
-                        .ExecuteUpdateAsync(r => r
+                    await _context.Roba.Where(r => r.SifraRobe == roba.SifraRobe)
+                                        .ExecuteUpdateAsync(r => r
                                                 .SetProperty(r => r.Naziv, robaEntity.Naziv)
-                                                .SetProperty(r => r.Cena, robaEntity.Cena));
+                                                .SetProperty(r => r.Cena, robaEntity.Cena)
+                                                .SetProperty(r => r.JedinicaMere, robaEntity.JedinicaMere));
 
                     await transaction.CommitAsync();
 
@@ -130,11 +128,6 @@ namespace Persistence.Repositories
                     throw;
                 }
             }
-        }
-
-        public Task<RobaEntity?> UpdateAsync(RobaEntity item)
-        {
-            throw new NotImplementedException();
         }
     }
 }

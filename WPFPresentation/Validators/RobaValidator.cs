@@ -7,6 +7,12 @@ namespace WPFPresentation.Validators
     {
         public RobaValidator()
         {
+            RuleFor(x => x.SifraRobe)
+                .NotEmpty().WithMessage("Šifra robe je obavezna");
+
+            RuleFor(x => x.JedinicaMere)
+                .NotEmpty().WithMessage("Jedinica mere je obavezna");
+
             RuleFor(x => x.Naziv)
                 .NotEmpty().WithMessage("Naziv je obavezan");
 

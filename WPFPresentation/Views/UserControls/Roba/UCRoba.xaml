@@ -15,7 +15,9 @@
         <!-- DataGrid -->
         <DataGrid x:Name="RobaDataGrid" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" Margin="10" ItemsSource="{Binding Path=Roba}" IsReadOnly="True">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Sifra robe" Width="*" Binding="{Binding Path=SifraRobe}"/>
                 <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Naziv}"/>
+                <DataGridTextColumn Header="Jedinica mere" Width="*" Binding="{Binding Path=JedinicaMere}"/>
                 <DataGridTextColumn Header="Cena" Width="*" Binding="{Binding Path=Cena}"/>
             </DataGrid.Columns>
         </DataGrid>

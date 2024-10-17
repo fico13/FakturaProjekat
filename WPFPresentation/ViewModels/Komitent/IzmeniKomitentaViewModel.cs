@@ -99,7 +99,7 @@ namespace WPFPresentation.ViewModels.Komitent
 
         private async Task DeleteKomitent(object obj)
         {
-            if (string.IsNullOrWhiteSpace(SelectedKomitent!.SifraKomitenta))
+            if (SelectedKomitent == null || SelectedKomitent!.SifraKomitenta == null)
             {
                 Validation = "Morate izabrati komitenta";
                 ValidationColor = Brushes.Red;

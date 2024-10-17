@@ -14,8 +14,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="100"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="100"/>
             <!-- New row for validation error TextBox -->
             <RowDefinition Height="Auto"/>
             <!-- New row for the button -->
@@ -26,11 +26,14 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Sifra robe TextBlock -->
+        <TextBlock Text="Sifra robe:" VerticalAlignment="Center" Margin="5" Grid.Row="0" Grid.Column="0"/>
+
         <!-- Search TextBox -->
-        <TextBox x:Name="SearchTextBox" Grid.Row="0" Grid.Column="0" Margin="5" Width="200" Height="25" Text="{Binding Path=SearchString}"/>
+        <TextBox x:Name="SearchTextBox" Grid.Row="0" Margin="73,12,97,12" Width="200" Height="20" Text="{Binding Path=SearchString}" Grid.ColumnSpan="2"/>
 
         <!-- Search Button -->
-        <Button Grid.Row="0" Grid.Column="1" Width="100" Height="40" Margin="5" HorizontalAlignment="Left" Command="{Binding Path=FindRobuCommand}" Style="{StaticResource RoundedButtonStyle}">
+        <Button Grid.Row="0" Grid.Column="1" Width="100" Height="40" Margin="141,5,0,5" HorizontalAlignment="Left" Command="{Binding Path=FindRobuCommand}" Style="{StaticResource RoundedButtonStyle}" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Icons/find.png" Width="24" Height="24" Margin="5,0,0,0"/>
                 <TextBlock Text="Pretraži" VerticalAlignment="Center" Margin="5,0,0,0"/>
@@ -41,26 +44,34 @@
         <DataGrid Grid.Row="1" Grid.ColumnSpan="3" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Margin="5" ItemsSource="{Binding Path=Roba}"
               SelectedItem="{Binding SelectedRoba, Mode=TwoWay}" >
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Sifra robe" Width="*" Binding="{Binding Path=SifraRobe}"/>
                 <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Naziv}"/>
+                <DataGridTextColumn Header="Jedinica mere" Width="*" Binding="{Binding Path=JedinicaMere}"/>
                 <DataGridTextColumn Header="Cena" Width="*" Binding="{Binding Path=Cena}"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- Izaberi komitenta Button -->
+        <!-- Sifra robe TextBlock and TextBox -->
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Sifra robe" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="2" Width="200" Margin="125,5,45,5" Text="{Binding Path=SelectedRoba.SifraRobe}" Grid.ColumnSpan="2" IsReadOnly="True"/>
 
         <!-- Naziv TextBlock and TextBox -->
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Naziv" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Width="200" Margin="5" Text="{Binding Path=SelectedRoba.Naziv}"/>
+        <TextBox Grid.Row="3" Width="200" Margin="125,5,45,5" Text="{Binding Path=SelectedRoba.Naziv}" Grid.ColumnSpan="2"/>
 
-        <!-- Adresa TextBlock and TextBox -->
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Cena" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="4" Grid.Column="1" Width="200" Margin="5" Text="{Binding Path=SelectedRoba.Cena}"/>
+        <!-- Jedinica mere TextBlock and TextBox -->
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Jedinica mere" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="4" Width="200" Margin="125,5,45,5" Text="{Binding Path=SelectedRoba.JedinicaMere}" Grid.ColumnSpan="2"/>
+
+        <!-- Cena TextBlock and TextBox -->
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Cena" VerticalAlignment="Center" Margin="5"/>
+        <TextBox Grid.Row="5" Width="200" Margin="125,5,45,5" Text="{Binding Path=SelectedRoba.Cena}" Grid.ColumnSpan="2"/>
 
         <!-- Validation Error TextBox -->
-        <TextBox Grid.Row="5" Grid.Column="1" Margin="5,5,10,5" Text="{Binding Path=Validation}" IsReadOnly="True" Foreground="Red" Background="Transparent" BorderThickness="0" />
+        <TextBox Grid.Row="6" Margin="125,10,45,10" Text="{Binding Path=Validation}" IsReadOnly="True" Foreground="{Binding ValidationColor}" Background="Transparent" BorderThickness="0" Grid.ColumnSpan="2" />
 
         <!-- Izmeni Button -->
-        <Button Grid.Row="6" Grid.Column="0" Width="150" Height="40" Margin="5" HorizontalAlignment="Left" Command="{Binding Path=UpdateRobaCommand}" Style="{StaticResource RoundedButtonStyle}">
+        <Button Grid.Row="7" Grid.Column="0" Width="150" Height="40" Margin="5" HorizontalAlignment="Left" Command="{Binding Path=UpdateRobaCommand}" Style="{StaticResource RoundedButtonStyle}">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Icons/update.png" Width="24" Height="24" Margin="5,0,0,0"/>
                 <TextBlock Text="Izmeni" VerticalAlignment="Center" Margin="5,0,0,0"/>
@@ -68,7 +79,7 @@
         </Button>
 
         <!-- Obrisi Button -->
-        <Button Grid.Row="6" Grid.Column="1" Width="150" Height="40" Margin="5" HorizontalAlignment="Left" Command="{Binding Path=DeleteRobaCommand}" Style="{StaticResource RoundedButtonStyle}">
+        <Button Grid.Row="7" Grid.Column="1" Width="150" Height="40" Margin="5" HorizontalAlignment="Left" Command="{Binding Path=DeleteRobaCommand}" Style="{StaticResource RoundedButtonStyle}">
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Icons/delete.png" Width="24" Height="24" Margin="5,0,0,0"/>
                 <TextBlock Text="Obrisi" VerticalAlignment="Center" Margin="5,0,0,0"/>

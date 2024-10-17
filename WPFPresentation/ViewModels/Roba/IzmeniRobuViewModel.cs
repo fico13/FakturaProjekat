@@ -2,6 +2,7 @@
 using FluentValidation;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Windows.Media;
 using WPFPresentation.Commands;
 using WPFPresentation.Services;
 using WPFPresentation.Validators;
@@ -69,6 +70,20 @@ namespace WPFPresentation.ViewModels.Roba
             }
         }
 
+        private Brush? _validationColor;
+        public Brush? ValidationColor
+        {
+            get
+            {
+                return _validationColor;
+            }
+            set
+            {
+                _validationColor = value;
+                OnPropertyChanged(nameof(ValidationColor));
+            }
+        }
+
         public ICommand FindRobuCommand { get; set; }
         public ICommand UpdateRobaCommand { get; set; }
         public ICommand DeleteRobaCommand { get; set; }
@@ -76,8 +91,6 @@ namespace WPFPresentation.ViewModels.Roba
         public IzmeniRobuViewModel()
         {
             _robaService = new RobaService();
-            SelectedRoba = new RobaDTO();
-            Roba = new ObservableCollection<RobaDTO>();
             _validator = new RobaValidator();
             FindRobuCommand = new RelayCommand(async (obj) => await FindRoba(obj));
             UpdateRobaCommand = new RelayCommand(async (obj) => await UpdateRoba(obj));
@@ -87,43 +100,71 @@ namespace WPFPresentation.ViewModels.Roba
 
         private async Task DeleteRoba(object obj)
         {
-            ////if (SelectedRoba == null || SelectedRoba!.Id == 0)
-            //{
-            //    Validation = "Morate izabrati robu koju zelite da obrisete";
-            //    return;
-            //}
-            await _robaService.DeleteRoba(SelectedRoba!);
-            SelectedRoba = new RobaDTO();
+            if (SelectedRoba == null || SelectedRoba!.SifraRobe == null)
+            {
+                Validation = "Morate izabrati robu";
+                ValidationColor = Brushes.Red;
+                return;
+            }
+
+            var successfull = await _robaService.DeleteRoba(SelectedRoba!.SifraRobe);
+            if (successfull)
+            {
+                Validation = "Uspesno obrisana roba";
+                ValidationColor = Brushes.Green;
+            }
+            else
+            {
+                Validation = "Neuspesno obrisana roba";
+                ValidationColor = Brushes.Red;
+            }
+
             await FindRoba(obj);
         }
 
         private async Task UpdateRoba(object obj)
         {
-            //if (SelectedRoba == null || SelectedRoba!.Id == 0)
-            //{
-            //    Validation = "Morate izabrati robu koju zelite da izmenite";
-            //    return;
-            //}
+            if (SelectedRoba == null || SelectedRoba!.SifraRobe == null)
+            {
+                Validation = "Morate izabrati robu";
+                ValidationColor = Brushes.Red;
+                return;
+            }
+
             var result = _validator.Validate(SelectedRoba!);
             if (!result.IsValid)
             {
                 Validation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
+                ValidationColor = Brushes.Red;
                 return;
             }
-            await _robaService.UpdateRoba(SelectedRoba!);
-            SelectedRoba = new RobaDTO();
+
+            var successfull = await _robaService.UpdateRoba(SelectedRoba!);
+            if (successfull)
+            {
+                Validation = "Uspesno izmenjena roba";
+                ValidationColor = Brushes.Green;
+            }
+            else
+            {
+                Validation = "Neuspesno izmenjena roba";
+                ValidationColor = Brushes.Red;
+            }
+
             await FindRoba(obj);
         }
 
         private async Task FindRoba(object obj)
         {
             IEnumerable<RobaDTO> roba;
+
             if (string.IsNullOrWhiteSpace(SearchString))
             {
                 roba = await _robaService.GetRoba();
                 Roba = new ObservableCollection<RobaDTO>(roba);
                 return;
             }
+
             roba = await _robaService.FindRoba(SearchString!);
             Roba = new ObservableCollection<RobaDTO>(roba);
         }

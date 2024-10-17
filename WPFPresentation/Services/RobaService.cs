@@ -21,9 +21,9 @@ namespace WPFPresentation.Services
             return false;
         }
 
-        internal async Task<IEnumerable<RobaDTO>> FindRoba(string name)
+        internal async Task<IEnumerable<RobaDTO>> FindRoba(string sifraRobe)
         {
-            var requestUri = $"api/Roba/search?name={Uri.EscapeDataString(name)}";
+            var requestUri = $"api/Roba/search?sifraRobe={Uri.EscapeDataString(sifraRobe)}";
             var response = await _httpClient.GetAsync(requestUri);
             if (response.IsSuccessStatusCode)
             {
@@ -46,15 +46,15 @@ namespace WPFPresentation.Services
 
         internal async Task<bool> UpdateRoba(RobaDTO robaDTO)
         {
-            var requestUri = $"api/Roba/{robaDTO.SifraRobe}";
+            var requestUri = $"api/Roba/";
             var response = await _httpClient.PutAsJsonAsync(requestUri, robaDTO);
             if (response.IsSuccessStatusCode) return true;
             return false;
         }
 
-        internal async Task<bool> DeleteRoba(RobaDTO robaDTO)
+        internal async Task<bool> DeleteRoba(string sifraRobe)
         {
-            var response = await _httpClient.DeleteAsync($"api/Roba/{robaDTO.SifraRobe}");
+            var response = await _httpClient.DeleteAsync($"api/Roba/{sifraRobe}");
             if (response.IsSuccessStatusCode) return true;
             return false;
         }

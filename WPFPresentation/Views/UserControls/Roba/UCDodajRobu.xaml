@@ -10,6 +10,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -18,20 +20,28 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Naziv -->
-        <TextBlock Text="Naziv:" VerticalAlignment="Center" Margin="116,0,370,0" Grid.Column="1" OpacityMask="Black"/>
-        <TextBox x:Name="NazivTextBox" Grid.Column="1" Margin="5" Text="{Binding Path=Roba.Naziv}" Width="200" OpacityMask="Black"/>
+        <!-- Sifra robe -->
+        <TextBlock Text="Sifra robe:" VerticalAlignment="Center" Margin="98,0,401,0" Grid.Column="0" OpacityMask="Black" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="SifraRobeTextBox" Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Path=Roba.SifraRobe}" Width="200" OpacityMask="Black"/>
 
-        <!-- Adresa -->
-        <TextBlock Text="Cena:" Grid.Row="1" VerticalAlignment="Center" Margin="116,0,419,0" Grid.ColumnSpan="2" OpacityMask="Black" RenderTransformOrigin="0.849,0.648"/>
-        <TextBox x:Name="AdresaTextBox" Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Path=Roba.Cena}" Width="200" OpacityMask="Black"/>
+        <!-- Naziv -->
+        <TextBlock Text="Naziv:" VerticalAlignment="Center" Margin="98,0,401,0" Grid.Row="1" Grid.Column="0" OpacityMask="Black" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="NazivTextBox" Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Path=Roba.Naziv}" Width="200" OpacityMask="Black"/>
+
+        <!-- Cena -->
+        <TextBlock Text="Cena:" VerticalAlignment="Center" Margin="98,0,401,0" Grid.Row="2" Grid.Column="0" OpacityMask="Black" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="CenaTextBox" Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding Path=Roba.Cena}" Width="200" OpacityMask="Black"/>
+
+        <!-- Jedinica mere -->
+        <TextBlock Text="Jedinica mere:" VerticalAlignment="Center" Margin="98,0,401,0" Grid.Row="3" Grid.Column="0" OpacityMask="Black" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="JedinicaMereTextBox" Grid.Row="3" Grid.Column="1" Margin="5" Text="{Binding Path=Roba.JedinicaMere}" Width="200" OpacityMask="Black"/>
 
         <!-- Validation Errors -->
-        <TextBox Grid.Row="2" Margin="5,10,5,53" IsReadOnly="True" Foreground="Red" Background="Transparent" BorderThickness="0" Grid.Column="1" Width="200" OpacityMask="Black"
+        <TextBox Grid.Row="4" Margin="187,10,187,24" IsReadOnly="True" Foreground="{Binding ValidationColor}" Background="Transparent" BorderThickness="0" Grid.Column="1" Width="200" OpacityMask="Black"
                  Text="{Binding Path=Validation}"/>
 
         <!-- Dodaj Button -->
-        <Button Grid.Row="3" Width="100" Height="40" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource RoundedButtonStyle}" Grid.ColumnSpan="2" Command="{Binding Path=DodajRobuCommand}" OpacityMask="Black">
+        <Button Grid.Row="5" Width="100" Height="40" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource RoundedButtonStyle}" Grid.ColumnSpan="2" Command="{Binding Path=DodajRobuCommand}" OpacityMask="Black">
             <StackPanel Orientation="Horizontal" OpacityMask="Black">
                 <Image Source="/Icons/add.png" Width="24" Height="24" Margin="5,0,0,0" OpacityMask="Black"/>
                 <TextBlock Text="Dodaj" VerticalAlignment="Center" Margin="5,0,0,0" OpacityMask="Black"/>
