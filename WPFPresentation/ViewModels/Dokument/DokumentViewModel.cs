@@ -22,8 +22,6 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
-
-
         private DokumentDTO? _selectedDokument;
         public DokumentDTO? SelectedDokument
         {
@@ -55,8 +53,6 @@ namespace WPFPresentation.ViewModels.Dokument
 
         public DokumentViewModel()
         {
-            Dokumenti = new ObservableCollection<DokumentDTO>();
-            SelectedDokument = new DokumentDTO();
             _dokumentService = new DokumentService();
             LoadData();
         }

@@ -22,13 +22,16 @@
         <DataGrid Grid.Row="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5,5,5,5" ItemsSource="{Binding Path=Dokumenti}"
                   SelectedItem="{Binding SelectedDokument, Mode=TwoWay}">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Broj dokumenta" Width="*" Binding="{Binding Path=BrojDokumenta}"/>
                 <DataGridTextColumn Header="Datum izdavanja" Width="*" Binding="{Binding Path=DatumIzdavanja}"/>
+                <DataGridTextColumn Header="Datum dospeca" Width="*" Binding="{Binding Path=DatumDospeca}"/>
                 <DataGridTextColumn Header="Cena" Width="*" Binding="{Binding Path=UkupnaCena}"/>
                 <DataGridTextColumn Header="Komitent" Width="*" >
                     <DataGridTextColumn.Binding>
-                        <MultiBinding StringFormat="{}{0} - {1}">
+                        <MultiBinding StringFormat="{}{0} - {1} - {2}">
                             <Binding Path="Komitent.Naziv" />
                             <Binding Path="Komitent.Adresa" />
+                            <Binding Path="Komitent.Grad" />
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
@@ -42,8 +45,9 @@
         <DataGrid Grid.Row="2" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5" ItemsSource="{Binding Path=Stavke}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Roba.Naziv}"/>
-                <DataGridTextColumn Header="Cena po komadu" Width="*" Binding="{Binding Path=CenaStavkeKom}"/>
+                <DataGridTextColumn Header="Jedinica mere" Width="*" Binding="{Binding Path=Roba.JedinicaMere}"/>
                 <DataGridTextColumn Header="Količina" Width="*" Binding="{Binding Path=Kolicina}"/>
+                <DataGridTextColumn Header="Cena" Width="*" Binding="{Binding Path=Roba.Cena}"/>
                 <DataGridTextColumn Header="Ukupna cena stavke" Width="*" Binding="{Binding Path=UkupnaCenaStavke}"/>
             </DataGrid.Columns>
         </DataGrid>
