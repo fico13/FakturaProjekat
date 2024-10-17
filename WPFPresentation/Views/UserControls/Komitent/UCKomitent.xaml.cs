@@ -22,11 +22,6 @@ namespace WPFPresentation.Views.UserControls
             _mainWindow.ContentGrid.Content = new UCDodajKomitenta();
         }
 
-        private void btnFindKomitent_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _mainWindow.ContentGrid.Content = new UCNadjiKomitenta();
-        }
-
         private void btnEditKomitent_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             _mainWindow.ContentGrid.Content = new UCIzmeniKomitenta();

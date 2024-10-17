@@ -7,7 +7,7 @@
 
         Task<T> AddAsync(T item);
 
-        Task<T?> UpdateAsync(string sifra, T item);
+        Task<T?> UpdateAsync(T item);
 
         Task<bool> DeleteAsync(string sifra);
     }

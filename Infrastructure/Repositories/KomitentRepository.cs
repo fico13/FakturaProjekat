@@ -35,17 +35,17 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(string sifraKomitenta)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    var komitent = await _context.Komitenti.FindAsync(id);
+                    var komitent = await _context.Komitenti.FirstOrDefaultAsync(k => k.SifraKomitenta == sifraKomitenta);
 
                     if (komitent == null) return false;
 
-                    await _context.Komitenti.Where(k => k.Id == id).ExecuteDeleteAsync();
+                    await _context.Komitenti.Where(k => k.SifraKomitenta == sifraKomitenta).ExecuteDeleteAsync();
 
                     await transaction.CommitAsync();
 
@@ -58,11 +58,6 @@ namespace Persistence.Repositories
                     throw;
                 }
             }
-        }
-
-        public Task<bool> DeleteAsync(string sifra)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<KomitentEntity>> GetAllAsync()
@@ -85,13 +80,14 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<IEnumerable<KomitentEntity>> GetBySifraAsync(string name)
+        public async Task<IEnumerable<KomitentEntity>> GetBySifraAsync(string sifraKomitenta)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    var komitent = await _context.Komitenti.AsNoTracking().Where(k => k.Naziv!.ToLower().Contains(name.ToLower())).ToListAsync();
+                    var komitent = await _context.Komitenti.AsNoTracking()
+                        .Where(k => k.SifraKomitenta!.ToLower().Contains(sifraKomitenta.ToLower())).ToListAsync();
 
                     await transaction.CommitAsync();
 
@@ -132,9 +128,32 @@ namespace Persistence.Repositories
             }
         }
 
-        public Task<KomitentEntity?> UpdateAsync(string sifra, KomitentEntity item)
+        public async Task<KomitentEntity?> UpdateAsync(KomitentEntity komitentEntity)
         {
-            throw new NotImplementedException();
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    var komitent = await _context.Komitenti.FirstOrDefaultAsync(k => k.SifraKomitenta == komitentEntity.SifraKomitenta);
+
+                    if (komitent == null) return null;
+
+                    await _context.Komitenti.Where(k => k.SifraKomitenta == komitentEntity.SifraKomitenta)
+                                            .ExecuteUpdateAsync(k => k
+                                                                    .SetProperty(k => k.Naziv, komitentEntity.Naziv)
+                                                                    .SetProperty(k => k.Adresa, komitentEntity.Adresa)
+                                                                    .SetProperty(k => k.Grad, komitentEntity.Grad));
+
+                    await transaction.CommitAsync();
+
+                    return komitentEntity;
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
         }
     }
 }

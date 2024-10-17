@@ -15,8 +15,10 @@
         <!-- DataGrid -->
         <DataGrid x:Name="KomitentDataGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" ItemsSource="{Binding Path=Komitenti}">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Šifra komitenta" Width="*" Binding="{Binding Path=SifraKomitenta}"/>
                 <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Naziv}"/>
                 <DataGridTextColumn Header="Adresa" Width="*" Binding="{Binding Path=Adresa}"/>
+                <DataGridTextColumn Header="Grad" Width="*" Binding="{Binding Path=Grad}"/>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -26,12 +28,6 @@
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Icons/add.png" Width="24" Height="24" Margin="5,0,0,0"/>
                     <TextBlock Text="Dodaj" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                </StackPanel>
-            </Button>
-            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnFindKomitent" Click="btnFindKomitent_Click">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/Icons/find.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                    <TextBlock Text="Pretraži" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
             </Button>
             <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnEditKomitent" Click="btnEditKomitent_Click">

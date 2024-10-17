@@ -132,7 +132,7 @@ namespace Persistence.Repositories
             }
         }
 
-        public Task<RobaEntity?> UpdateAsync(string sifra, RobaEntity item)
+        public Task<RobaEntity?> UpdateAsync(RobaEntity item)
         {
             throw new NotImplementedException();
         }

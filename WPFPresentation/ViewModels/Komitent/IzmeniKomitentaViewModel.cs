@@ -2,6 +2,7 @@
 using FluentValidation;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Windows.Media;
 using WPFPresentation.Commands;
 using WPFPresentation.Services;
 using WPFPresentation.Validators;
@@ -13,17 +14,17 @@ namespace WPFPresentation.ViewModels.Komitent
         private KomitentService _komitentService;
         private IValidator<KomitentDTO> _validator;
 
-        private string? _searchString;
-        public string? SearchString
+        private string? _sifraKomitentaSearch;
+        public string? SifraKomitentaSearch
         {
             get
             {
-                return _searchString;
+                return _sifraKomitentaSearch;
             }
             set
             {
-                _searchString = value;
-                OnPropertyChanged(nameof(SearchString));
+                _sifraKomitentaSearch = value;
+                OnPropertyChanged(nameof(SifraKomitentaSearch));
             }
         }
 
@@ -69,6 +70,20 @@ namespace WPFPresentation.ViewModels.Komitent
             }
         }
 
+        private Brush? _validationColor;
+        public Brush? ValidationColor
+        {
+            get
+            {
+                return _validationColor;
+            }
+            set
+            {
+                _validationColor = value;
+                OnPropertyChanged(nameof(ValidationColor));
+            }
+        }
+
         public ICommand FindKomitentCommand { get; set; }
         public ICommand UpdateKomitentCommand { get; set; }
         public ICommand DeleteKomitentCommand { get; set; }
@@ -76,8 +91,6 @@ namespace WPFPresentation.ViewModels.Komitent
         public IzmeniKomitentaViewModel()
         {
             _komitentService = new KomitentService();
-            SelectedKomitent = new KomitentDTO();
-            Komitenti = new ObservableCollection<KomitentDTO>();
             _validator = new KomitentValidator();
             FindKomitentCommand = new RelayCommand(async (obj) => await FindKomitents(obj));
             UpdateKomitentCommand = new RelayCommand(async (obj) => await UpdateKomitent(obj));
@@ -86,43 +99,73 @@ namespace WPFPresentation.ViewModels.Komitent
 
         private async Task DeleteKomitent(object obj)
         {
-            //if (SelectedKomitent!.Id == 0)
-            //{
-            //    Validation = "Morate izabrati komitenta";
-            //    return;
-            //}
-            await _komitentService.DeleteKomitent(SelectedKomitent!);
-            SelectedKomitent = new KomitentDTO();
+            if (string.IsNullOrWhiteSpace(SelectedKomitent!.SifraKomitenta))
+            {
+                Validation = "Morate izabrati komitenta";
+                ValidationColor = Brushes.Red;
+                return;
+            }
+
+            var successfull = await _komitentService.DeleteKomitent(SelectedKomitent!.SifraKomitenta);
+
+            if (successfull)
+            {
+                Validation = "Uspesno obrisan komitent";
+                ValidationColor = Brushes.Green;
+            }
+            else
+            {
+                Validation = "Greska prilikom brisanja komitenta";
+                ValidationColor = Brushes.Red;
+            }
+
             await FindKomitents(obj);
         }
 
         private async Task UpdateKomitent(object obj)
         {
-            //if (SelectedKomitent!.Id == 0)
-            //{
-            //    Validation = "Morate izabrati komitenta";
-            //    return;
-            //}
+            if (SelectedKomitent == null || SelectedKomitent!.SifraKomitenta == null)
+            {
+                Validation = "Morate izabrati komitenta";
+                ValidationColor = Brushes.Red;
+                return;
+            }
+
             var result = _validator.Validate(SelectedKomitent!);
             if (!result.IsValid)
             {
                 Validation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
+                ValidationColor = Brushes.Red;
                 return;
             }
-            await _komitentService.UpdateKomitent(SelectedKomitent!);
-            SelectedKomitent = new KomitentDTO();
+
+            var successfull = await _komitentService.UpdateKomitent(SelectedKomitent!);
+            if (successfull)
+            {
+                Validation = "Uspesno izmenjen komitent";
+                ValidationColor = Brushes.Green;
+            }
+            else
+            {
+                Validation = "Greska prilikom izmene komitenta";
+                ValidationColor = Brushes.Red;
+            }
+
+            await FindKomitents(obj);
         }
 
         private async Task FindKomitents(object obj)
         {
             IEnumerable<KomitentDTO> komitenti = new List<KomitentDTO>();
-            if (string.IsNullOrWhiteSpace(SearchString))
+
+            if (string.IsNullOrWhiteSpace(SifraKomitentaSearch))
             {
                 komitenti = await _komitentService.GetKomitents();
                 Komitenti = new ObservableCollection<KomitentDTO>(komitenti);
                 return;
             }
-            komitenti = await _komitentService.FindKomitents(SearchString);
+
+            komitenti = await _komitentService.FindKomitents(SifraKomitentaSearch);
             Komitenti = new ObservableCollection<KomitentDTO>(komitenti);
         }
     }

@@ -42,29 +42,31 @@ namespace WPFPresentation.Services
             return false;
         }
 
-        internal async Task<IReadOnlyList<KomitentDTO>> FindKomitents(string name)
+        internal async Task<IReadOnlyList<KomitentDTO>> FindKomitents(string sifraKomitenta)
         {
-            var requestUri = $"api/Komitent/search?name={Uri.EscapeDataString(name)}";
+            var requestUri = $"api/Komitent/search?sifraKomitenta={Uri.EscapeDataString(sifraKomitenta)}";
             var response = await _httpClient.GetAsync(requestUri);
+
             if (response.IsSuccessStatusCode)
             {
                 var komitents = await response.Content.ReadFromJsonAsync<IReadOnlyList<KomitentDTO>>();
                 return komitents!;
+
             }
             return new List<KomitentDTO>();
         }
 
         internal async Task<bool> UpdateKomitent(KomitentDTO komitentDTO)
         {
-            var requestUri = $"api/Komitent/{komitentDTO.SifraKomitenta}";
+            var requestUri = $"api/Komitent/";
             var response = await _httpClient.PutAsJsonAsync(requestUri, komitentDTO);
             if (response.IsSuccessStatusCode) return true;
             return false;
         }
 
-        internal async Task<bool> DeleteKomitent(KomitentDTO komitentDTO)
+        internal async Task<bool> DeleteKomitent(string sifraKomitenta)
         {
-            var response = await _httpClient.DeleteAsync($"api/Komitent/{komitentDTO.SifraKomitenta}");
+            var response = await _httpClient.DeleteAsync($"api/Komitent/{sifraKomitenta}");
             if (response.IsSuccessStatusCode) return true;
             return false;
         }

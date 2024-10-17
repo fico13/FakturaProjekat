@@ -160,7 +160,7 @@ namespace Persistence.Repositories
             }
         }
 
-        public Task<DokumentEntity?> UpdateAsync(string sifra, DokumentEntity item)
+        public Task<DokumentEntity?> UpdateAsync(DokumentEntity item)
         {
             throw new NotImplementedException();
         }

@@ -44,7 +44,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutRobaEntity([FromQuery] string sifraRobe, [FromBody] RobaDTO robaDTO)
         {
-            var robaEntity = await _robaRepository.UpdateAsync(sifraRobe, robaDTO.ToRobaEntity());
+            var robaEntity = await _robaRepository.UpdateAsync(robaDTO.ToRobaEntity());
 
             if (robaEntity == null) return NotFound();
 

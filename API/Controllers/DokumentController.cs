@@ -44,7 +44,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutDokumentEntity([FromQuery] string brojDokumenta, [FromBody] DokumentDTO dokumentDTO)
         {
-            var dokument = await _dokumentRepository.UpdateAsync(brojDokumenta, dokumentDTO.ToDokumentEntity());
+            var dokument = await _dokumentRepository.UpdateAsync(dokumentDTO.ToDokumentEntity());
 
             if (dokument == null) return NotFound();
 
@@ -58,7 +58,7 @@ namespace API.Controllers
         {
             var dokumentEntity = await _dokumentRepository.AddAsync(dokumentDTO.ToDokumentEntity());
 
-            return Ok(dokumentEntity.ToDokumentDTO());
+            return Ok();
         }
 
         // DELETE: api/DokumentEntities/5
