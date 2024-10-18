@@ -19,16 +19,27 @@ namespace Persistence.Repositories
             {
                 try
                 {
+                    // Check if Komitent with the same SifraKomitenta already exists
+                    if (dokumentEntity.Komitent != null)
+                    {
+                        var existingKomitent = await _context.Komitenti
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync(k => k.SifraKomitenta == dokumentEntity.Komitent.SifraKomitenta);
+
+                        if (existingKomitent != null)
+                        {
+                            dokumentEntity.Komitent = existingKomitent;
+                        }
+                        else
+                        {
+                            // Add the new KomitentEntity if it does not exist
+                            _context.Komitenti.Attach(dokumentEntity.Komitent);
+                        }
+                    }
+
                     await _context.Dokumenti.AddAsync(dokumentEntity);
-
                     await _context.SaveChangesAsync();
-
                     await transaction.CommitAsync();
-
-                    //var dokument = await _context.Dokumenti.AsNoTracking().Include(d => d.Stavke!).ThenInclude(s => s.Roba)
-                    //                                .Include(d => d.Komitent)
-                    //                                .AsSplitQuery()
-                    //                                .FirstOrDefaultAsync(d => d.Id == dokumentEntity.Id);
 
                     return dokumentEntity;
                 }
@@ -39,6 +50,8 @@ namespace Persistence.Repositories
                 }
             }
         }
+
+
 
         public async Task<bool> DeleteAsync(int id)
         {
@@ -146,7 +159,7 @@ namespace Persistence.Repositories
                     await _context.Dokumenti.Where(d => d.Id == id)
                                             .ExecuteUpdateAsync(d => d
                                                     .SetProperty(d => d.UkupnaCena, dokumentEntity.UkupnaCena)
-                                                    .SetProperty(d => d.DatumIzdavanja, DateTime.UtcNow));
+                                                    .SetProperty(d => d.DatumIzdavanja, DateOnly.FromDateTime(DateTime.Now)));
 
                     await transaction.CommitAsync();
 

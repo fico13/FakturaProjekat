@@ -3,8 +3,8 @@
     public class DokumentDTO
     {
         public string? BrojDokumenta { get; set; }
-        public DateTime DatumIzdavanja { get; set; }
-        public DateTime DatumDospeca { get; set; }
+        public DateOnly DatumIzdavanja { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+        public DateOnly DatumDospeca { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         public decimal UkupnaCena { get; set; }
         public KomitentDTO? Komitent { get; set; }
         public List<StavkaDokumentaDTO>? Stavke { get; set; }

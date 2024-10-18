@@ -7,11 +7,17 @@ namespace WPFPresentation.Validators
     {
         public DokumentValidator()
         {
-            RuleFor(d => d.Komitent!.SifraKomitenta)
+            RuleFor(x => x.BrojDokumenta)
+                .NotEmpty().WithMessage("Broj dokumenta je obavezan")
+                .MaximumLength(50).WithMessage("Broj dokumenta ne sme biti duži od 50 karaktera");
+
+            RuleFor(d => d.Komitent)
                 .NotEmpty().WithMessage("Komitent je obavezan");
 
-            RuleFor(d => d.Stavke!.Count)
-                .GreaterThan(0).WithMessage("Stavke su obavezne");
+            RuleFor(x => x.DatumDospeca)
+                .GreaterThan(x => x.DatumIzdavanja).WithMessage("Datum dospeća mora biti posle datuma izdavanja")
+                .NotEmpty().WithMessage("Datum dospeća je obavezan");
+
         }
     }
 }

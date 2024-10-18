@@ -54,9 +54,11 @@ namespace API.Controllers
         // POST: api/DokumentEntities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DokumentEntity>> PostDokumentEntity([FromBody] DokumentDTO dokumentDTO)
+        public async Task<ActionResult<DokumentEntity>> AddDokument([FromBody] DokumentDTO dokumentDTO)
         {
             var dokumentEntity = await _dokumentRepository.AddAsync(dokumentDTO.ToDokumentEntity());
+
+            if (dokumentEntity == null) return NotFound();
 
             return Ok();
         }

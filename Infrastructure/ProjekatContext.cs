@@ -33,7 +33,7 @@ namespace Persistence
                     .HasOne(d => d.Komitent)
                     .WithMany()
                     .HasForeignKey(d => d.SifraKomitenta)
-                    .HasPrincipalKey(d => d.SifraKomitenta);
+                    .HasPrincipalKey(k => k.SifraKomitenta);
 
             modelBuilder.Entity<DokumentEntity>()
                 .Property(d => d.BrojDokumenta).IsRequired();
@@ -51,13 +51,13 @@ namespace Persistence
                 .HasOne(s => s.Roba)
                 .WithMany()
                 .HasForeignKey(s => s.SifraRobe)
-                .HasPrincipalKey(s => s.SifraRobe);
+                .HasPrincipalKey(r => r.SifraRobe);
 
             modelBuilder.Entity<StavkaDokumentaEntity>()
                 .HasOne(s => s.Dokument)
                 .WithMany()
                 .HasForeignKey(s => s.BrojDokumenta)
-                .HasPrincipalKey(s => s.BrojDokumenta);
+                .HasPrincipalKey(d => d.BrojDokumenta);
 
             modelBuilder.Entity<StavkaDokumentaEntity>()
                 .Property(s => s.BrojDokumenta).IsRequired();
@@ -77,7 +77,7 @@ namespace Persistence
                 .Property(r => r.JedinicaMere).IsRequired();
 
             modelBuilder.Entity<RobaEntity>()
-                .HasIndex(k => k.SifraRobe)
+                .HasIndex(r => r.SifraRobe)
                 .IsUnique();
 
             //Komitent

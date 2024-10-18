@@ -1,7 +1,9 @@
 ﻿using Application.DTOs;
 using FluentValidation;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using WPFPresentation.Commands;
 using WPFPresentation.Services;
 using WPFPresentation.Validators;
@@ -15,6 +17,34 @@ namespace WPFPresentation.ViewModels.Dokument
         private DokumentService _dokumentService;
         private IValidator<DokumentDTO> _dokumentValidator;
         private IValidator<StavkaDokumentaDTO> _stavkaValidator;
+
+        private Brush? _infoColor;
+        public Brush? InfoColor
+        {
+            get
+            {
+                return _infoColor;
+            }
+            set
+            {
+                _infoColor = value;
+                OnPropertyChanged(nameof(InfoColor));
+            }
+        }
+
+        private string? _dokumentInfoText;
+        public string? DokumentInfoText
+        {
+            get
+            {
+                return _dokumentInfoText;
+            }
+            set
+            {
+                _dokumentInfoText = value;
+                OnPropertyChanged(nameof(DokumentInfoText));
+            }
+        }
 
         private ObservableCollection<RobaDTO>? _roba;
         public ObservableCollection<RobaDTO>? Roba
@@ -30,16 +60,16 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
-        private ObservableCollection<KomitentDTO>? _komitent;
+        private ObservableCollection<KomitentDTO>? _komitenti;
         public ObservableCollection<KomitentDTO>? Komitenti
         {
             get
             {
-                return _komitent;
+                return _komitenti;
             }
             set
             {
-                _komitent = value;
+                _komitenti = value;
                 OnPropertyChanged(nameof(Komitenti));
             }
         }
@@ -55,7 +85,16 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 _selectedRoba = value;
                 OnPropertyChanged(nameof(SelectedRoba));
+                UpdateSelectedRobaDetails();
             }
+        }
+
+        private void UpdateSelectedRobaDetails()
+        {
+            SelectedRobaDetails = $"Sifra: {SelectedRoba!.SifraRobe}\n" +
+                                  $"Naziv: {SelectedRoba!.Naziv}\n" +
+                                  $"Jedinica mere: {SelectedRoba!.JedinicaMere}\n" +
+                                  $"Cena: {SelectedRoba!.Cena}";
         }
 
         private KomitentDTO? _selectedKomitent;
@@ -69,7 +108,16 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 _selectedKomitent = value;
                 OnPropertyChanged(nameof(SelectedKomitent));
+                UpdateSelectedKomitentDetails();
             }
+        }
+
+        private void UpdateSelectedKomitentDetails()
+        {
+            SelectedKomitentDetails = $"Sifra: {SelectedKomitent!.SifraKomitenta}\n" +
+                                      $"Naziv: {SelectedKomitent!.Naziv}\n" +
+                                      $"Adresa: {SelectedKomitent!.Adresa}\n" +
+                                      $"Grad: {SelectedKomitent!.Grad}";
         }
 
         private DokumentDTO? _selectedDokument;
@@ -111,6 +159,20 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 _kolicina = value;
                 OnPropertyChanged(nameof(Kolicina));
+            }
+        }
+
+        private string? _brojDokumenta;
+        public string? BrojDokumenta
+        {
+            get
+            {
+                return _brojDokumenta;
+            }
+            set
+            {
+                _brojDokumenta = value;
+                OnPropertyChanged(nameof(BrojDokumenta));
             }
         }
 
@@ -156,11 +218,81 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
+        private string? _selectedKomitentDetails;
+        public string? SelectedKomitentDetails
+        {
+            get
+            {
+                return _selectedKomitentDetails;
+            }
+            set
+            {
+                _selectedKomitentDetails = value;
+                OnPropertyChanged(nameof(SelectedKomitentDetails));
+            }
+        }
+
+        private string? _selectedRobaDetails;
+        public string? SelectedRobaDetails
+        {
+            get
+            {
+                return _selectedRobaDetails;
+            }
+            set
+            {
+                _selectedRobaDetails = value;
+                OnPropertyChanged(nameof(SelectedRobaDetails));
+            }
+        }
+
+        private string? _datumIzdavanjaRacuna;
+        public string? DatumIzdavanjaRacuna
+        {
+            get
+            {
+                return _datumIzdavanjaRacuna;
+            }
+            set
+            {
+                _datumIzdavanjaRacuna = value;
+                OnPropertyChanged(nameof(DatumIzdavanjaRacuna));
+            }
+        }
+
+        private DateTime? _datumDospeca;
+        public DateTime? DatumDospeca
+        {
+            get
+            {
+                return _datumDospeca;
+            }
+            set
+            {
+                _datumDospeca = value;
+                OnPropertyChanged(nameof(DatumDospeca));
+            }
+        }
+
+        private Visibility _robaGroupVisibility = Visibility.Collapsed;
+        public Visibility RobaGroupVisibility
+        {
+            get { return _robaGroupVisibility; }
+            set
+            {
+                _robaGroupVisibility = value;
+                OnPropertyChanged(nameof(RobaGroupVisibility));
+            }
+        }
+
         private ICommand _dodajStavkuCommand;
         public ICommand DodajStavkuCommand => _dodajStavkuCommand;
 
-        private ICommand _dodajFakturuCommand;
-        public ICommand DodajFakturuCommand => _dodajFakturuCommand;
+        private ICommand _dodajStavkeCommand;
+        public ICommand DodajStavkeCommand => _dodajStavkeCommand;
+
+        private ICommand _dodajDokumentCommand;
+        public ICommand DodajDokumentCommand => _dodajDokumentCommand;
 
         public DodajDokumentViewModel()
         {
@@ -169,74 +301,124 @@ namespace WPFPresentation.ViewModels.Dokument
             _dokumentService = new DokumentService();
             _dokumentValidator = new DokumentValidator();
             _stavkaValidator = new StavkaDokumentaValidator();
-            Roba = new ObservableCollection<RobaDTO>();
-            Komitenti = new ObservableCollection<KomitentDTO>();
-            Stavke = new ObservableCollection<StavkaDokumentaDTO>();
-            SelectedRoba = new RobaDTO();
-            SelectedKomitent = new KomitentDTO();
-            SelectedDokument = new DokumentDTO();
+            _dodajStavkeCommand = new RelayCommand(ShowRobaGroup);
             _dodajStavkuCommand = new RelayCommand(DodajStavku);
-            _dodajFakturuCommand = new RelayCommand(DodajFakturu);
+            _dodajDokumentCommand = new RelayCommand(DodajDokument);
+            DatumIzdavanjaRacuna = DateTime.Now.Date.ToString("d");
             LoadData();
         }
 
-        private async void DodajFakturu(object obj)
+        private void ShowRobaGroup(object obj)
         {
-            if (UkupnaCena == null)
+
+            if (!ValidateDokument()) return;
+
+            DokumentValidation = string.Empty;
+            RobaGroupVisibility = Visibility.Visible;
+            Stavke = new ObservableCollection<StavkaDokumentaDTO>();
+        }
+
+        private bool ValidateDokument()
+        {
+            if (!DatumDospeca.HasValue)
             {
-                DokumentValidation = "Morate uneti stavke";
-                return;
+                DokumentValidation = string.Join("\n", "Niste odabrali datum dospeca");
+                return false;
             }
-            var dokument = new DokumentDTO
+
+            SelectedDokument = new DokumentDTO
             {
-                DatumIzdavanja = DateTime.UtcNow,
-                UkupnaCena = decimal.Parse(UkupnaCena!),
-                Komitent = SelectedKomitent,
-                Stavke = Stavke!.ToList()
+                BrojDokumenta = BrojDokumenta,
+                DatumDospeca = DateOnly.FromDateTime(DatumDospeca.Value),
+                Komitent = SelectedKomitent
             };
-            var result = _dokumentValidator.Validate(dokument);
+
+            var result = _dokumentValidator.Validate(SelectedDokument);
             if (!result.IsValid)
             {
                 DokumentValidation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
-                return;
+                return false;
             }
-            await _dokumentService.AddDokument(dokument);
-            Stavke = new ObservableCollection<StavkaDokumentaDTO>();
-            SelectedKomitent = new KomitentDTO();
-            SelectedRoba = new RobaDTO();
-            UkupnaCena = string.Empty;
+            return true;
         }
 
         private void DodajStavku(object obj)
         {
-            if (Kolicina == null)
+            if (!ValidateRoba()) return;
+
+
+            StavkaDokumentaDTO stavka = new StavkaDokumentaDTO
             {
-                StavkaValidation = "Morate uneti kolicinu";
-                return;
-            }
-            try
+                Roba = SelectedRoba,
+                Kolicina = int.Parse(Kolicina!),
+                UkupnaCenaStavke = int.Parse(Kolicina!) * SelectedRoba!.Cena
+            };
+
+            var result = _stavkaValidator.Validate(stavka);
+            if (!result.IsValid)
             {
-                StavkaDokumentaDTO stavka = new StavkaDokumentaDTO
-                {
-                    Roba = SelectedRoba,
-                    Kolicina = int.Parse(Kolicina!),
-                    UkupnaCenaStavke = int.Parse(Kolicina!) * SelectedRoba!.Cena
-                };
-                var result = _stavkaValidator.Validate(stavka);
-                if (!result.IsValid)
-                {
-                    StavkaValidation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
-                    return;
-                }
-                Stavke!.Add(stavka);
-                UkupnaCena = Stavke.Sum(x => x.UkupnaCenaStavke).ToString();
-            }
-            catch (FormatException)
-            {
-                StavkaValidation = "Količina mora biti broj veći od 0";
+                StavkaValidation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
                 return;
             }
 
+            Stavke!.Add(stavka);
+            UkupnaCena = Stavke.Sum(x => x.UkupnaCenaStavke).ToString();
+
+        }
+
+        private bool ValidateRoba()
+        {
+            if (SelectedRoba == null)
+            {
+                StavkaValidation = string.Join("\n", "Morate odabrati robu");
+                return false;
+            }
+
+            if (Kolicina == null)
+            {
+                StavkaValidation = string.Join("\n", "Morate odabrati kolicinu");
+                return false;
+            }
+
+            return true;
+        }
+
+        private async void DodajDokument(object obj)
+        {
+            if (UkupnaCena == null)
+            {
+                DokumentValidation = string.Join("\n", "Morate uneti stavke");
+                return;
+            }
+
+            SelectedDokument!.Stavke = new List<StavkaDokumentaDTO>(Stavke!);
+            SelectedDokument.UkupnaCena = int.Parse(UkupnaCena!);
+
+            var successfull = await _dokumentService.AddDokument(SelectedDokument!);
+            if (successfull)
+            {
+                DokumentInfoText = "Uspesno dodat dokument";
+                InfoColor = Brushes.Green;
+                ResetData();
+            }
+            else
+            {
+                DokumentInfoText = "Doslo je do greske prilikom dodavanja dokumenta";
+                InfoColor = Brushes.Red;
+            }
+        }
+
+        private void ResetData()
+        {
+            Stavke = new ObservableCollection<StavkaDokumentaDTO>();
+            SelectedKomitent = new KomitentDTO();
+            SelectedKomitentDetails = string.Empty;
+            SelectedRoba = new RobaDTO();
+            SelectedRobaDetails = string.Empty;
+            SelectedDokument = new DokumentDTO();
+            UkupnaCena = string.Empty;
+            BrojDokumenta = string.Empty;
+            DatumDospeca = null;
         }
 
         private async void LoadData()

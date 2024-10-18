@@ -12,7 +12,7 @@ namespace Application.Mappers
                 Dokument = stavkaDokumentaEntity.Dokument!.ToDokumentDTO(),
                 Kolicina = stavkaDokumentaEntity.Kolicina,
                 UkupnaCenaStavke = stavkaDokumentaEntity.UkupnaCenaStavke,
-                Roba = stavkaDokumentaEntity.Roba!.ToRobaDTO()
+                Roba = stavkaDokumentaEntity.Roba!.ToRobaDTO(),
             };
         }
 
@@ -20,9 +20,9 @@ namespace Application.Mappers
         {
             return new StavkaDokumentaEntity
             {
+                SifraRobe = stavkaDokumentaDTO.Roba!.SifraRobe,
                 Kolicina = stavkaDokumentaDTO.Kolicina,
                 UkupnaCenaStavke = stavkaDokumentaDTO.UkupnaCenaStavke,
-                Dokument = stavkaDokumentaDTO.Dokument!.ToDokumentEntity(),
                 Roba = stavkaDokumentaDTO.Roba!.ToRobaEntity()
             };
         }

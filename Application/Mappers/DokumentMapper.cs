@@ -27,6 +27,7 @@ namespace Application.Mappers
                 DatumDospeca = dokumentDTO.DatumDospeca,
                 UkupnaCena = dokumentDTO.UkupnaCena,
                 Komitent = dokumentDTO.Komitent!.ToKomitentEntity(),
+                SifraKomitenta = dokumentDTO.Komitent!.SifraKomitenta,
                 Stavke = dokumentDTO.Stavke!.Select(s => s.ToStavkaDokumentaEntity()).ToList()
             };
         }
