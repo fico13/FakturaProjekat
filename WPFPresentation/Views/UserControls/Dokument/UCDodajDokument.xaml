@@ -175,8 +175,6 @@
              Width="200" Height="67"
              Margin="46,0,435,20"
              Grid.Row="8" Grid.Column="2"
-             IsReadOnly="True"
-             Foreground="{Binding ValidationColor}" Background="Transparent"
-             Text="{Binding DokumentInfoText}" VerticalAlignment="Bottom" Grid.RowSpan="2"/>
+             IsReadOnly="True" Foreground="{Binding InfoColor}" Background="Transparent" BorderThickness="0" Text="{Binding DokumentInfoText}" VerticalAlignment="Bottom" Grid.RowSpan="2"/>
     </Grid>
 </UserControl>

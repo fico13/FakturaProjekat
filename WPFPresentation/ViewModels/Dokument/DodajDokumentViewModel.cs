@@ -330,6 +330,7 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 BrojDokumenta = BrojDokumenta,
                 DatumDospeca = DateOnly.FromDateTime(DatumDospeca.Value),
+                DatumIzdavanja = DateOnly.FromDateTime(DateTime.Now),
                 Komitent = SelectedKomitent
             };
 

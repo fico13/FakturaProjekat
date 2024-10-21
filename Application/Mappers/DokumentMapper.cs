@@ -9,6 +9,7 @@ namespace Application.Mappers
         {
             return new DokumentDTO
             {
+                Id = dokumentEntity.Id,
                 BrojDokumenta = dokumentEntity.BrojDokumenta,
                 DatumIzdavanja = dokumentEntity.DatumIzdavanja,
                 UkupnaCena = dokumentEntity.UkupnaCena,
@@ -22,11 +23,11 @@ namespace Application.Mappers
         {
             return new DokumentEntity
             {
+                Id = dokumentDTO.Id,
                 BrojDokumenta = dokumentDTO.BrojDokumenta,
                 DatumIzdavanja = dokumentDTO.DatumIzdavanja,
                 DatumDospeca = dokumentDTO.DatumDospeca,
                 UkupnaCena = dokumentDTO.UkupnaCena,
-                Komitent = dokumentDTO.Komitent!.ToKomitentEntity(),
                 SifraKomitenta = dokumentDTO.Komitent!.SifraKomitenta,
                 Stavke = dokumentDTO.Stavke!.Select(s => s.ToStavkaDokumentaEntity()).ToList()
             };

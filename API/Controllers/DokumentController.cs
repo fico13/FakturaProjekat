@@ -42,7 +42,7 @@ namespace API.Controllers
         // PUT: api/DokumentEntities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
-        public async Task<IActionResult> PutDokumentEntity([FromQuery] string brojDokumenta, [FromBody] DokumentDTO dokumentDTO)
+        public async Task<IActionResult> PutDokumentEntity([FromBody] DokumentDTO dokumentDTO)
         {
             var dokument = await _dokumentRepository.UpdateAsync(dokumentDTO.ToDokumentEntity());
 
@@ -64,8 +64,8 @@ namespace API.Controllers
         }
 
         // DELETE: api/DokumentEntities/5
-        [HttpDelete]
-        public async Task<IActionResult> DeleteDokumentEntity([FromQuery] string brojDokumenta)
+        [HttpDelete("{brojDokumenta}")]
+        public async Task<IActionResult> DeleteDokumentEntity([FromRoute] string brojDokumenta)
         {
             var successful = await _dokumentRepository.DeleteAsync(brojDokumenta);
 

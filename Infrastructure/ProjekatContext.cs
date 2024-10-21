@@ -55,7 +55,7 @@ namespace Persistence
 
             modelBuilder.Entity<StavkaDokumentaEntity>()
                 .HasOne(s => s.Dokument)
-                .WithMany()
+                .WithMany(d => d.Stavke)
                 .HasForeignKey(s => s.BrojDokumenta)
                 .HasPrincipalKey(d => d.BrojDokumenta);
 

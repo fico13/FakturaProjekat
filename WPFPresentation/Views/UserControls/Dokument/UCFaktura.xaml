@@ -26,7 +26,7 @@
                 <DataGridTextColumn Header="Datum izdavanja" Width="*" Binding="{Binding Path=DatumIzdavanja}"/>
                 <DataGridTextColumn Header="Datum dospeca" Width="*" Binding="{Binding Path=DatumDospeca}"/>
                 <DataGridTextColumn Header="Cena" Width="*" Binding="{Binding Path=UkupnaCena}"/>
-                <DataGridTextColumn Header="Komitent" Width="*" >
+                <DataGridTextColumn Header="Komitent" Width="2*" >
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} - {1} - {2}">
                             <Binding Path="Komitent.Naziv" />
@@ -47,7 +47,7 @@
                 <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Roba.Naziv}"/>
                 <DataGridTextColumn Header="Jedinica mere" Width="*" Binding="{Binding Path=Roba.JedinicaMere}"/>
                 <DataGridTextColumn Header="Količina" Width="*" Binding="{Binding Path=Kolicina}"/>
-                <DataGridTextColumn Header="Cena" Width="*" Binding="{Binding Path=Roba.Cena}"/>
+                <DataGridTextColumn Header="Cena po JM" Width="*" Binding="{Binding Path=Roba.Cena}"/>
                 <DataGridTextColumn Header="Ukupna cena stavke" Width="*" Binding="{Binding Path=UkupnaCenaStavke}"/>
             </DataGrid.Columns>
         </DataGrid>

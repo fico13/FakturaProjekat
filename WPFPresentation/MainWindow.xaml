@@ -124,7 +124,7 @@
                         <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/bill.png" x:Name="btnFaktura" Click="btnFaktura_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Icons/bill.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                                <TextBlock Text="Faktura" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                <TextBlock Text="Dokument" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>

@@ -21,16 +21,16 @@ namespace WPFPresentation.Services
             return false;
         }
 
-        internal async Task<bool> DeleteDokument(int id)
+        internal async Task<bool> DeleteDokument(string brojDokumenta)
         {
-            var response = await _httpClient.DeleteAsync($"api/Dokument/{id}");
+            var response = await _httpClient.DeleteAsync($"api/Dokument/{brojDokumenta}");
             if (response.IsSuccessStatusCode) return true;
             return false;
         }
 
-        internal async Task<IEnumerable<DokumentDTO>> FindDokuments(string name)
+        internal async Task<IEnumerable<DokumentDTO>> FindDokuments(string brojDokumenta)
         {
-            var requestUri = $"api/Dokument/search?name={Uri.EscapeDataString(name)}";
+            var requestUri = $"api/Dokument/search?brojDokumenta={Uri.EscapeDataString(brojDokumenta)}";
             var response = await _httpClient.GetAsync(requestUri);
             if (response.IsSuccessStatusCode)
             {
@@ -53,7 +53,7 @@ namespace WPFPresentation.Services
 
         internal async Task<bool> UpdateDokument(DokumentDTO selectedDokument)
         {
-            var requestUri = $"api/Dokument/{selectedDokument.BrojDokumenta}";
+            var requestUri = $"api/Dokument/";
             var response = await _httpClient.PutAsJsonAsync(requestUri, selectedDokument);
             if (response.IsSuccessStatusCode) return true;
             return false;

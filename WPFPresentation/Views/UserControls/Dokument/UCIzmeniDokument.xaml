@@ -4,21 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFPresentation.Views.UserControls.Dokument"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="800" d:DesignWidth="1000">
     <Grid Background="White">
         <!-- StackPanel for Komitent selection and search button -->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10">
-            <TextBlock Text="Komitent" VerticalAlignment="Center" Margin="0,0,10,0" />
-            <ComboBox x:Name="KomitentComboBox"
-                      DisplayMemberPath="Naziv"
-                      SelectedValuePath="Id"
-                      Width="200"
-                      Height="25"
-                      Margin="0,0,10,0"
-                      ItemsSource="{Binding Path=Komitenti}"
-                      SelectedItem="{Binding Path=SelectedKomitent}"/>
-            <Button Width="100" Height="40" Margin="0,0,0,0" HorizontalAlignment="Left" Command="{Binding Path=FindDokumentCommand}" Style="{StaticResource RoundedButtonStyle}">
+            <TextBlock Text="Broj dokumenta" VerticalAlignment="Center" Margin="0,0,10,0" />
+            <TextBox Text="{Binding BrojDokumenta}" Width="200" Height="20"/>
+            <Button Width="100" Height="40" Margin="10,0,0,0" HorizontalAlignment="Left" Command="{Binding Path=FindDokumentCommand}" Style="{StaticResource RoundedButtonStyle}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Icons/find.png" Width="24" Height="24" Margin="5,0,0,0"/>
                     <TextBlock Text="Pretraži" VerticalAlignment="Center" Margin="5,0,0,0"/>
@@ -27,16 +21,19 @@
         </StackPanel>
 
         <!-- DataGrid for displaying documents -->
-        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Margin="10,58,10,372" ItemsSource="{Binding Path=Dokumenti}"
+        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Margin="10,58,10,564" ItemsSource="{Binding Path=Dokumenti}"
                   SelectedItem="{Binding SelectedDokument, Mode=TwoWay}">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Broj dokumenta" Width="*" Binding="{Binding Path=BrojDokumenta}"/>
                 <DataGridTextColumn Header="Datum izdavanja" Width="*" Binding="{Binding Path=DatumIzdavanja}"/>
+                <DataGridTextColumn Header="Datum dospeca" Width="*" Binding="{Binding Path=DatumDospeca}"/>
                 <DataGridTextColumn Header="Cena" Width="*" Binding="{Binding Path=UkupnaCena}"/>
-                <DataGridTextColumn Header="Komitent" Width="*" >
+                <DataGridTextColumn Header="Komitent" Width="2*" >
                     <DataGridTextColumn.Binding>
-                        <MultiBinding StringFormat="{}{0} - {1}">
+                        <MultiBinding StringFormat="{}{0} - {1} - {2}">
                             <Binding Path="Komitent.Naziv" />
                             <Binding Path="Komitent.Adresa" />
+                            <Binding Path="Komitent.Grad" />
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
@@ -44,7 +41,7 @@
         </DataGrid>
 
         <!-- Grid for Stavke DataGrid and Kolicina input -->
-        <Grid Margin="10,270,10,100">
+        <Grid Margin="10,261,10,168">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -54,19 +51,23 @@
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Stavke" Grid.Row="1" Grid.ColumnSpan="2" Margin="5,0,0,0" VerticalAlignment="Top" Grid.RowSpan="2"/>
-            <DataGrid Grid.Row="2" Grid.Column="0" AutoGenerateColumns="False" IsReadOnly="True" Margin="5" ItemsSource="{Binding Path=Stavke}" SelectedItem="{Binding Path=SelectedStavka}" Height="150">
+            <TextBlock Text="Stavke" Grid.Row="1" Grid.ColumnSpan="2" Margin="5,7,0,0" VerticalAlignment="Top" Grid.RowSpan="2"/>
+            <DataGrid Grid.Row="2" Grid.Column="0" AutoGenerateColumns="False" IsReadOnly="True" Margin="5,38,0,160" ItemsSource="{Binding Path=Stavke}" SelectedItem="{Binding Path=SelectedStavka}" Grid.ColumnSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Roba.Naziv}"/>
-                    <DataGridTextColumn Header="Cena po komadu" Width="*" Binding="{Binding Path=CenaStavkeKom}"/>
+                    <DataGridTextColumn Header="Jedinica mere" Width="*" Binding="{Binding Path=Roba.JedinicaMere}"/>
                     <DataGridTextColumn Header="Količina" Width="*" Binding="{Binding Path=Kolicina}"/>
+                    <DataGridTextColumn Header="Cena po JM" Width="*" Binding="{Binding Path=Roba.Cena}"/>
                     <DataGridTextColumn Header="Ukupna cena stavke" Width="*" Binding="{Binding Path=UkupnaCenaStavke}"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="5,0,0,0">
+            <StackPanel Grid.Row="2" Orientation="Vertical" VerticalAlignment="Top" Margin="8,234,323,0" Height="127">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Kolicina" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <TextBox Width="200" Text="{Binding Path=Kolicina}"/>
+                    <xctk:IntegerUpDown 
+     Value="{Binding Kolicina}"
+     Minimum="1"
+     Increment="1" VerticalAlignment="Center" Margin="12,10" Grid.Row="2" Grid.Column="1" Height="20" Width="100"/>
                 </StackPanel>
                 <Button Width="150" Height="40" Margin="5,20,0,0" HorizontalAlignment="Left" Command="{Binding Path=UpdateStavkaCommand}" Style="{StaticResource RoundedButtonStyle}">
                     <StackPanel Orientation="Horizontal">
@@ -82,18 +83,18 @@
             <Button Width="150" Height="40" Margin="5" HorizontalAlignment="Left" Command="{Binding Path=UpdateDokumentCommand}" Style="{StaticResource RoundedButtonStyle}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Icons/update.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                    <TextBlock Text="Izmeni fakturu" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <TextBlock Text="Izmeni dokument" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
             </Button>
             <Button Width="150" Height="40" Margin="5" HorizontalAlignment="Left" Command="{Binding Path=DeleteDokumentCommand}" Style="{StaticResource RoundedButtonStyle}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Icons/delete.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                    <TextBlock Text="Obrisi fakturu" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    <TextBlock Text="Obrisi dokument" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
             </Button>
 
             <TextBox VerticalAlignment="Top" Width="200" Height="100" Margin="120,10,0,0" 
-         Text="{Binding ValidationText}" IsReadOnly="True" Foreground="Red" Background="Transparent" BorderThickness="0" />
+         Text="{Binding ValidationText}" IsReadOnly="True" Foreground="{Binding ValidationColor}" Background="Transparent" BorderThickness="0" />
         </StackPanel>
     </Grid>
 </UserControl>

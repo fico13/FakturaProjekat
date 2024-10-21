@@ -9,6 +9,7 @@ namespace Application.Mappers
         {
             return new RobaDTO
             {
+                Id = robaEntity.Id,
                 SifraRobe = robaEntity.SifraRobe,
                 Naziv = robaEntity.Naziv,
                 JedinicaMere = robaEntity.JedinicaMere,
@@ -20,6 +21,7 @@ namespace Application.Mappers
         {
             return new RobaEntity
             {
+                Id = robaDTO.Id,
                 SifraRobe = robaDTO.SifraRobe,
                 Naziv = robaDTO.Naziv ?? string.Empty,
                 Cena = robaDTO.Cena,
