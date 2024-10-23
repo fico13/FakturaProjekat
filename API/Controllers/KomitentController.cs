@@ -1,7 +1,9 @@
-﻿using Application.Contracts.Interfaces;
+﻿using Application.CQRS.Requests.Commands.Komitent;
+using Application.CQRS.Requests.Queries.Komitent;
 using Application.DTOs;
 using Application.Mappers;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -10,18 +12,18 @@ namespace API.Controllers
     [ApiController]
     public class KomitentController : ControllerBase
     {
-        private readonly IKomitentRepository _komitentRepository;
+        private readonly IMediator _mediator;
 
-        public KomitentController(IKomitentRepository komitentRepository)
+        public KomitentController(IMediator mediator)
         {
-            _komitentRepository = komitentRepository;
+            _mediator = mediator;
         }
 
         // GET: api/Komitent
         [HttpGet]
         public async Task<ActionResult<IEnumerable<KomitentDTO>>> GetKomitenti()
         {
-            var komitenti = await _komitentRepository.GetAllAsync();
+            var komitenti = await _mediator.Send(new GetKomitentsListQuery());
             if (komitenti == null || !komitenti.Any()) return NotFound();
 
             return Ok(komitenti.Select(k => k.ToKomitentDTO()).ToList());
@@ -30,7 +32,7 @@ namespace API.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<KomitentDTO>>> GetKomitentBySifra([FromQuery] string sifraKomitenta)
         {
-            var komitenti = await _komitentRepository.GetBySifraAsync(sifraKomitenta);
+            var komitenti = await _mediator.Send(new GetKomitentBySifraQuery(sifraKomitenta));
             if (komitenti == null || !komitenti.Any())
             {
                 return NotFound();
@@ -42,8 +44,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateKomitentEntity([FromBody] KomitentDTO komitentDTO)
         {
-
-            var komitentEntity = await _komitentRepository.UpdateAsync(komitentDTO.ToKomitentEntity());
+            var komitentEntity = await _mediator.Send(new UpdateKomitentCommand(komitentDTO.ToKomitentEntity()));
 
             if (komitentEntity == null) return NotFound();
 
@@ -54,7 +55,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<KomitentEntity>> AddKomitentEntity([FromBody] KomitentDTO komitentDTO)
         {
-            var komitentEntity = await _komitentRepository.AddAsync(komitentDTO.ToKomitentEntity());
+            var komitentEntity = await _mediator.Send(new AddKomitentCommand(komitentDTO.ToKomitentEntity()));
             if (komitentEntity == null) return NotFound();
             return Ok();
         }
@@ -63,7 +64,7 @@ namespace API.Controllers
         [HttpDelete("{sifraKomitenta}")]
         public async Task<IActionResult> DeleteKomitentEntity([FromRoute] string sifraKomitenta)
         {
-            var successful = await _komitentRepository.DeleteAsync(sifraKomitenta);
+            var successful = await _mediator.Send(new DeleteKomitentCommand(sifraKomitenta));
 
             if (!successful) return NotFound();
 

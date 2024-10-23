@@ -1,7 +1,9 @@
-﻿using Application.Contracts.Interfaces;
+﻿using Application.CQRS.Requests.Commands.Dokument;
+using Application.CQRS.Requests.Queries.Dokument;
 using Application.DTOs;
 using Application.Mappers;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -10,18 +12,18 @@ namespace API.Controllers
     [ApiController]
     public class DokumentController : ControllerBase
     {
-        private readonly IDokumentRepository _dokumentRepository;
+        private readonly IMediator _mediator;
 
-        public DokumentController(IDokumentRepository dokumentRepository)
+        public DokumentController(IMediator mediator)
         {
-            _dokumentRepository = dokumentRepository;
+            _mediator = mediator;
         }
 
         // GET: api/DokumentEntities
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DokumentEntity>>> GetDokumenti()
         {
-            var dokumenti = await _dokumentRepository.GetAllAsync();
+            var dokumenti = await _mediator.Send(new GetDokumentListQuery());
 
             if (dokumenti == null || !dokumenti.Any()) return NotFound();
 
@@ -31,7 +33,7 @@ namespace API.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<IReadOnlyList<DokumentDTO>>> GetDokumentByBrojDokumenta([FromQuery] string brojDokumenta)
         {
-            var dokumenti = await _dokumentRepository.GetBySifraAsync(brojDokumenta);
+            var dokumenti = await _mediator.Send(new GetDokumentByBrojDokumentaQuery(brojDokumenta));
             if (dokumenti == null || !dokumenti.Any())
             {
                 return NotFound();
@@ -44,7 +46,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutDokumentEntity([FromBody] DokumentDTO dokumentDTO)
         {
-            var dokument = await _dokumentRepository.UpdateAsync(dokumentDTO.ToDokumentEntity());
+            var dokument = await _mediator.Send(new UpdateDokumentCommand(dokumentDTO.ToDokumentEntity()));
 
             if (dokument == null) return NotFound();
 
@@ -56,7 +58,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<DokumentEntity>> AddDokument([FromBody] DokumentDTO dokumentDTO)
         {
-            var dokumentEntity = await _dokumentRepository.AddAsync(dokumentDTO.ToDokumentEntity());
+            var dokumentEntity = await _mediator.Send(new AddDokumentCommand(dokumentDTO.ToDokumentEntity()));
 
             if (dokumentEntity == null) return NotFound();
 
@@ -67,7 +69,7 @@ namespace API.Controllers
         [HttpDelete("{brojDokumenta}")]
         public async Task<IActionResult> DeleteDokumentEntity([FromRoute] string brojDokumenta)
         {
-            var successful = await _dokumentRepository.DeleteAsync(brojDokumenta);
+            var successful = await _mediator.Send(new DeleteDokumentCommand(brojDokumenta));
 
             if (!successful) return BadRequest();
 

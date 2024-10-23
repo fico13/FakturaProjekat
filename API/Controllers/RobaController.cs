@@ -1,7 +1,9 @@
-﻿using Application.Contracts.Interfaces;
+﻿using Application.CQRS.Requests.Commands.Roba;
+using Application.CQRS.Requests.Queries.Roba;
 using Application.DTOs;
 using Application.Mappers;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -10,18 +12,18 @@ namespace API.Controllers
     [ApiController]
     public class RobaController : ControllerBase
     {
-        private readonly IRobaRepository _robaRepository;
+        private readonly IMediator _mediator;
 
-        public RobaController(IRobaRepository robaRepository)
+        public RobaController(IMediator mediator)
         {
-            _robaRepository = robaRepository;
+            _mediator = mediator;
         }
 
         // GET: api/Roba
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RobaEntity>>> GetRoba()
         {
-            var roba = await _robaRepository.GetAllAsync();
+            var roba = await _mediator.Send(new GetRobaListQuery());
 
             if (roba == null || !roba.Any()) return NotFound();
 
@@ -31,7 +33,7 @@ namespace API.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<IReadOnlyList<KomitentDTO>>> GetRobaBySifraRobe([FromQuery] string sifraRobe)
         {
-            var roba = await _robaRepository.GetBySifraAsync(sifraRobe);
+            var roba = await _mediator.Send(new GetRobaBySifraQuery(sifraRobe));
             if (roba == null || !roba.Any())
             {
                 return NotFound();
@@ -44,7 +46,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRobaEntity([FromBody] RobaDTO robaDTO)
         {
-            var robaEntity = await _robaRepository.UpdateAsync(robaDTO.ToRobaEntity());
+            var robaEntity = await _mediator.Send(new UpdateRobaCommand(robaDTO.ToRobaEntity()));
 
             if (robaEntity == null) return NotFound();
 
@@ -56,7 +58,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<RobaEntity>> AddRoba([FromBody] RobaDTO robaDTO)
         {
-            var robaEntity = await _robaRepository.AddAsync(robaDTO.ToRobaEntity());
+            var robaEntity = await _mediator.Send(new AddRobaCommand(robaDTO.ToRobaEntity()));
 
             if (robaEntity == null) return BadRequest();
 
@@ -67,7 +69,7 @@ namespace API.Controllers
         [HttpDelete("{sifraRobe}")]
         public async Task<IActionResult> DeleteRobaEntity([FromRoute] string sifraRobe)
         {
-            var successful = await _robaRepository.DeleteAsync(sifraRobe);
+            var successful = await _mediator.Send(new DeleteRobaCommand(sifraRobe));
 
             if (!successful) return NotFound();
 

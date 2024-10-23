@@ -101,40 +101,13 @@ namespace Persistence.Repositories
             }
         }
 
-        public async Task<KomitentEntity?> UpdateAsync(int id, KomitentEntity komitentEntity)
-        {
-            using (var transaction = await _context.Database.BeginTransactionAsync())
-            {
-                try
-                {
-                    var komitent = await _context.Komitenti.FindAsync(id);
-
-                    if (komitent == null) return null;
-
-                    await _context.Komitenti.Where(k => k.Id == id)
-                                            .ExecuteUpdateAsync(k => k
-                                                                    .SetProperty(k => k.Naziv, komitentEntity.Naziv)
-                                                                    .SetProperty(k => k.Adresa, komitentEntity.Adresa));
-
-                    await transaction.CommitAsync();
-
-                    return komitentEntity;
-                }
-                catch (Exception)
-                {
-                    await transaction.RollbackAsync();
-                    throw;
-                }
-            }
-        }
-
         public async Task<KomitentEntity?> UpdateAsync(KomitentEntity komitentEntity)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    var komitent = await _context.Komitenti.FirstOrDefaultAsync(k => k.SifraKomitenta == komitentEntity.SifraKomitenta);
+                    var komitent = await _context.Komitenti.FindAsync(komitentEntity.Id);
 
                     if (komitent == null) return null;
 

@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Interfaces;
+using Application.CQRS.Handlers.Queries.Komitent;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Repositories;
@@ -15,6 +16,8 @@ namespace API
             {
                 options.UseNpgsql(connectionString);
             });
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetKomitentsListQueryHandler).Assembly));
 
             services.AddScoped<IKomitentRepository, KomitentRepository>();
             services.AddScoped<IRobaRepository, RobaRepository>();
