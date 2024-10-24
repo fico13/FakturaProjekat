@@ -18,11 +18,6 @@ namespace WPFPresentation.Views.UserControls
             DataContext = new DokumentViewModel();
         }
 
-        public UCFaktura()
-        {
-
-        }
-
         private void btnAddDokument_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             _mainWindow.ContentGrid.Content = new UCDodajDokument();

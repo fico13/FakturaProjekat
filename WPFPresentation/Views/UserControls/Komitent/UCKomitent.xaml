@@ -3,75 +3,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WPFPresentation.Views.UserControls" 
-             xmlns:viewmodels="clr-namespace:WPFPresentation.ViewModels" 
+             xmlns:local="clr-namespace:WPFPresentation.Views.UserControls" xmlns:viewmodels="clr-namespace:WPFPresentation.ViewModels" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- New Components -->
-        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
-            <TextBlock Text="Šifra komitenta" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <TextBox Name="txtSifraKomitenta" Width="200" Height="20" Margin="0,0,10,0" Text="{Binding SearchString}"/>
-            <Button Name="btnPretrazi" Width="100" Height="40" Style="{StaticResource RoundedButtonStyle}" Command="{Binding Path=FindKomitentsCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/Icons/find.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                    <TextBlock Text="Pretraži" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                </StackPanel>
-            </Button>
-        </StackPanel>
-
         <!-- DataGrid -->
-        <DataGrid x:Name="KomitentDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" ItemsSource="{Binding Path=Komitenti}" Height="300">
+        <DataGrid x:Name="KomitentDataGrid" Grid.Row="0" Margin="10" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" ItemsSource="{Binding Path=Komitenti}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Šifra komitenta" Width="0.7*" Binding="{Binding Path=SifraKomitenta}"/>
+                <DataGridTextColumn Header="Šifra komitenta" Width="*" Binding="{Binding Path=SifraKomitenta}"/>
                 <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Naziv}"/>
                 <DataGridTextColumn Header="Adresa" Width="*" Binding="{Binding Path=Adresa}"/>
                 <DataGridTextColumn Header="Grad" Width="*" Binding="{Binding Path=Grad}"/>
-
-                <DataGridTemplateColumn Header="" Width="0.5*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <!-- Update Button -->
-                                <Button Command="{Binding Path =DataContext.UpdateKomitentCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding}" Margin="5,0" HorizontalAlignment="Left" Grid.Column="0"
-                                        Width="30" Height="30" Style="{StaticResource RoundedButtonStyle}">
-                                    <Image Source="/Icons/update.png" Width="16" Height="16" Margin="5,0,0,0"/>
-                                </Button>
-
-                                <!-- Delete Button -->
-                                <Button Command="{Binding Path=DataContext.DeleteKomitentCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding}" Margin="5,0" HorizontalAlignment="Right" Grid.Column="2"
-                                        Width="30" Height="30" Style="{StaticResource RoundedButtonStyle}">
-                                    <Image Source="/Icons/delete.png" Width="16" Height="16" Margin="5,0,0,0"/>
-                                </Button>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- Buttons -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Margin="10">
-            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnAddKomitent" >
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="10">
+            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnAddKomitent" Click="btnAddKomitent_Click">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Icons/add.png" Width="24" Height="24" Margin="5,0,0,0"/>
                     <TextBlock Text="Dodaj" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
             </Button>
-            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnEditKomitent">
+            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnEditKomitent" Click="btnEditKomitent_Click">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Icons/update.png" Width="24" Height="24" Margin="5,0,0,0"/>
                     <TextBlock Text="Izmeni" VerticalAlignment="Center" Margin="5,0,0,0"/>

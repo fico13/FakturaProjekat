@@ -19,11 +19,6 @@ namespace WPFPresentation.Views.UserControls
             DataContext = new RobaViewModel();
         }
 
-        public UCRoba()
-        {
-
-        }
-
         private void btnAddRoba_Click(object sender, RoutedEventArgs e)
         {
             _mainWindow.ContentGrid.Content = new UCDodajRobu();

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WPFPresentation.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Faktura" Height="600" Width="1000"
+        Title="Faktura" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" AllowsTransparency="True" Background="White">
     <Window.Resources>
@@ -88,10 +88,10 @@
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGreen">
             <TextBlock Text="Faktura" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="Blue"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{StaticResource MinimizeButtonStyle}" Command="{Binding Path=MinimizeWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                <Button Style="{StaticResource MinimizeButtonStyle}" Click="MinimizeButton_Click">
                     <Path Data="M 0,5 L 10,5" Stroke="Black" StrokeThickness="2"/>
                 </Button>
-                <Button Style="{StaticResource ExitButtonStyle}" Command="{Binding Path=ExitWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                <Button Style="{StaticResource ExitButtonStyle}" Click="ExitButton_Click">
                     <Path Data="M 0,0 L 10,10 M 0,10 L 10,0" Stroke="Black" StrokeThickness="2"/>
                 </Button>
             </StackPanel>
@@ -99,29 +99,29 @@
 
         <Grid Grid.Row="1" Grid.Column="0" Background="LightGreen" x:Name="MenuStackPanel">
             <StackPanel>
-                <Button Name="HamburgerButton" Content="☰" Command="{Binding Path=HamburgerCommand}"  Width="30" Height="30" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                <StackPanel x:Name="MenuContent" Visibility="{Binding MenuVisibility}">
+                <Button Name="HamburgerButton" Content="☰" Click="HamburgerButton_Click" Width="30" Height="30" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                <StackPanel x:Name="MenuContent">
                     <TextBlock Text="MENI" Margin="5, 20, 5, 5" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Blue" />
                     <StackPanel VerticalAlignment="Center">
-                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/home.png" x:Name="btnHome" Command="{Binding Path=NavigateHomeCommand}">
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/home.png" x:Name="btnHome" Click="btnHome_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Icons/home.png" Width="24" Height="24" Margin="5,0,0,0"/>
                                 <TextBlock Text="Početak" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Button>
-                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/client.png" x:Name="btnKomitent" Command="{Binding Path=NavigateKomitentCommand}">
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/client.png" x:Name="btnKomitent" Click="btnKomitent_Click" Command="{Binding KomitentView}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Icons/client.png" Width="24" Height="24" Margin="5,0,0,0"/>
                                 <TextBlock Text="Komitent" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Button>
-                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/goods.png" x:Name="btnRoba" Command="{Binding Path=NavigateRobaCommand}">
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/goods.png" x:Name="btnRoba" Click="btnRoba_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Icons/goods.png" Width="24" Height="24" Margin="5,0,0,0"/>
                                 <TextBlock Text="Roba" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Button>
-                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/bill.png" x:Name="btnFaktura" Command="{Binding Path=NavigateFakturaCommand}">
+                        <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/bill.png" x:Name="btnFaktura" Click="btnFaktura_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Icons/bill.png" Width="24" Height="24" Margin="5,0,0,0"/>
                                 <TextBlock Text="Dokument" VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -133,7 +133,8 @@
         </Grid>
 
         <!-- Content for the second column can go here -->
-        <ContentControl x:Name="ContentGrid" Grid.Column="1" Grid.Row="1">
+        <ContentControl Grid.Row="1" Grid.Column="1" x:Name="ContentGrid">
+            <!-- Your content here -->
             <ContentControl.Content>
                 <Image Source="pack://application:,,,/Pictures/faktura.jpg" />
             </ContentControl.Content>
