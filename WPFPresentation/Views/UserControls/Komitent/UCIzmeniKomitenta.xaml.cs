@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using WPFPresentation.ViewModels.Komitent;
 
 namespace WPFPresentation.Views.UserControls.Komitent
 {
@@ -11,7 +10,7 @@ namespace WPFPresentation.Views.UserControls.Komitent
         public UCIzmeniKomitenta()
         {
             InitializeComponent();
-            DataContext = new IzmeniKomitentaViewModel();
+            //DataContext = new IzmeniKomitentaViewModel();
         }
     }
 }

@@ -1,54 +1,39 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+﻿using Application.DTOs;
+using System.Windows;
+using WPFPresentation.Navigation;
+using WPFPresentation.ViewModels.Komitent;
+using WPFPresentation.ViewModels.MainWindow;
 using WPFPresentation.Views.UserControls;
+using WPFPresentation.Views.UserControls.Home;
+using WPFPresentation.Views.UserControls.Komitent;
 
 namespace WPFPresentation
 {
     public partial class MainWindow : Window
     {
+        private readonly NavigationService _navigationService;
+
         public MainWindow()
         {
             InitializeComponent();
+            _navigationService = new NavigationService(ContentGrid);
+            DataContext = new MainWindowViewModel(_navigationService);
         }
 
-        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        private void RegisterViews()
         {
-            MenuContent.Visibility = MenuContent.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            _navigationService.RegisterView("Home", () => new UCHome());
+            _navigationService.RegisterView("UCKomitent", () => new UCKomitent());
+            _navigationService.RegisterView("UCRoba", () => new UCRoba());
+            _navigationService.RegisterView("UCFaktura", () => new UCFaktura());
         }
 
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        public void ShowUCIzmeniKomitenta(KomitentDTO komitent)
         {
-            WindowState = WindowState.Minimized;
-        }
-
-        private void ExitButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void btnHome_Click(object sender, RoutedEventArgs e)
-        {
-            var image = new Image
-            {
-                Source = new BitmapImage(new Uri("pack://application:,,,/Pictures/faktura.jpg"))
-            };
-            ContentGrid.Content = image;
-        }
-
-        private void btnKomitent_Click(object sender, RoutedEventArgs e)
-        {
-            ContentGrid.Content = new UCKomitent(this);
-        }
-
-        private void btnRoba_Click(object sender, RoutedEventArgs e)
-        {
-            ContentGrid.Content = new UCRoba(this);
-        }
-
-        private void btnFaktura_Click(object sender, RoutedEventArgs e)
-        {
-            ContentGrid.Content = new UCFaktura(this);
+            var editControl = new UCIzmeniKomitenta();
+            var editViewModel = new IzmeniKomitentaViewModel(komitent, _navigationService);
+            editControl.DataContext = editViewModel;
+            ContentGrid.Content = editControl;
         }
     }
 }
