@@ -14,7 +14,7 @@ namespace WPFPresentation.Views.UserControls
         {
             InitializeComponent();
             _mainWindow = mainWindow;
-            DataContext = new KomitentViewModel();
+            DataContext = new KomitentViewModel(_mainWindow);
         }
 
         private void btnAddKomitent_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -22,9 +22,5 @@ namespace WPFPresentation.Views.UserControls
             _mainWindow.ContentGrid.Content = new UCDodajKomitenta();
         }
 
-        private void btnEditKomitent_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _mainWindow.ContentGrid.Content = new UCIzmeniKomitenta();
-        }
     }
 }

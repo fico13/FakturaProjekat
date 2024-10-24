@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using Application.DTOs;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using WPFPresentation.Views.UserControls;
+using WPFPresentation.Views.UserControls.Komitent;
 
 namespace WPFPresentation
 {
@@ -49,6 +51,11 @@ namespace WPFPresentation
         private void btnFaktura_Click(object sender, RoutedEventArgs e)
         {
             ContentGrid.Content = new UCFaktura(this);
+        }
+
+        internal void ShowUCIzmeniKomitenta(KomitentDTO komitent)
+        {
+            ContentGrid.Content = new UCIzmeniKomitenta(komitent);
         }
     }
 }

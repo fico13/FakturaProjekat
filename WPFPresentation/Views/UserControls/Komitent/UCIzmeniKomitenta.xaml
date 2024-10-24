@@ -7,83 +7,43 @@
              d:DesignHeight="600" d:DesignWidth="1000">
     <Grid Background="White" Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="200"/>
-            <!-- Smaller DataGrid height -->
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="Auto"/>
-            <!-- New row for validation error TextBox -->
-            <RowDefinition Height="Auto"/>
-            <!-- New row for the button -->
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Sifra komitenta TextBlock -->
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Sifra komitenta" VerticalAlignment="Center" Margin="5"/>
+        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- Sifra komitenta TextBlock and TextBox -->
+            <TextBlock Text="Sifra komitenta" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Width="200" Height="20" Margin="5" Text="{Binding Path=SelectedKomitent.SifraKomitenta}" IsReadOnly="True"/>
 
-        <!-- Search TextBox -->
-        <TextBox x:Name="SearchTextBox" Grid.Row="0" Margin="109,15,61,15" Width="200" Height="20" Text="{Binding Path=SifraKomitentaSearch}" Grid.ColumnSpan="2"/>
+            <!-- Naziv TextBlock and TextBox -->
+            <TextBlock Text="Naziv" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Width="200" Height="20" Margin="5" Text="{Binding Path=SelectedKomitent.Naziv}"/>
 
-        <!-- Search Button -->
-        <Button Grid.Row="0" Grid.Column="1" Width="100" Height="40" Margin="175,5,0,5" HorizontalAlignment="Left" Command="{Binding Path=FindKomitentCommand}" Style="{StaticResource RoundedButtonStyle}" Grid.ColumnSpan="2">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/find.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                <TextBlock Text="Pretraži" VerticalAlignment="Center" Margin="5,0,0,0"/>
-            </StackPanel>
-        </Button>
+            <!-- Adresa TextBlock and TextBox -->
+            <TextBlock Text="Adresa" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Width="200" Height="20" Margin="5" Text="{Binding Path=SelectedKomitent.Adresa}"/>
 
-        <!-- DataGrid -->
-        <DataGrid Grid.Row="1" Grid.ColumnSpan="3" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Margin="5,0,5,20" ItemsSource="{Binding Path=Komitenti}"
-                  SelectedItem="{Binding SelectedKomitent, Mode=TwoWay}" >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Šifra komitenta" Width="*" Binding="{Binding Path=SifraKomitenta}"/>
-                <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Naziv}"/>
-                <DataGridTextColumn Header="Adresa" Width="*" Binding="{Binding Path=Adresa}"/>
-                <DataGridTextColumn Header="Grad" Width="*" Binding="{Binding Path=Grad}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+            <!-- Grad TextBlock and TextBox -->
+            <TextBlock Text="Grad" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Width="200" Height="20" Margin="5" Text="{Binding Path=SelectedKomitent.Grad}"/>
 
-        <!-- Sifra komitenta TextBlock and TextBox -->
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Sifra komitenta" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="2" Width="200" Height="20" Margin="111,5,59,5" Text="{Binding Path=SelectedKomitent.SifraKomitenta}" Grid.ColumnSpan="2" IsReadOnly="True"/>
+            <!-- Validation Error TextBox -->
+            <TextBox Margin="5" Text="{Binding Path=Validation}" IsReadOnly="True" Foreground="{Binding ValidationColor}" Background="Transparent" BorderThickness="0" Height="64"/>
 
-        <!-- Naziv TextBlock and TextBox -->
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Naziv" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="3" Width="200" Height="20" Margin="111,5,59,5" Text="{Binding Path=SelectedKomitent.Naziv}" Grid.ColumnSpan="2"/>
-
-        <!-- Adresa TextBlock and TextBox -->
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Adresa" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="4" Width="200" Height="20" Margin="111,5,59,5" Text="{Binding Path=SelectedKomitent.Adresa}" Grid.ColumnSpan="2"/>
-
-        <!-- Grad TextBlock and TextBox -->
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="Grad" VerticalAlignment="Center" Margin="5"/>
-        <TextBox Grid.Row="5" Width="200" Height="20" Margin="111,5,59,5" Text="{Binding Path=SelectedKomitent.Grad}" Grid.ColumnSpan="2"/>
-
-        <!-- Validation Error TextBox -->
-        <TextBox Grid.Row="6" Margin="111,5,59,5" Text="{Binding Path=Validation}" IsReadOnly="True" Foreground="{Binding ValidationColor}" Background="Transparent" BorderThickness="0" Grid.ColumnSpan="2"/>
-
-        <!-- Izmeni Button -->
-        <Button Grid.Row="7" Grid.Column="0" Width="150" Height="40" Margin="5" HorizontalAlignment="Left" Command="{Binding Path=UpdateKomitentCommand}" Style="{StaticResource RoundedButtonStyle}">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/update.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                <TextBlock Text="Izmeni" VerticalAlignment="Center" Margin="5,0,0,0"/>
-            </StackPanel>
-        </Button>
-
-        <!-- Obrisi Button -->
-        <Button Grid.Row="7" Grid.Column="1" Width="150" Height="40" Margin="5" HorizontalAlignment="Left" Command="{Binding Path=DeleteKomitentCommand}" Style="{StaticResource RoundedButtonStyle}">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/delete.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                <TextBlock Text="Obrisi" VerticalAlignment="Center" Margin="5,0,0,0"/>
-            </StackPanel>
-        </Button>
+            <!-- Izmeni Button -->
+            <Button Width="150" Height="40" Margin="5" HorizontalAlignment="Center" Command="{Binding Path=UpdateKomitentCommand}" Style="{StaticResource RoundedButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Icons/update.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                    <TextBlock Text="Izmeni" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using Application.DTOs;
+using System.Windows.Controls;
 using WPFPresentation.ViewModels.Komitent;
 
 namespace WPFPresentation.Views.UserControls.Komitent
@@ -8,10 +9,10 @@ namespace WPFPresentation.Views.UserControls.Komitent
     /// </summary>
     public partial class UCIzmeniKomitenta : UserControl
     {
-        public UCIzmeniKomitenta()
+        public UCIzmeniKomitenta(KomitentDTO komitent)
         {
             InitializeComponent();
-            DataContext = new IzmeniKomitentaViewModel();
+            DataContext = new IzmeniKomitentaViewModel(komitent);
         }
     }
 }
