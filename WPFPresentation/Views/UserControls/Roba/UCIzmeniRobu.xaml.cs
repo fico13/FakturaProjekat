@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using Application.DTOs;
+using System.Windows.Controls;
 using WPFPresentation.ViewModels.Roba;
 
 namespace WPFPresentation.Views.UserControls.Roba
@@ -8,10 +9,10 @@ namespace WPFPresentation.Views.UserControls.Roba
     /// </summary>
     public partial class UCIzmeniRobu : UserControl
     {
-        public UCIzmeniRobu()
+        public UCIzmeniRobu(RobaDTO roba)
         {
             InitializeComponent();
-            DataContext = new IzmeniRobuViewModel();
+            DataContext = new IzmeniRobuViewModel(roba);
         }
     }
 }

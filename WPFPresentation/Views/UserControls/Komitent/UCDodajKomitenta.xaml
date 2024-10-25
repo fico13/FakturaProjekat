@@ -4,15 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFPresentation.Views.UserControls.Komitent"
-             mc:Ignorable="d" Background="White" Height="303" Width="594">
-    <Grid Margin="10">
+             mc:Ignorable="d" Background="White" Height="450" Width="800">
+    <Grid Background="White" Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -20,56 +17,35 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Sifra -->
-        <Grid Grid.Row="0" Grid.Column="1" Margin="0,0,0,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="200"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Sifra komitenta:" VerticalAlignment="Center" Margin="0,0,10,0" Grid.Column="0"/>
-            <TextBox x:Name="SifraTextBox" Text="{Binding Path=Komitent.SifraKomitenta}" Width="200" Grid.Column="1" Margin="13,0,-13,0"/>
-        </Grid>
+        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- Sifra komitenta TextBlock and TextBox -->
+            <TextBlock Text="Sifra komitenta" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Width="200" Height="20" Margin="5" Text="{Binding Path=Komitent.SifraKomitenta}"/>
 
-        <!-- Naziv -->
-        <Grid Grid.Row="1" Grid.Column="1" Margin="0,0,0,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="200"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Naziv:" VerticalAlignment="Center" Margin="0,0,10,0" Grid.Column="0"/>
-            <TextBox x:Name="NazivTextBox" Text="{Binding Path=Komitent.Naziv}" Width="200" Grid.Column="1" Margin="64,0,-64,0"/>
-        </Grid>
+            <!-- Naziv TextBlock and TextBox -->
+            <TextBlock Text="Naziv" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Width="200" Height="20" Margin="5" Text="{Binding Path=Komitent.Naziv}"/>
 
-        <!-- Adresa -->
-        <Grid Grid.Row="2" Grid.Column="1" Margin="0,0,0,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="200"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Adresa:" VerticalAlignment="Center" Margin="0,0,10,0" Grid.Column="0"/>
-            <TextBox x:Name="AdresaTextBox" Text="{Binding Path=Komitent.Adresa}" Width="200" Margin="56,0,-56,0" Grid.Column="1"/>
-        </Grid>
+            <!-- Adresa TextBlock and TextBox -->
+            <TextBlock Text="Adresa" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Width="200" Height="20" Margin="5" Text="{Binding Path=Komitent.Adresa}"/>
 
-        <!-- Grad -->
-        <Grid Grid.Row="3" Grid.Column="1" Margin="0,0,0,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="200"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Grad:" VerticalAlignment="Center" Margin="0,0,10,0" Grid.Column="0"/>
-            <TextBox x:Name="GradTextBox" Text="{Binding Path=Komitent.Grad}" Width="200" Grid.Column="1" Margin="67,0,-67,0"/>
-        </Grid>
+            <!-- Grad TextBlock and TextBox -->
+            <TextBlock Text="Grad" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Width="200" Height="20" Margin="5" Text="{Binding Path=Komitent.Grad}"/>
 
-        <!-- Validation Errors -->
-        <TextBox Grid.Row="4" Grid.Column="1" Margin="105,10,128,53" IsReadOnly="True" Foreground="{Binding ValidationColor}" Background="Transparent" BorderThickness="0" Width="200" Text="{Binding Validation}" Grid.ColumnSpan="2"/>
+            <!-- Validation Error TextBox -->
+            <TextBox Margin="5" Text="{Binding Path=Validation}" IsReadOnly="True" Foreground="{Binding ValidationColor}" Background="Transparent" BorderThickness="0" Height="64"/>
 
-        <!-- Dodaj Button -->
-        <Button Grid.Row="5" Grid.Column="1" Width="100" Height="40" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource RoundedButtonStyle}" Command="{Binding Path=DodajKomitenta}">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/add.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                <TextBlock Text="Dodaj" VerticalAlignment="Center" Margin="5,0,0,0"/>
-            </StackPanel>
-        </Button>
+            <!-- Izmeni Button -->
+            <!-- Dodaj Button -->
+            <Button Grid.Row="5" Grid.Column="1" Width="100" Height="40" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource RoundedButtonStyle}" Command="{Binding Path=DodajKomitenta}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Icons/add.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                    <TextBlock Text="Dodaj" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>
 

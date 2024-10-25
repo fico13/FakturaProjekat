@@ -22,10 +22,5 @@ namespace WPFPresentation.Views.UserControls
         {
             _mainWindow.ContentGrid.Content = new UCDodajDokument();
         }
-
-        private void btnEditDokument_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            _mainWindow.ContentGrid.Content = new UCIzmeniDokument();
-        }
     }
 }

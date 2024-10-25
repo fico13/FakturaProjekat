@@ -16,17 +16,12 @@ namespace WPFPresentation.Views.UserControls
         {
             InitializeComponent();
             _mainWindow = mainWindow;
-            DataContext = new RobaViewModel();
+            DataContext = new RobaViewModel(_mainWindow);
         }
 
         private void btnAddRoba_Click(object sender, RoutedEventArgs e)
         {
             _mainWindow.ContentGrid.Content = new UCDodajRobu();
-        }
-
-        private void btnEditRoba_Click(object sender, RoutedEventArgs e)
-        {
-            _mainWindow.ContentGrid.Content = new UCIzmeniRobu();
         }
     }
 }

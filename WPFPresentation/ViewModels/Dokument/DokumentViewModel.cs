@@ -1,5 +1,7 @@
 ﻿using Application.DTOs;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using WPFPresentation.Commands;
 using WPFPresentation.Services;
 
 namespace WPFPresentation.ViewModels.Dokument
@@ -51,15 +53,39 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
+        private string? _serachBrojDokumenta;
+        public string? SearchBrojDokumenta
+        {
+            get
+            {
+                return _serachBrojDokumenta;
+            }
+            set
+            {
+                _serachBrojDokumenta = value;
+                OnPropertyChanged(nameof(SearchBrojDokumenta));
+            }
+        }
+
+        private ICommand _findDokumentsCommand;
+        public ICommand FindDokumentsCommand => _findDokumentsCommand;
+
         public DokumentViewModel()
         {
             _dokumentService = new DokumentService();
-            LoadData();
+            _findDokumentsCommand = new RelayCommand(async (obj) => await FindDokuments(obj));
         }
 
-        private async void LoadData()
+        private async Task FindDokuments(object obj)
         {
-            var dokumenti = await _dokumentService.GetDokumenti();
+            IEnumerable<DokumentDTO> dokumenti = new List<DokumentDTO>();
+            if (string.IsNullOrWhiteSpace(SearchBrojDokumenta))
+            {
+                dokumenti = await _dokumentService.GetDokumenti();
+                Dokumenti = new ObservableCollection<DokumentDTO>(dokumenti);
+                return;
+            }
+            dokumenti = await _dokumentService.FindDokuments(SearchBrojDokumenta);
             Dokumenti = new ObservableCollection<DokumentDTO>(dokumenti);
         }
 

@@ -8,9 +8,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -18,15 +19,27 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Broj dokumenta Search Section -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2" Margin="5">
+            <TextBlock Text="Broj dokumenta:" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Width="200" Margin="5" Height="20" Text="{Binding Path=SearchBrojDokumenta, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Name="btnPretrazi" Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" Command="{Binding Path=FindDokumentsCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Icons/find.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                    <TextBlock Text="Pretrazi" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
         <!-- DataGrid for Dokumenti -->
-        <DataGrid Grid.Row="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5,5,5,5" ItemsSource="{Binding Path=Dokumenti}"
+        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5,20,5,37" ItemsSource="{Binding Path=Dokumenti}"
                   SelectedItem="{Binding SelectedDokument, Mode=TwoWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Broj dokumenta" Width="*" Binding="{Binding Path=BrojDokumenta}"/>
                 <DataGridTextColumn Header="Datum izdavanja" Width="*" Binding="{Binding Path=DatumIzdavanja}"/>
                 <DataGridTextColumn Header="Datum dospeca" Width="*" Binding="{Binding Path=DatumDospeca}"/>
                 <DataGridTextColumn Header="Cena" Width="*" Binding="{Binding Path=UkupnaCena}"/>
-                <DataGridTextColumn Header="Komitent" Width="2*" >
+                <DataGridTextColumn Header="Komitent" Width="2.5*" >
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} - {1} - {2}">
                             <Binding Path="Komitent.Naziv" />
@@ -35,35 +48,82 @@
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
+                <DataGridTemplateColumn Header="" Width="0.8*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Update Button -->
+                                <Button Command="{Binding Path=DataContext.UpdateStavkaCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                        CommandParameter="{Binding}" Margin="5,0" HorizontalAlignment="Left" Grid.Column="0"
+                        Width="30" Height="30" Style="{StaticResource RoundedButtonStyle}">
+                                    <Image Source="/Icons/update.png" Width="16" Height="16" Margin="5,0,0,0"/>
+                                </Button>
+
+                                <!-- Delete Button -->
+                                <Button Command="{Binding Path=DataContext.DeleteStavkaCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                        CommandParameter="{Binding}" Margin="5,0" HorizontalAlignment="Right" Grid.Column="2"
+                        Width="30" Height="30" Style="{StaticResource RoundedButtonStyle}">
+                                    <Image Source="/Icons/delete.png" Width="16" Height="16" Margin="5,0,0,0"/>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- TextBlock for Stavke -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Right" Text="Stavke" FontWeight="Bold"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Margin="369,163,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Text="Stavke" FontWeight="Bold" Grid.ColumnSpan="2"/>
 
         <!-- DataGrid for Stavke -->
-        <DataGrid Grid.Row="2" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5" ItemsSource="{Binding Path=Stavke}">
+        <DataGrid Grid.Row="3" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5" ItemsSource="{Binding Path=Stavke}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Roba.Naziv}"/>
-                <DataGridTextColumn Header="Jedinica mere" Width="*" Binding="{Binding Path=Roba.JedinicaMere}"/>
-                <DataGridTextColumn Header="Količina" Width="*" Binding="{Binding Path=Kolicina}"/>
+                <DataGridTextColumn Header="Naziv" Width="0.5*" Binding="{Binding Path=Roba.Naziv}"/>
+                <DataGridTextColumn Header="Sifra" Width="0.5*" Binding="{Binding Path=Roba.SifraRobe}"/>
+                <DataGridTextColumn Header="Jedinica mere" Width="0.7*" Binding="{Binding Path=Roba.JedinicaMere}"/>
+                <DataGridTextColumn Header="Količina" Width="0.7*" Binding="{Binding Path=Kolicina}"/>
                 <DataGridTextColumn Header="Cena po JM" Width="*" Binding="{Binding Path=Roba.Cena}"/>
                 <DataGridTextColumn Header="Ukupna cena stavke" Width="*" Binding="{Binding Path=UkupnaCenaStavke}"/>
+                <DataGridTemplateColumn Header="" Width="0.7*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Update Button -->
+                                <Button Command="{Binding Path=DataContext.UpdateStavkaCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding}" Margin="5,0" HorizontalAlignment="Left" Grid.Column="0"
+                                        Width="30" Height="30" Style="{StaticResource RoundedButtonStyle}">
+                                    <Image Source="/Icons/update.png" Width="16" Height="16" Margin="5,0,0,0"/>
+                                </Button>
+
+                                <!-- Delete Button -->
+                                <Button Command="{Binding Path=DataContext.DeleteStavkaCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding}" Margin="5,0" HorizontalAlignment="Right" Grid.Column="2"
+                                        Width="30" Height="30" Style="{StaticResource RoundedButtonStyle}">
+                                    <Image Source="/Icons/delete.png" Width="16" Height="16" Margin="5,0,0,0"/>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- Buttons -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="3" Grid.ColumnSpan="2" Margin="10">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4" Grid.ColumnSpan="2" Margin="10">
             <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnAddDokument" Click="btnAddDokument_Click">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Icons/add.png" Width="24" Height="24" Margin="5,0,0,0"/>
                     <TextBlock Text="Dodaj" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                </StackPanel>
-            </Button>
-            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnEditDokument" Click="btnEditDokument_Click">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/Icons/update.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                    <TextBlock Text="Izmeni" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
             </Button>
         </StackPanel>
