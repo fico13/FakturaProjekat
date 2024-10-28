@@ -15,7 +15,7 @@ namespace WPFPresentation.Views.UserControls
         {
             InitializeComponent();
             _mainWindow = mainWindow;
-            DataContext = new DokumentViewModel();
+            DataContext = new DokumentViewModel(_mainWindow);
         }
 
         private void btnAddDokument_Click(object sender, System.Windows.RoutedEventArgs e)

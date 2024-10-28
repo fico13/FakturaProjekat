@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using Application.DTOs;
+using System.Windows.Controls;
 using WPFPresentation.ViewModels.Dokument;
 
 namespace WPFPresentation.Views.UserControls.Dokument
@@ -8,10 +9,10 @@ namespace WPFPresentation.Views.UserControls.Dokument
     /// </summary>
     public partial class UCIzmeniDokument : UserControl
     {
-        public UCIzmeniDokument()
+        public UCIzmeniDokument(DokumentDTO dokument)
         {
             InitializeComponent();
-            DataContext = new IzmeniDokumentViewModel();
+            DataContext = new IzmeniDokumentViewModel(dokument);
         }
     }
 }

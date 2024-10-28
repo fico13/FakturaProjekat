@@ -15,7 +15,7 @@ namespace WPFPresentation.Validators
                 .NotEmpty().WithMessage("Komitent je obavezan");
 
             RuleFor(x => x.DatumDospeca)
-                .GreaterThan(x => x.DatumIzdavanja).WithMessage("Datum dospeća mora biti posle datuma izdavanja")
+                .GreaterThan(x => x.DatumIzdavanja).WithMessage("Datum dospeća mora biti \n posle datuma izdavanja")
                 .NotEmpty().WithMessage("Datum dospeća je obavezan");
 
         }

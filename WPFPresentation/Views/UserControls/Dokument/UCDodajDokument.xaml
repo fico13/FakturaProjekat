@@ -140,7 +140,7 @@
                 </Button>
 
                 <!-- DataGrid for StavkaRacuna -->
-                <DataGrid x:Name="StavkaRacunaDataGrid" AutoGenerateColumns="False" IsReadOnly="True"  ItemsSource="{Binding Stavke}" Grid.Row="3" Grid.ColumnSpan="3" Margin="10,10,10,10" Grid.RowSpan="2">
+                <DataGrid x:Name="StavkaRacunaDataGrid" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Stavke}" Grid.Row="3" Grid.ColumnSpan="3" Margin="10,10,10,10" Grid.RowSpan="2">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Sifra" Width="*" Binding="{Binding Roba.SifraRobe}"/>
                         <DataGridTextColumn Header="Naziv" Width="2*" Binding="{Binding Roba.Naziv}"/>
@@ -148,8 +148,24 @@
                         <DataGridTextColumn Header="Količina" Width="*" Binding="{Binding Kolicina}"/>
                         <DataGridTextColumn Header="Cena po JM" Width="*" Binding="{Binding Roba.Cena}"/>
                         <DataGridTextColumn Header="Ukupna cena stavke" Width="*" Binding="{Binding UkupnaCenaStavke}"/>
+                        <DataGridTemplateColumn Header="" Width="0.7*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Button Command="{Binding Path=DataContext.DeleteStavkaCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                CommandParameter="{Binding}" 
+                                Width="30" Height="30" 
+                                Style="{StaticResource RoundedButtonStyle}" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Image Source="/Icons/delete.png" Width="16" Height="16"/>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+
             </Grid>
         </GroupBox>
 

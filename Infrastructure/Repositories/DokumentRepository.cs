@@ -153,7 +153,8 @@ namespace Persistence.Repositories
                     await _context.Dokumenti.Where(d => d.Id == dokumentEntity.Id)
                                             .ExecuteUpdateAsync(d => d
                                                     .SetProperty(d => d.UkupnaCena, dokumentEntity.UkupnaCena)
-                                                    .SetProperty(d => d.DatumIzdavanja, DateOnly.FromDateTime(DateTime.Now)));
+                                                    .SetProperty(d => d.DatumIzdavanja, dokumentEntity.DatumIzdavanja)
+                                                    .SetProperty(d => d.DatumDospeca, dokumentEntity.DatumDospeca));
 
                     await transaction.CommitAsync();
 

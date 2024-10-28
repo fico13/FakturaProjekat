@@ -70,10 +70,41 @@ namespace WPFPresentation.ViewModels.Dokument
         private ICommand _findDokumentsCommand;
         public ICommand FindDokumentsCommand => _findDokumentsCommand;
 
-        public DokumentViewModel()
+        public ICommand _deleteDokumentCommand;
+        public ICommand DeleteDokumentCommand => _deleteDokumentCommand;
+
+        public ICommand _updateDokumentCommand;
+        public ICommand UpdateDokumentCommand => _updateDokumentCommand;
+
+        private readonly MainWindow _mainWindow;
+
+        public DokumentViewModel(MainWindow mainWindow)
         {
+            _mainWindow = mainWindow;
             _dokumentService = new DokumentService();
             _findDokumentsCommand = new RelayCommand(async (obj) => await FindDokuments(obj));
+            _deleteDokumentCommand = new RelayCommand(async (obj) => await DeleteDokument(obj));
+            _updateDokumentCommand = new RelayCommand((obj) => UpdateDokument(obj));
+        }
+
+        private void UpdateDokument(object obj)
+        {
+            if (obj is DokumentDTO dokument)
+            {
+                _mainWindow.Dispatcher.Invoke(() =>
+                {
+                    _mainWindow.ShowUCIzmeniDokument(dokument);
+                });
+            }
+        }
+
+        private async Task DeleteDokument(object obj)
+        {
+            var successfull = await _dokumentService.DeleteDokument(SelectedDokument!.BrojDokumenta!);
+            if (successfull)
+            {
+                await FindDokuments(SearchBrojDokumenta!);
+            }
         }
 
         private async Task FindDokuments(object obj)

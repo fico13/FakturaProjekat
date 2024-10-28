@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using WPFPresentation.Views.UserControls;
+using WPFPresentation.Views.UserControls.Dokument;
 using WPFPresentation.Views.UserControls.Komitent;
 using WPFPresentation.Views.UserControls.Roba;
 
@@ -62,6 +63,11 @@ namespace WPFPresentation
         internal void ShowUCIzmeniRobu(RobaDTO roba)
         {
             ContentGrid.Content = new UCIzmeniRobu(roba);
+        }
+
+        internal void ShowUCIzmeniDokument(DokumentDTO dokument)
+        {
+            ContentGrid.Content = new UCIzmeniDokument(dokument);
         }
     }
 }

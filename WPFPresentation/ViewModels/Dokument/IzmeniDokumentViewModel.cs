@@ -1,16 +1,18 @@
 ﻿using Application.DTOs;
+using FluentValidation;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Media;
 using WPFPresentation.Commands;
 using WPFPresentation.Services;
+using WPFPresentation.Validators;
 
 namespace WPFPresentation.ViewModels.Dokument
 {
     public class IzmeniDokumentViewModel : BaseViewModel
     {
-        private KomitentService _komitentService;
         private DokumentService _dokumentService;
+        private IValidator<DokumentDTO> _dokumentValidator;
 
         private string? _brojDokumenta;
         public string? BrojDokumenta
@@ -23,20 +25,6 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 _brojDokumenta = value;
                 OnPropertyChanged(nameof(BrojDokumenta));
-            }
-        }
-
-        private ObservableCollection<DokumentDTO>? _dokumenti;
-        public ObservableCollection<DokumentDTO>? Dokumenti
-        {
-            get
-            {
-                return _dokumenti;
-            }
-            set
-            {
-                _dokumenti = value;
-                OnPropertyChanged(nameof(Dokumenti));
             }
         }
 
@@ -65,7 +53,6 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 _selectedDokument = value;
                 OnPropertyChanged(nameof(SelectedDokument));
-                ShowStavke();
             }
         }
 
@@ -80,8 +67,13 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 _selectedStavka = value;
                 OnPropertyChanged(nameof(SelectedStavka));
-                ShowStavka();
+                ShowKolicina();
             }
+        }
+
+        private void ShowKolicina()
+        {
+            Kolicina = SelectedStavka!.Kolicina;
         }
 
         private int _kolicina;
@@ -126,25 +118,66 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
-        private ICommand _findDokumentCommand;
-        public ICommand FindDokumentCommand => _findDokumentCommand;
+        private string? _datumIzdavanjaRacuna;
+        public string? DatumIzdavanjaRacuna
+        {
+            get
+            {
+                return _datumIzdavanjaRacuna;
+            }
+            set
+            {
+                _datumIzdavanjaRacuna = value;
+                OnPropertyChanged(nameof(DatumIzdavanjaRacuna));
+            }
+        }
+
+        private string? _ukupnaCena;
+        public string? UkupnaCena
+        {
+            get
+            {
+                return _ukupnaCena;
+            }
+            set
+            {
+                _ukupnaCena = value;
+                OnPropertyChanged(nameof(UkupnaCena));
+            }
+        }
+
+        private DateTime? _datumDospeca;
+        public DateTime? DatumDospeca
+        {
+            get
+            {
+                return _datumDospeca;
+            }
+            set
+            {
+                _datumDospeca = value;
+                OnPropertyChanged(nameof(DatumDospeca));
+            }
+        }
 
         private ICommand _updateDokumentCommand;
         public ICommand UpdateDokumentCommand => _updateDokumentCommand;
 
-        private ICommand _deleteDokumentCommand;
-        public ICommand DeleteDokumentCommand => _deleteDokumentCommand;
-
         private ICommand _updateStavkaCommand;
         public ICommand UpdateStavkaCommand => _updateStavkaCommand;
 
-        public IzmeniDokumentViewModel()
+
+        public IzmeniDokumentViewModel(DokumentDTO dokument)
         {
-            _komitentService = new KomitentService();
+            SelectedDokument = dokument;
+            BrojDokumenta = dokument.BrojDokumenta!.ToString();
+            DatumIzdavanjaRacuna = SelectedDokument.DatumIzdavanja.ToString();
+            DatumDospeca = SelectedDokument.DatumDospeca.ToDateTime(TimeOnly.MinValue);
+            UkupnaCena = SelectedDokument.UkupnaCena.ToString();
+            Stavke = new ObservableCollection<StavkaDokumentaDTO>(SelectedDokument.Stavke!);
             _dokumentService = new DokumentService();
+            _dokumentValidator = new DokumentValidator();
             _updateStavkaCommand = new RelayCommand(UpdateStavka);
-            _findDokumentCommand = new RelayCommand(async (obj) => await FindDokument(obj));
-            _deleteDokumentCommand = new RelayCommand(async (obj) => await DeleteDokument(obj));
             _updateDokumentCommand = new RelayCommand(async (obj) => await UpdateDokument(obj));
         }
 
@@ -162,28 +195,24 @@ namespace WPFPresentation.ViewModels.Dokument
             SelectedStavka.UkupnaCenaStavke = SelectedStavka.Roba!.Cena * SelectedStavka.Kolicina;
             SelectedDokument!.Stavke!.Add(SelectedStavka);
             SelectedDokument!.UkupnaCena = SelectedDokument.Stavke!.Sum(s => s.UkupnaCenaStavke);
+            UkupnaCena = SelectedDokument!.UkupnaCena.ToString();
 
             Stavke = new ObservableCollection<StavkaDokumentaDTO>(SelectedDokument.Stavke);
         }
 
-        private async Task DeleteDokument(object obj)
+        private async Task UpdateDokument(object obj)
         {
-            if (SelectedDokument is null)
+            if (DatumDospeca is null)
             {
-                ValidationText = "Morate izabrati dokument";
+                ValidationText = "Morate uneti datum dospeca";
                 ValidationColor = Brushes.Red;
                 return;
             }
-            await _dokumentService.DeleteDokument(SelectedDokument!.BrojDokumenta!);
-            SelectedDokument = new DokumentDTO();
-            await FindDokument(obj);
-        }
-
-        private async Task UpdateDokument(object obj)
-        {
-            if (SelectedDokument is null)
+            SelectedDokument!.DatumDospeca = DateOnly.FromDateTime(DatumDospeca!.Value);
+            var result = _dokumentValidator.Validate(SelectedDokument!);
+            if (!result.IsValid)
             {
-                ValidationText = "Morate izabrati dokument";
+                ValidationText = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
                 ValidationColor = Brushes.Red;
                 return;
             }
@@ -198,44 +227,6 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 ValidationText = "Greska prilikom izmene dokumenta";
                 ValidationColor = Brushes.Red;
-            }
-            SelectedDokument = new DokumentDTO();
-            Kolicina = 1;
-            Dokumenti = new ObservableCollection<DokumentDTO>();
-        }
-
-        private async Task FindDokument(object obj)
-        {
-            IEnumerable<DokumentDTO> dokumenti;
-            if (string.IsNullOrWhiteSpace(BrojDokumenta))
-            {
-                dokumenti = await _dokumentService.GetDokumenti();
-                Dokumenti = new ObservableCollection<DokumentDTO>(dokumenti);
-            }
-            else
-            {
-                dokumenti = await _dokumentService.FindDokuments(BrojDokumenta!);
-                Dokumenti = new ObservableCollection<DokumentDTO>(dokumenti);
-            }
-        }
-
-        private void ShowStavke()
-        {
-            if (SelectedDokument != null && SelectedDokument.Stavke != null)
-            {
-                Stavke = new ObservableCollection<StavkaDokumentaDTO>(SelectedDokument.Stavke);
-            }
-            else
-            {
-                Stavke = new ObservableCollection<StavkaDokumentaDTO>();
-            }
-        }
-
-        private void ShowStavka()
-        {
-            if (SelectedStavka != null)
-            {
-                Kolicina = SelectedStavka.Kolicina;
             }
         }
     }

@@ -294,6 +294,9 @@ namespace WPFPresentation.ViewModels.Dokument
         private ICommand _dodajDokumentCommand;
         public ICommand DodajDokumentCommand => _dodajDokumentCommand;
 
+        private ICommand _deleteStavkaCommand;
+        public ICommand DeleteStavkaCommand => _deleteStavkaCommand;
+
         public DodajDokumentViewModel()
         {
             _komitentService = new KomitentService();
@@ -304,8 +307,18 @@ namespace WPFPresentation.ViewModels.Dokument
             _dodajStavkeCommand = new RelayCommand(ShowRobaGroup);
             _dodajStavkuCommand = new RelayCommand(DodajStavku);
             _dodajDokumentCommand = new RelayCommand(DodajDokument);
+            _deleteStavkaCommand = new RelayCommand(DeleteStavka);
             DatumIzdavanjaRacuna = DateTime.Now.Date.ToString("d");
             LoadData();
+        }
+
+        private void DeleteStavka(object obj)
+        {
+            if (obj is StavkaDokumentaDTO stavka)
+            {
+                Stavke!.Remove(stavka);
+                UkupnaCena = Stavke.Sum(x => x.UkupnaCenaStavke).ToString();
+            }
         }
 
         private void ShowRobaGroup(object obj)
@@ -386,9 +399,10 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private async void DodajDokument(object obj)
         {
-            if (UkupnaCena == null)
+            if (UkupnaCena == null || UkupnaCena == "0")
             {
-                DokumentValidation = string.Join("\n", "Morate uneti stavke");
+                DokumentInfoText = string.Join("\n", "Morate uneti stavke");
+                InfoColor = Brushes.Red;
                 return;
             }
 
