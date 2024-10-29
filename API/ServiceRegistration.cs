@@ -19,6 +19,7 @@ namespace API
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetKomitentsListQueryHandler).Assembly));
 
+
             services.AddScoped<IKomitentRepository, KomitentRepository>();
             services.AddScoped<IRobaRepository, RobaRepository>();
             services.AddScoped<IDokumentRepository, DokumentRepository>();

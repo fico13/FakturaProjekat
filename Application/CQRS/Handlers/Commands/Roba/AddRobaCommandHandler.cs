@@ -1,11 +1,12 @@
 ﻿using Application.Contracts.Interfaces;
 using Application.CQRS.Requests.Commands.Roba;
-using Domain;
+using Application.DTOs;
+using Application.Mappers;
 using MediatR;
 
 namespace Application.CQRS.Handlers.Commands.Roba
 {
-    public class AddRobaCommandHandler : IRequestHandler<AddRobaCommand, RobaEntity>
+    public class AddRobaCommandHandler : IRequestHandler<AddRobaCommand, RobaDTO>
     {
         private readonly IRobaRepository _robaRepository;
 
@@ -13,9 +14,11 @@ namespace Application.CQRS.Handlers.Commands.Roba
         {
             _robaRepository = robaRepository;
         }
-        public async Task<RobaEntity> Handle(AddRobaCommand request, CancellationToken cancellationToken)
+
+        public async Task<RobaDTO> Handle(AddRobaCommand request, CancellationToken cancellationToken)
         {
-            return await _robaRepository.AddAsync(request.Roba);
+            var roba = await _robaRepository.AddAsync(request.Roba.ToRobaEntity());
+            return roba.ToRobaDTO();
         }
     }
 }

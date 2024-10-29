@@ -19,6 +19,10 @@ namespace WPFPresentation.Validators
             RuleFor(x => x.Cena)
                 .NotEmpty().WithMessage("Cena je obavezna")
                 .GreaterThan(0).WithMessage("Cena mora biti veća od 0");
+
+            RuleFor(x => x.Stanje)
+                .NotEmpty().WithMessage("Stanje je obavezno")
+                .GreaterThanOrEqualTo(0).WithMessage("Stanje mora biti veće ili jednako 0");
         }
     }
 }

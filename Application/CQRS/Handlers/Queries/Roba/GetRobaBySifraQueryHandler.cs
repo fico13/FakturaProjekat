@@ -1,11 +1,12 @@
 ﻿using Application.Contracts.Interfaces;
 using Application.CQRS.Requests.Queries.Roba;
-using Domain;
+using Application.DTOs;
+using Application.Mappers;
 using MediatR;
 
 namespace Application.CQRS.Handlers.Queries.Roba
 {
-    public class GetRobaBySifraQueryHandler : IRequestHandler<GetRobaBySifraQuery, IEnumerable<RobaEntity>>
+    public class GetRobaBySifraQueryHandler : IRequestHandler<GetRobaBySifraQuery, IEnumerable<RobaDTO>>
     {
         private readonly IRobaRepository _robaRepository;
 
@@ -13,9 +14,11 @@ namespace Application.CQRS.Handlers.Queries.Roba
         {
             _robaRepository = robaRepository;
         }
-        public async Task<IEnumerable<RobaEntity>> Handle(GetRobaBySifraQuery request, CancellationToken cancellationToken)
+
+        public async Task<IEnumerable<RobaDTO>> Handle(GetRobaBySifraQuery request, CancellationToken cancellationToken)
         {
-            return await _robaRepository.GetBySifraAsync(request.SifraRobe);
+            var roba = await _robaRepository.GetBySifraAsync(request.SifraRobe);
+            return roba.Select(r => r.ToRobaDTO()).ToList();
         }
     }
 }

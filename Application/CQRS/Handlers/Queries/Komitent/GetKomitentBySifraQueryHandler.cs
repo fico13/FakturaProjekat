@@ -1,11 +1,12 @@
 ﻿using Application.Contracts.Interfaces;
 using Application.CQRS.Requests.Queries.Komitent;
-using Domain;
+using Application.DTOs;
+using Application.Mappers;
 using MediatR;
 
 namespace Application.CQRS.Handlers.Queries.Komitent
 {
-    public class GetKomitentBySifraQueryHandler : IRequestHandler<GetKomitentBySifraQuery, IEnumerable<KomitentEntity>>
+    public class GetKomitentBySifraQueryHandler : IRequestHandler<GetKomitentBySifraQuery, IEnumerable<KomitentDTO>>
     {
         private readonly IKomitentRepository _komitentRepository;
 
@@ -14,9 +15,10 @@ namespace Application.CQRS.Handlers.Queries.Komitent
             _komitentRepository = komitentRepository;
         }
 
-        public async Task<IEnumerable<KomitentEntity>> Handle(GetKomitentBySifraQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<KomitentDTO>> Handle(GetKomitentBySifraQuery request, CancellationToken cancellationToken)
         {
-            return await _komitentRepository.GetBySifraAsync(request.SifraKomitenta!);
+            var komitenti = await _komitentRepository.GetBySifraAsync(request.SifraKomitenta!);
+            return komitenti.Select(k => k.ToKomitentDTO()).ToList();
         }
     }
 }

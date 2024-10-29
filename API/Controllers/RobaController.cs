@@ -1,7 +1,6 @@
 ﻿using Application.CQRS.Requests.Commands.Roba;
 using Application.CQRS.Requests.Queries.Roba;
 using Application.DTOs;
-using Application.Mappers;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +26,7 @@ namespace API.Controllers
 
             if (roba == null || !roba.Any()) return NotFound();
 
-            return Ok(roba.Select(r => r.ToRobaDTO()).ToList());
+            return Ok(roba);
         }
 
         [HttpGet("search")]
@@ -38,7 +37,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            return Ok(roba.Select(k => k.ToRobaDTO()).ToList());
+            return Ok(roba);
         }
 
         // PUT: api/Roba/5
@@ -46,11 +45,11 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRobaEntity([FromBody] RobaDTO robaDTO)
         {
-            var robaEntity = await _mediator.Send(new UpdateRobaCommand(robaDTO.ToRobaEntity()));
+            var robaEntity = await _mediator.Send(new UpdateRobaCommand(robaDTO));
 
             if (robaEntity == null) return NotFound();
 
-            return Ok(robaEntity.ToRobaDTO());
+            return Ok();
         }
 
         // POST: api/Roba
@@ -58,7 +57,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<RobaEntity>> AddRoba([FromBody] RobaDTO robaDTO)
         {
-            var robaEntity = await _mediator.Send(new AddRobaCommand(robaDTO.ToRobaEntity()));
+            var robaEntity = await _mediator.Send(new AddRobaCommand(robaDTO));
 
             if (robaEntity == null) return BadRequest();
 

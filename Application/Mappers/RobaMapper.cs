@@ -14,6 +14,7 @@ namespace Application.Mappers
                 Naziv = robaEntity.Naziv,
                 JedinicaMere = robaEntity.JedinicaMere,
                 Cena = robaEntity.Cena,
+                Stanje = robaEntity.Stanje
             };
         }
 
@@ -25,7 +26,8 @@ namespace Application.Mappers
                 SifraRobe = robaDTO.SifraRobe,
                 Naziv = robaDTO.Naziv ?? string.Empty,
                 Cena = robaDTO.Cena,
-                JedinicaMere = robaDTO.JedinicaMere
+                JedinicaMere = robaDTO.JedinicaMere,
+                Stanje = robaDTO.Stanje
             };
         }
     }

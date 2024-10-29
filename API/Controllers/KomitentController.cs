@@ -1,7 +1,6 @@
 ﻿using Application.CQRS.Requests.Commands.Komitent;
 using Application.CQRS.Requests.Queries.Komitent;
 using Application.DTOs;
-using Application.Mappers;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +25,7 @@ namespace API.Controllers
             var komitenti = await _mediator.Send(new GetKomitentsListQuery());
             if (komitenti == null || !komitenti.Any()) return NotFound();
 
-            return Ok(komitenti.Select(k => k.ToKomitentDTO()).ToList());
+            return Ok(komitenti);
         }
 
         [HttpGet("search")]
@@ -37,14 +36,14 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            return Ok(komitenti.Select(k => k.ToKomitentDTO()).ToList());
+            return Ok(komitenti);
         }
 
 
         [HttpPut]
         public async Task<IActionResult> UpdateKomitentEntity([FromBody] KomitentDTO komitentDTO)
         {
-            var komitentEntity = await _mediator.Send(new UpdateKomitentCommand(komitentDTO.ToKomitentEntity()));
+            var komitentEntity = await _mediator.Send(new UpdateKomitentCommand(komitentDTO));
 
             if (komitentEntity == null) return NotFound();
 
@@ -55,7 +54,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<KomitentEntity>> AddKomitentEntity([FromBody] KomitentDTO komitentDTO)
         {
-            var komitentEntity = await _mediator.Send(new AddKomitentCommand(komitentDTO.ToKomitentEntity()));
+            var komitentEntity = await _mediator.Send(new AddKomitentCommand(komitentDTO));
             if (komitentEntity == null) return NotFound();
             return Ok();
         }

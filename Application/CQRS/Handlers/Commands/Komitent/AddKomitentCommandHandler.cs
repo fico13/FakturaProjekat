@@ -1,11 +1,12 @@
 ﻿using Application.Contracts.Interfaces;
 using Application.CQRS.Requests.Commands.Komitent;
-using Domain;
+using Application.DTOs;
+using Application.Mappers;
 using MediatR;
 
 namespace Application.CQRS.Handlers.Commands.Komitent
 {
-    public class AddKomitentCommandHandler : IRequestHandler<AddKomitentCommand, KomitentEntity>
+    public class AddKomitentCommandHandler : IRequestHandler<AddKomitentCommand, KomitentDTO>
     {
         private readonly IKomitentRepository _komitentRepository;
 
@@ -13,9 +14,11 @@ namespace Application.CQRS.Handlers.Commands.Komitent
         {
             _komitentRepository = komitentRepository;
         }
-        public async Task<KomitentEntity> Handle(AddKomitentCommand request, CancellationToken cancellationToken)
+
+        public async Task<KomitentDTO> Handle(AddKomitentCommand request, CancellationToken cancellationToken)
         {
-            return await _komitentRepository.AddAsync(request.Komitent);
+            var komitent = await _komitentRepository.AddAsync(request.Komitent.ToKomitentEntity());
+            return komitent.ToKomitentDTO();
         }
     }
 }

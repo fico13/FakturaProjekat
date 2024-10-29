@@ -32,6 +32,7 @@
                 <DataGridTextColumn Header="Naziv" Width="*" Binding="{Binding Path=Naziv}"/>
                 <DataGridTextColumn Header="Jedinica mere" Width="*" Binding="{Binding Path=JedinicaMere}"/>
                 <DataGridTextColumn Header="Cena" Width="*" Binding="{Binding Path=Cena}"/>
+                <DataGridTextColumn Header="Stanje" Width="*" Binding="{Binding Path=Stanje}"/>
 
                 <DataGridTemplateColumn Header="" Width="0.5*">
                     <DataGridTemplateColumn.CellTemplate>

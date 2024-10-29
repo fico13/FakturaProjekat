@@ -1,9 +1,9 @@
-﻿using Domain;
+﻿using Application.DTOs;
 using MediatR;
 
 namespace Application.CQRS.Requests.Queries.Komitent
 {
-    public class GetKomitentBySifraQuery : IRequest<IEnumerable<KomitentEntity>>
+    public class GetKomitentBySifraQuery : IRequest<IEnumerable<KomitentDTO>>
     {
         public string? SifraKomitenta { get; set; }
 

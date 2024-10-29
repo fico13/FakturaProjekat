@@ -85,8 +85,8 @@
         </Grid.ColumnDefinitions>
 
         <!-- Custom Title Bar -->
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGreen">
-            <TextBlock Text="Faktura" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="Blue"/>
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="#ebd4ce">
+            <TextBlock Text="Faktura" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="Black"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Style="{StaticResource MinimizeButtonStyle}" Click="MinimizeButton_Click">
                     <Path Data="M 0,5 L 10,5" Stroke="Black" StrokeThickness="2"/>
@@ -97,11 +97,11 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="0" Background="LightGreen" x:Name="MenuStackPanel">
+        <Grid Grid.Row="1" Grid.Column="0" Background="Purple" x:Name="MenuStackPanel">
             <StackPanel>
                 <Button Name="HamburgerButton" Content="☰" Click="HamburgerButton_Click" Width="30" Height="30" HorizontalAlignment="Left" Margin="5,0,0,0"/>
                 <StackPanel x:Name="MenuContent">
-                    <TextBlock Text="MENI" Margin="5, 20, 5, 5" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Blue" />
+                    <TextBlock Text="MENI" Margin="5, 20, 5, 5" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#ebd4ce" />
                     <StackPanel VerticalAlignment="Center">
                         <Button Margin="5" Width="180" Height="50" Style="{StaticResource RoundedButtonStyle}" Tag="Icons/home.png" x:Name="btnHome" Click="btnHome_Click">
                             <StackPanel Orientation="Horizontal">

@@ -1,9 +1,9 @@
-﻿using Domain;
+﻿using Application.DTOs;
 using MediatR;
 
 namespace Application.CQRS.Requests.Queries.Dokument
 {
-    public class GetDokumentByBrojDokumentaQuery : IRequest<IEnumerable<DokumentEntity>>
+    public class GetDokumentByBrojDokumentaQuery : IRequest<IEnumerable<DokumentDTO>>
     {
         public string BrojDokumenta { get; set; }
 

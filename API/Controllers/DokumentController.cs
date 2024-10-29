@@ -1,7 +1,6 @@
 ﻿using Application.CQRS.Requests.Commands.Dokument;
 using Application.CQRS.Requests.Queries.Dokument;
 using Application.DTOs;
-using Application.Mappers;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +26,7 @@ namespace API.Controllers
 
             if (dokumenti == null || !dokumenti.Any()) return NotFound();
 
-            return Ok(dokumenti.Select(d => d.ToDokumentDTO()).ToList());
+            return Ok(dokumenti);
         }
 
         [HttpGet("search")]
@@ -38,7 +37,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            return Ok(dokumenti.Select(d => d.ToDokumentDTO()).ToList());
+            return Ok(dokumenti);
         }
 
         // PUT: api/DokumentEntities/5
@@ -46,7 +45,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutDokumentEntity([FromBody] DokumentDTO dokumentDTO)
         {
-            var dokument = await _mediator.Send(new UpdateDokumentCommand(dokumentDTO.ToDokumentEntity()));
+            var dokument = await _mediator.Send(new UpdateDokumentCommand(dokumentDTO));
 
             if (dokument == null) return NotFound();
 
@@ -58,7 +57,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<DokumentEntity>> AddDokument([FromBody] DokumentDTO dokumentDTO)
         {
-            var dokumentEntity = await _mediator.Send(new AddDokumentCommand(dokumentDTO.ToDokumentEntity()));
+            var dokumentEntity = await _mediator.Send(new AddDokumentCommand(dokumentDTO));
 
             if (dokumentEntity == null) return NotFound();
 

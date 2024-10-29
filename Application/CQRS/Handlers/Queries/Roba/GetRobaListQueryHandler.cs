@@ -1,11 +1,12 @@
 ﻿using Application.Contracts.Interfaces;
 using Application.CQRS.Requests.Queries.Roba;
-using Domain;
+using Application.DTOs;
+using Application.Mappers;
 using MediatR;
 
 namespace Application.CQRS.Handlers.Queries.Roba
 {
-    public class GetRobaListQueryHandler : IRequestHandler<GetRobaListQuery, IEnumerable<RobaEntity>>
+    public class GetRobaListQueryHandler : IRequestHandler<GetRobaListQuery, IEnumerable<RobaDTO>>
     {
         private readonly IRobaRepository _robaRepository;
 
@@ -13,9 +14,11 @@ namespace Application.CQRS.Handlers.Queries.Roba
         {
             _robaRepository = robaRepository;
         }
-        public async Task<IEnumerable<RobaEntity>> Handle(GetRobaListQuery request, CancellationToken cancellationToken)
+
+        public async Task<IEnumerable<RobaDTO>> Handle(GetRobaListQuery request, CancellationToken cancellationToken)
         {
-            return await _robaRepository.GetAllAsync();
+            var roba = await _robaRepository.GetAllAsync();
+            return roba.Select(r => r.ToRobaDTO()).ToList();
         }
     }
 }

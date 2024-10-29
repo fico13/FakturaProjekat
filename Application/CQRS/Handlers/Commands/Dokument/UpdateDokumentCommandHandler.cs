@@ -1,11 +1,12 @@
 ﻿using Application.Contracts.Interfaces;
 using Application.CQRS.Requests.Commands.Dokument;
-using Domain;
+using Application.DTOs;
+using Application.Mappers;
 using MediatR;
 
 namespace Application.CQRS.Handlers.Commands.Dokument
 {
-    public class UpdateDokumentCommandHandler : IRequestHandler<UpdateDokumentCommand, DokumentEntity?>
+    public class UpdateDokumentCommandHandler : IRequestHandler<UpdateDokumentCommand, DokumentDTO?>
     {
         private readonly IDokumentRepository _dokumentRepository;
 
@@ -13,9 +14,12 @@ namespace Application.CQRS.Handlers.Commands.Dokument
         {
             _dokumentRepository = dokumentRepository;
         }
-        public async Task<DokumentEntity?> Handle(UpdateDokumentCommand request, CancellationToken cancellationToken)
+
+        public async Task<DokumentDTO?> Handle(UpdateDokumentCommand request, CancellationToken cancellationToken)
         {
-            return await _dokumentRepository.UpdateAsync(request.Dokument);
+            var dokument = await _dokumentRepository.UpdateAsync(request.Dokument.ToDokumentEntity());
+
+            return dokument?.ToDokumentDTO();
         }
     }
 }

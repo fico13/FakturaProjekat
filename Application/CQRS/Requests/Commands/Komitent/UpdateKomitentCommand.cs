@@ -1,13 +1,13 @@
-﻿using Domain;
+﻿using Application.DTOs;
 using MediatR;
 
 namespace Application.CQRS.Requests.Commands.Komitent
 {
-    public class UpdateKomitentCommand : IRequest<KomitentEntity?>
+    public class UpdateKomitentCommand : IRequest<KomitentDTO?>
     {
-        public KomitentEntity Komitent { get; set; }
+        public KomitentDTO Komitent { get; set; }
 
-        public UpdateKomitentCommand(KomitentEntity komitent)
+        public UpdateKomitentCommand(KomitentDTO komitent)
         {
             Komitent = komitent;
         }

@@ -1,11 +1,12 @@
 ﻿using Application.Contracts.Interfaces;
 using Application.CQRS.Requests.Queries.Dokument;
-using Domain;
+using Application.DTOs;
+using Application.Mappers;
 using MediatR;
 
 namespace Application.CQRS.Handlers.Queries.Dokument
 {
-    public class GetDokumentByBrojDokumentaQueryHandler : IRequestHandler<GetDokumentByBrojDokumentaQuery, IEnumerable<DokumentEntity>>
+    public class GetDokumentByBrojDokumentaQueryHandler : IRequestHandler<GetDokumentByBrojDokumentaQuery, IEnumerable<DokumentDTO>>
     {
         private readonly IDokumentRepository _dokumentRepository;
 
@@ -13,9 +14,12 @@ namespace Application.CQRS.Handlers.Queries.Dokument
         {
             _dokumentRepository = dokumentRepository;
         }
-        public Task<IEnumerable<DokumentEntity>> Handle(GetDokumentByBrojDokumentaQuery request, CancellationToken cancellationToken)
+
+        public async Task<IEnumerable<DokumentDTO>> Handle(GetDokumentByBrojDokumentaQuery request, CancellationToken cancellationToken)
         {
-            return _dokumentRepository.GetBySifraAsync(request.BrojDokumenta);
+            var dokumenti = await _dokumentRepository.GetBySifraAsync(request.BrojDokumenta);
+            return dokumenti.Select(d => d.ToDokumentDTO());
+
         }
     }
 }
