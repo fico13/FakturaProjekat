@@ -76,6 +76,9 @@ namespace WPFPresentation.ViewModels.Dokument
         public ICommand _updateDokumentCommand;
         public ICommand UpdateDokumentCommand => _updateDokumentCommand;
 
+        public ICommand _addStavkaCommand;
+        public ICommand AddStavkaCommand => _addStavkaCommand;
+
         private readonly MainWindow _mainWindow;
 
         public DokumentViewModel(MainWindow mainWindow)
@@ -85,6 +88,18 @@ namespace WPFPresentation.ViewModels.Dokument
             _findDokumentsCommand = new RelayCommand(async (obj) => await FindDokuments(obj));
             _deleteDokumentCommand = new RelayCommand(async (obj) => await DeleteDokument(obj));
             _updateDokumentCommand = new RelayCommand((obj) => UpdateDokument(obj));
+            _addStavkaCommand = new RelayCommand((obj) => AddStavka(obj));
+        }
+
+        private void AddStavka(object obj)
+        {
+            if (SelectedDokument != null)
+            {
+                _mainWindow.Dispatcher.Invoke(() =>
+                {
+                    _mainWindow.ShowUCDodajStavku(SelectedDokument);
+                });
+            }
         }
 
         private void UpdateDokument(object obj)

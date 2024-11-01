@@ -5,15 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFPresentation.Views.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="800">
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="1.5*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <!-- Added new row for Stavke TextBlock -->
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -31,10 +30,16 @@
                     <TextBlock Text="Pretrazi" VerticalAlignment="Center" Margin="5,0,0,0"/>
                 </StackPanel>
             </Button>
+            <Button Width="150" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnAddDokument" Click="btnAddDokument_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Icons/add.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                    <TextBlock Text="Dodaj dokument" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <!-- DataGrid for Dokumenti -->
-        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5,20,5,37" ItemsSource="{Binding Path=Dokumenti}"
+        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5" ItemsSource="{Binding Path=Dokumenti}"
                   SelectedItem="{Binding SelectedDokument, Mode=TwoWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Broj dokumenta" Width="*" Binding="{Binding Path=BrojDokumenta}"/>
@@ -80,10 +85,12 @@
         </DataGrid>
 
         <!-- TextBlock for Stavke -->
-        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,10,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Stavke" FontWeight="Bold" Grid.ColumnSpan="2"/>
+        <Grid Grid.Row="2" Grid.ColumnSpan="2">
+            <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Text="Stavke" FontWeight="Bold" Margin="0,16,0,0"/>
+        </Grid>
 
         <!-- DataGrid for Stavke -->
-        <DataGrid Grid.Row="4" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5" ItemsSource="{Binding Path=Stavke}">
+        <DataGrid Grid.Row="3" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5,21,5,121" ItemsSource="{Binding Path=Stavke}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Naziv" Width="0.5*" Binding="{Binding Path=Roba.Naziv}"/>
                 <DataGridTextColumn Header="Sifra" Width="0.5*" Binding="{Binding Path=Roba.SifraRobe}"/>
@@ -91,18 +98,15 @@
                 <DataGridTextColumn Header="Količina" Width="0.7*" Binding="{Binding Path=Kolicina}"/>
                 <DataGridTextColumn Header="Cena po JM" Width="*" Binding="{Binding Path=Roba.Cena}"/>
                 <DataGridTextColumn Header="Ukupna cena stavke" Width="*" Binding="{Binding Path=UkupnaCenaStavke}"/>
-                
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- Buttons -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="5" Grid.ColumnSpan="2" Margin="10">
-            <Button Width="100" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnAddDokument" Click="btnAddDokument_Click">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/Icons/add.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                    <TextBlock Text="Dodaj" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                </StackPanel>
-            </Button>
-        </StackPanel>
+        <!-- Button for Dodaj stavke -->
+        <Button Grid.Row="4" Grid.ColumnSpan="2" Width="150" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnAddStavke" Command="{Binding AddStavkaCommand}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Icons/stavka.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                <TextBlock Text="Dodaj stavke" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </UserControl>

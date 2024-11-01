@@ -69,5 +69,10 @@ namespace WPFPresentation
         {
             ContentGrid.Content = new UCIzmeniDokument(dokument);
         }
+
+        internal void ShowUCDodajStavku(DokumentDTO selectedDokument)
+        {
+            ContentGrid.Content = new Views.UserControls.Dokument.UCDodajStavku(selectedDokument);
+        }
     }
 }
