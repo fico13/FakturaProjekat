@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Windows.Media;
 using WPFPresentation.Commands;
 using WPFPresentation.Services;
 
@@ -67,6 +68,34 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
+        private string? _stavkaValidation;
+        public string? StavkaValidation
+        {
+            get
+            {
+                return _stavkaValidation;
+            }
+            set
+            {
+                _stavkaValidation = value;
+                OnPropertyChanged(nameof(StavkaValidation));
+            }
+        }
+
+        private Brush? _validationColor;
+        public Brush? ValidationColor
+        {
+            get
+            {
+                return _validationColor;
+            }
+            set
+            {
+                _validationColor = value;
+                OnPropertyChanged(nameof(ValidationColor));
+            }
+        }
+
         private ICommand _findDokumentsCommand;
         public ICommand FindDokumentsCommand => _findDokumentsCommand;
 
@@ -93,13 +122,16 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private void AddStavka(object obj)
         {
-            if (SelectedDokument != null)
+            if (SelectedDokument == null)
             {
-                _mainWindow.Dispatcher.Invoke(() =>
-                {
-                    _mainWindow.ShowUCDodajStavku(SelectedDokument);
-                });
+                StavkaValidation = "Morate izabrati dokument!";
+                ValidationColor = Brushes.Red;
+                return;
             }
+            _mainWindow.Dispatcher.Invoke(() =>
+            {
+                _mainWindow.ShowUCDodajStavku(SelectedDokument);
+            });
         }
 
         private void UpdateDokument(object obj)

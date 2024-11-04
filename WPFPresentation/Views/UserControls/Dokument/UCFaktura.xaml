@@ -90,7 +90,7 @@
         </Grid>
 
         <!-- DataGrid for Stavke -->
-        <DataGrid Grid.Row="3" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5,21,5,121" ItemsSource="{Binding Path=Stavke}">
+        <DataGrid Grid.Row="3" Grid.ColumnSpan="2" AutoGenerateColumns="False" IsReadOnly="True" Margin="5,21,5,206" ItemsSource="{Binding Path=Stavke}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Naziv" Width="0.5*" Binding="{Binding Path=Roba.Naziv}"/>
                 <DataGridTextColumn Header="Sifra" Width="0.5*" Binding="{Binding Path=Roba.SifraRobe}"/>
@@ -101,12 +101,15 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- Button for Dodaj stavke -->
-        <Button Grid.Row="4" Grid.ColumnSpan="2" Width="150" Height="40" Margin="5" Style="{StaticResource RoundedButtonStyle}" x:Name="btnAddStavke" Command="{Binding AddStavkaCommand}">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Icons/stavka.png" Width="24" Height="24" Margin="5,0,0,0"/>
-                <TextBlock Text="Dodaj stavke" VerticalAlignment="Center" Margin="5,0,0,0"/>
-            </StackPanel>
-        </Button>
+        <!-- Button for Dodaj stavke with Validation TextBox -->
+        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="10,10,0,10">
+            <Button Width="150" Height="40" Style="{StaticResource RoundedButtonStyle}" x:Name="btnAddStavke" Command="{Binding AddStavkaCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Icons/stavka.png" Width="24" Height="24" Margin="5,0,0,0"/>
+                    <TextBlock Text="Dodaj stavke" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
+            <TextBox Width="200" Height="40" Margin="10,0,0,0" IsReadOnly="True" Foreground="{Binding ValidationColor}" Background="Transparent" BorderThickness="0" Text="{Binding StavkaValidation}" VerticalAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </UserControl>

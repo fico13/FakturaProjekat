@@ -43,7 +43,7 @@ namespace API.Controllers
         // PUT: api/DokumentEntities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
-        public async Task<IActionResult> PutDokumentEntity([FromBody] DokumentDTO dokumentDTO)
+        public async Task<IActionResult> UpdateDokumentEntity([FromBody] DokumentDTO dokumentDTO)
         {
             var dokument = await _mediator.Send(new UpdateDokumentCommand(dokumentDTO));
 

@@ -9,9 +9,9 @@ namespace WPFPresentation.Views.UserControls.Dokument
     /// </summary>
     public partial class UCDodajStavku : UserControl
     {
-
         public UCDodajStavku(DokumentDTO selectedDokument)
         {
+            InitializeComponent();
             DataContext = new DodajStavkuViewModel(selectedDokument);
         }
     }

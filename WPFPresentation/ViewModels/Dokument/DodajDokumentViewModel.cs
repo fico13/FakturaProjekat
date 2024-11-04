@@ -148,8 +148,8 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
-        private string? _kolicina;
-        public string? Kolicina
+        private int _kolicina = 1;
+        public int Kolicina
         {
             get
             {
@@ -306,10 +306,10 @@ namespace WPFPresentation.ViewModels.Dokument
             _stavkaValidator = new StavkaDokumentaValidator();
             _dodajStavkeCommand = new RelayCommand(ShowRobaGroup);
             _dodajStavkuCommand = new RelayCommand(DodajStavku);
-            _dodajDokumentCommand = new RelayCommand(DodajDokument);
+            _dodajDokumentCommand = new RelayCommand(async (obj) => await DodajDokument(obj));
             _deleteStavkaCommand = new RelayCommand(DeleteStavka);
             DatumIzdavanjaRacuna = DateTime.Now.Date.ToString("d");
-            LoadData();
+            _ = LoadData();
         }
 
         private void DeleteStavka(object obj)
@@ -364,8 +364,8 @@ namespace WPFPresentation.ViewModels.Dokument
             StavkaDokumentaDTO stavka = new StavkaDokumentaDTO
             {
                 Roba = SelectedRoba,
-                Kolicina = int.Parse(Kolicina!),
-                UkupnaCenaStavke = int.Parse(Kolicina!) * SelectedRoba!.Cena
+                Kolicina = Kolicina,
+                UkupnaCenaStavke = Kolicina * SelectedRoba!.Cena
             };
 
             var result = _stavkaValidator.Validate(stavka);
@@ -388,16 +388,10 @@ namespace WPFPresentation.ViewModels.Dokument
                 return false;
             }
 
-            if (Kolicina == null)
-            {
-                StavkaValidation = string.Join("\n", "Morate odabrati kolicinu");
-                return false;
-            }
-
             return true;
         }
 
-        private async void DodajDokument(object obj)
+        private async Task DodajDokument(object obj)
         {
             if (UkupnaCena == null || UkupnaCena == "0")
             {
@@ -418,7 +412,7 @@ namespace WPFPresentation.ViewModels.Dokument
             }
             else
             {
-                DokumentInfoText = "Doslo je do greske prilikom dodavanja dokumenta";
+                DokumentInfoText = "Doslo je do greske \nprilikom dodavanja dokumenta";
                 InfoColor = Brushes.Red;
             }
         }
@@ -436,7 +430,7 @@ namespace WPFPresentation.ViewModels.Dokument
             DatumDospeca = null;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             var roba = await _robaService.GetRoba();
             Roba = new ObservableCollection<RobaDTO>(roba);

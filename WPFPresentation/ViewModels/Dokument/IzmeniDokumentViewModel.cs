@@ -189,10 +189,23 @@ namespace WPFPresentation.ViewModels.Dokument
                 ValidationColor = Brushes.Red;
                 return;
             }
+
             ValidationText = "";
             SelectedDokument!.Stavke!.Remove(SelectedStavka!);
             SelectedStavka!.Kolicina = Kolicina;
             SelectedStavka.UkupnaCenaStavke = SelectedStavka.Roba!.Cena * SelectedStavka.Kolicina;
+
+
+            var stavkaValidator = new StavkaDokumentaValidator();
+            var result = stavkaValidator.Validate(SelectedStavka);
+            if (!result.IsValid)
+            {
+                ValidationText = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
+                ValidationColor = Brushes.Red;
+                return;
+            }
+
+
             SelectedDokument!.Stavke!.Add(SelectedStavka);
             SelectedDokument!.UkupnaCena = SelectedDokument.Stavke!.Sum(s => s.UkupnaCenaStavke);
             UkupnaCena = SelectedDokument!.UkupnaCena.ToString();

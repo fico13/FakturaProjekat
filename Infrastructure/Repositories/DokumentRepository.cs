@@ -136,29 +136,57 @@ namespace Persistence.Repositories
             {
                 try
                 {
-                    var dokument = await _context.Dokumenti.FindAsync(dokumentEntity.Id);
+                    // Step 1: Retrieve the existing Dokument from the database
+                    var dokument = await _context.Dokumenti
+                        .Include(d => d.Stavke) // Include existing StavkaDokumenta
+                        .FirstOrDefaultAsync(d => d.Id == dokumentEntity.Id);
 
                     if (dokument == null) return null;
 
+                    // Step 2: Update or Add StavkaDokumenta items
                     foreach (var stavka in dokumentEntity.Stavke!)
                     {
-                        await _context.Stavke.Where(s => s.Id == stavka.Id)
-                                             .ExecuteUpdateAsync(s => s
-                                                    .SetProperty(s => s.Kolicina, stavka.Kolicina)
-                                                    .SetProperty(s => s.UkupnaCenaStavke, stavka.UkupnaCenaStavke));
+                        var existingStavka = dokument.Stavke!.FirstOrDefault(s => s.Id == stavka.Id);
+
+                        if (existingStavka != null)
+                        {
+                            // Update existing StavkaDokumenta
+                            await _context.Stavke.Where(s => s.Id == stavka.Id)
+                                                 .ExecuteUpdateAsync(s => s
+                                                     .SetProperty(s => s.Kolicina, stavka.Kolicina)
+                                                     .SetProperty(s => s.UkupnaCenaStavke, stavka.UkupnaCenaStavke));
+                        }
+                        else
+                        {
+                            // Add new StavkaDokumenta to the dokument
+                            dokument.Stavke!.Add(new StavkaDokumentaEntity
+                            {
+                                Kolicina = stavka.Kolicina,
+                                UkupnaCenaStavke = stavka.UkupnaCenaStavke,
+                                BrojDokumenta = dokument.BrojDokumenta,
+                                SifraRobe = stavka.SifraRobe,
+                            });
+                        }
                     }
 
-
-
+                    // Step 3: Update Dokument fields
                     await _context.Dokumenti.Where(d => d.Id == dokumentEntity.Id)
-                                            .ExecuteUpdateAsync(d => d
-                                                    .SetProperty(d => d.UkupnaCena, dokumentEntity.UkupnaCena)
-                                                    .SetProperty(d => d.DatumIzdavanja, dokumentEntity.DatumIzdavanja)
-                                                    .SetProperty(d => d.DatumDospeca, dokumentEntity.DatumDospeca));
+                                             .ExecuteUpdateAsync(d => d
+                                                 .SetProperty(d => d.UkupnaCena, dokumentEntity.UkupnaCena)
+                                                 .SetProperty(d => d.DatumIzdavanja, dokumentEntity.DatumIzdavanja)
+                                                 .SetProperty(d => d.DatumDospeca, dokumentEntity.DatumDospeca));
 
+                    // Step 4: Save changes
+                    await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
 
-                    return dokument;
+                    var updatedDokument = await _context.Dokumenti.AsNoTracking()
+                                      .Include(d => d.Stavke!).ThenInclude(s => s.Roba)
+                                      .Include(d => d.Komitent)
+                                      .AsSplitQuery()
+                                      .FirstOrDefaultAsync(d => d.Id == dokument.Id);
+
+                    return updatedDokument;
                 }
                 catch (Exception)
                 {
@@ -167,5 +195,6 @@ namespace Persistence.Repositories
                 }
             }
         }
+
     }
 }

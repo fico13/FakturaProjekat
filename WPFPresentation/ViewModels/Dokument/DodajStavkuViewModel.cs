@@ -1,27 +1,26 @@
 ﻿using Application.DTOs;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Windows.Media;
 using WPFPresentation.Commands;
+using WPFPresentation.Services;
+using WPFPresentation.Validators;
 
 namespace WPFPresentation.ViewModels.Dokument
 {
     public class DodajStavkuViewModel : BaseViewModel
     {
+        private RobaService _robaService;
+        private DokumentService _dokumentService;
         private DokumentDTO _selectedDokument;
-        private ObservableCollection<RobaDTO> _robaList;
-        private RobaDTO _selectedRoba;
-        private int _kolicina;
-        private string _selectedRobaInfo;
-        private string _validationMessage;
+        private ObservableCollection<RobaDTO>? _robaList;
+        private RobaDTO? _selectedRoba;
+        private int _kolicina = 1;
+        private string? _selectedRobaInfo;
+        private string? _validationMessage;
 
-        public DodajStavkuViewModel(DokumentDTO selectedDokument)
-        {
-            _selectedDokument = selectedDokument;
-            _robaList = new ObservableCollection<RobaDTO>(); // Populate this list as needed
-            DodajStavkuCommand = new RelayCommand(DodajStavku);
-        }
 
-        public ObservableCollection<RobaDTO> RobaList
+        public ObservableCollection<RobaDTO>? RobaList
         {
             get => _robaList;
             set
@@ -31,7 +30,7 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
-        public RobaDTO SelectedRoba
+        public RobaDTO? SelectedRoba
         {
             get => _selectedRoba;
             set
@@ -49,20 +48,22 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 _kolicina = value;
                 OnPropertyChanged(nameof(Kolicina));
+                UkupnaCena = SelectedRoba != null ? (SelectedRoba.Cena * Kolicina).ToString() : null;
             }
         }
 
-        public string SelectedRobaInfo
+        public string? SelectedRobaInfo
         {
             get => _selectedRobaInfo;
             set
             {
                 _selectedRobaInfo = value;
                 OnPropertyChanged(nameof(SelectedRobaInfo));
+                UkupnaCena = SelectedRoba != null ? (SelectedRoba.Cena * Kolicina).ToString() : null;
             }
         }
 
-        public string ValidationMessage
+        public string? ValidationMessage
         {
             get => _validationMessage;
             set
@@ -72,23 +73,116 @@ namespace WPFPresentation.ViewModels.Dokument
             }
         }
 
+        private string? _ukupnaCena;
+        public string? UkupnaCena
+        {
+            get
+            {
+                return _ukupnaCena;
+            }
+            set
+            {
+                _ukupnaCena = value;
+                OnPropertyChanged(nameof(UkupnaCena));
+            }
+        }
+
+        private string? _stavkaValidation;
+        public string? StavkaValidation
+        {
+            get
+            {
+                return _stavkaValidation;
+            }
+            set
+            {
+                _stavkaValidation = value;
+                OnPropertyChanged(nameof(StavkaValidation));
+            }
+        }
+
+        private Brush? _validationColor;
+        public Brush? ValidationColor
+        {
+            get
+            {
+                return _validationColor;
+            }
+            set
+            {
+                _validationColor = value;
+                OnPropertyChanged(nameof(ValidationColor));
+            }
+        }
+
+
         public ICommand DodajStavkuCommand { get; }
 
-        private void DodajStavku(object parameter)
+        public DodajStavkuViewModel(DokumentDTO selectedDokument)
         {
-            // Add logic to add the item to the document
+            _robaService = new RobaService();
+            _dokumentService = new DokumentService();
+            _selectedDokument = selectedDokument;
+            DodajStavkuCommand = new RelayCommand(DodajStavku);
+            LoadData();
+        }
+
+        private async void LoadData()
+        {
+            var roba = await _robaService.GetRoba();
+            RobaList = new ObservableCollection<RobaDTO>(roba);
+        }
+
+
+        private async void DodajStavku(object parameter)
+        {
+            if (SelectedRoba == null)
+            {
+                StavkaValidation = "Morate izabrati robu!";
+                ValidationColor = Brushes.Red;
+                return;
+            }
+
+            StavkaDokumentaDTO stavkaDokumentaDTO = new StavkaDokumentaDTO
+            {
+                Roba = SelectedRoba,
+                Kolicina = Kolicina,
+                UkupnaCenaStavke = Convert.ToInt32(UkupnaCena)
+            };
+
+            var stavkaValidator = new StavkaDokumentaValidator();
+            var result = stavkaValidator.Validate(stavkaDokumentaDTO);
+            if (!result.IsValid)
+            {
+                StavkaValidation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
+                ValidationColor = Brushes.Red;
+                return;
+            }
+
+            _selectedDokument.UkupnaCena += stavkaDokumentaDTO.UkupnaCenaStavke;
+            _selectedDokument.Stavke!.Add(stavkaDokumentaDTO);
+
+            var successfull = await _dokumentService.UpdateDokument(_selectedDokument);
+
+            if (successfull)
+            {
+                StavkaValidation = "Stavka uspesno dodata!";
+                ValidationColor = Brushes.Green;
+            }
+
+            else
+            {
+                StavkaValidation = "Greska prilikom dodavanja stavke!";
+                ValidationColor = Brushes.Red;
+            }
         }
 
         private void UpdateSelectedRobaInfo()
         {
-            if (_selectedRoba != null)
-            {
-                SelectedRobaInfo = $"Naziv: {_selectedRoba.Naziv}\nCena: {_selectedRoba.Cena}";
-            }
-            else
-            {
-                SelectedRobaInfo = string.Empty;
-            }
+            SelectedRobaInfo = $"Sifra: {SelectedRoba!.SifraRobe}\n" +
+                                  $"Naziv: {SelectedRoba!.Naziv}\n" +
+                                  $"Jedinica mere: {SelectedRoba!.JedinicaMere}\n" +
+                                  $"Cena: {SelectedRoba!.Cena}";
         }
     }
 }
