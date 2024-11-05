@@ -123,18 +123,18 @@ namespace WPFPresentation.ViewModels.Dokument
             _robaService = new RobaService();
             _dokumentService = new DokumentService();
             _selectedDokument = selectedDokument;
-            DodajStavkuCommand = new RelayCommand(DodajStavku);
-            LoadData();
+            DodajStavkuCommand = new RelayCommand(async (parameter) => await DodajStavku());
+            _ = LoadData();
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             var roba = await _robaService.GetRoba();
             RobaList = new ObservableCollection<RobaDTO>(roba);
         }
 
 
-        private async void DodajStavku(object parameter)
+        private async Task DodajStavku()
         {
             if (SelectedRoba == null)
             {
@@ -168,6 +168,7 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 StavkaValidation = "Stavka uspesno dodata!";
                 ValidationColor = Brushes.Green;
+                ClearData();
             }
 
             else
@@ -175,6 +176,13 @@ namespace WPFPresentation.ViewModels.Dokument
                 StavkaValidation = "Greska prilikom dodavanja stavke!";
                 ValidationColor = Brushes.Red;
             }
+        }
+
+        private void ClearData()
+        {
+            Kolicina = 1;
+            SelectedRobaInfo = null;
+            UkupnaCena = null;
         }
 
         private void UpdateSelectedRobaInfo()
