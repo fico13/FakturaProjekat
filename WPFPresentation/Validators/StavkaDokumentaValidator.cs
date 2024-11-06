@@ -14,6 +14,9 @@ namespace WPFPresentation.Validators
 
             RuleFor(s => s.Roba!.SifraRobe)
                 .NotEmpty().WithMessage("Roba je obavezna");
+
+            RuleFor(s => s.UkupnaCenaStavke)
+                .NotEmpty().WithMessage("Morate odabrati robu!");
         }
     }
 }
