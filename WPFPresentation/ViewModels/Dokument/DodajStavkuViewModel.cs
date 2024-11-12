@@ -136,11 +136,34 @@ namespace WPFPresentation.ViewModels.Dokument
 
         private async Task DodajStavku()
         {
+            if (ValidateStavka())
+            {
+                var successfull = await _dokumentService.UpdateDokument(_selectedDokument);
+
+                if (successfull)
+                {
+                    StavkaValidation = "Stavka uspesno dodata!";
+                    ValidationColor = Brushes.Green;
+                    ClearData();
+                }
+
+                else
+                {
+                    StavkaValidation = "Greska prilikom dodavanja stavke!";
+                    ValidationColor = Brushes.Red;
+                }
+            }
+
+
+        }
+
+        private bool ValidateStavka()
+        {
             if (SelectedRoba == null)
             {
                 StavkaValidation = "Morate izabrati robu!";
                 ValidationColor = Brushes.Red;
-                return;
+                return false;
             }
 
             StavkaDokumentaDTO stavkaDokumentaDTO = new StavkaDokumentaDTO
@@ -156,26 +179,12 @@ namespace WPFPresentation.ViewModels.Dokument
             {
                 StavkaValidation = string.Join("\n", result.Errors.Select(error => error.ErrorMessage));
                 ValidationColor = Brushes.Red;
-                return;
+                return false;
             }
 
             _selectedDokument.UkupnaCena += stavkaDokumentaDTO.UkupnaCenaStavke;
             _selectedDokument.Stavke!.Add(stavkaDokumentaDTO);
-
-            var successfull = await _dokumentService.UpdateDokument(_selectedDokument);
-
-            if (successfull)
-            {
-                StavkaValidation = "Stavka uspesno dodata!";
-                ValidationColor = Brushes.Green;
-                ClearData();
-            }
-
-            else
-            {
-                StavkaValidation = "Greska prilikom dodavanja stavke!";
-                ValidationColor = Brushes.Red;
-            }
+            return true;
         }
 
         private void ClearData()
