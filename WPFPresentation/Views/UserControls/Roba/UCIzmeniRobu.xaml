@@ -35,6 +35,10 @@
             <TextBlock Text="Cena" VerticalAlignment="Center" Margin="5"/>
             <TextBox Width="200" Height="20" Margin="5" Text="{Binding Path=SelectedRoba.Cena}"/>
 
+            <!-- Stanje TextBlock and TextBox -->
+            <TextBlock Text="Stanje" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Width="200" Height="20" Margin="5" Text="{Binding Path=SelectedRoba.Stanje}"/>
+
             <!-- Validation Error TextBox -->
             <TextBox Margin="5" Text="{Binding Path=Validation}" IsReadOnly="True" Foreground="{Binding ValidationColor}" Background="Transparent" BorderThickness="0" Height="64"/>
 

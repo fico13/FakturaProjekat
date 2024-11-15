@@ -116,7 +116,8 @@ namespace Persistence.Repositories
                                         .ExecuteUpdateAsync(r => r
                                                 .SetProperty(r => r.Naziv, robaEntity.Naziv)
                                                 .SetProperty(r => r.Cena, robaEntity.Cena)
-                                                .SetProperty(r => r.JedinicaMere, robaEntity.JedinicaMere));
+                                                .SetProperty(r => r.JedinicaMere, robaEntity.JedinicaMere)
+                                                .SetProperty(r => r.Stanje, robaEntity.Stanje));
 
                     await transaction.CommitAsync();
 
